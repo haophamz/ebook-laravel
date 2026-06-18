@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Admin\BookController;
 //dang ki dang nhap
 Route::get('/register', [RegisterController::class, 'index'])
     ->name('register');
@@ -139,3 +140,23 @@ Route::post('/reset-password', function (Request $request) {
         ]);
 
 })->name('password.update');
+//admin
+Route::prefix('admin')
+    ->middleware([
+        'auth',
+        'verified',
+        'admin'
+    ])
+    ->group(function () {
+
+        Route::get('/', function () {
+            return view('admin.dashboard');
+        })->name('admin.dashboard');
+
+        Route::get('/books/create', [BookController::class, 'create'])
+            ->name('admin.books.create');
+
+        Route::post('/books/store', [BookController::class, 'store'])
+            ->name('admin.books.store');
+
+    });
