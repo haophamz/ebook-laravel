@@ -15,21 +15,21 @@
     <ul class="sidebar-menu">
 
         <li>
-            <a href="{{ route('admin.dashboard') }}" class="active">
+            <a href="{{ route('admin.dashboard') }}"  class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                 <i class="ti ti-layout-dashboard"></i>
                 Dashboard
             </a>
         </li>
 
         <li>
-            <a href="#">
+            <a href="{{ route('admin.books.create') }}"  class="{{ request()->routeIs('admin.books.create') ? 'active' : '' }}">
                 <i class="ti ti-book-upload"></i>
                 Upload Ebook
             </a>
         </li>
 
         <li>
-            <a href="#">
+            <a href="{{ route('admin.books.index') }}"  class="{{ request()->routeIs('admin.books.index') ? 'active' : '' }}">
                 <i class="ti ti-books"></i>
                 Danh sách Ebook
             </a>

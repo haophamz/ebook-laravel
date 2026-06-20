@@ -129,12 +129,7 @@
                 </div>
 
                 <div class="actions">
-                    <button type="button" class="btn-cancel"
-                            onclick="history.back()">Hủy</button>
-                    <button type="submit" class="btn-upload">Lưu Ebook</button>
-                </div>
-
-            </div>
+<a href="{{ route('admin.books.drafts') }}" class="btn-draft"> <i class="ti ti-file-pencil"></i> Xem bản nháp </a> <button type="submit" class="btn-upload"> <i class="ti ti-device-floppy"></i> Lưu Ebook </button>            </div>
 
         </div>{{-- end .upload-layout --}}
 

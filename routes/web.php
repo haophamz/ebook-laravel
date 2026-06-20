@@ -157,6 +157,9 @@ Route::prefix('admin')
     Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->name('dashboard');
+Route::get('/books/drafts', [BookController::class, 'drafts'])
+->name('books.drafts');
+
 
     });
 
