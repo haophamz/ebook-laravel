@@ -1,0 +1,260 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+.upload-page {
+    padding: 36px 40px;
+}
+
+/* Head */
+.page-head {
+    margin-bottom: 28px;
+}
+
+.page-head h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: #111;
+    margin-bottom: 4px;
+}
+
+.page-head p {
+    font-size: 13px;
+    color: #71717a;
+}
+
+/* ── 2-column master layout ── */
+.upload-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+/* Shared card */
+.card {
+    background: #fff;
+    border: 1px solid #e4e4e7;
+    border-radius: 16px;
+    padding: 28px;
+}
+
+/* Section label */
+.section-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: #a1a1aa;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f4f4f5;
+}
+
+/* Form group */
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group:last-child { margin-bottom: 0; }
+
+.form-group label,
+.form-group > span.lbl {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #3f3f46;
+    margin-bottom: 7px;
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    border: 1px solid #d4d4d8;
+    border-radius: 10px;
+    padding: 11px 13px;
+    font-size: 13.5px;
+    color: #111;
+    background: #fafafa;
+    outline: none;
+    font-family: inherit;
+    transition: border-color .15s, box-shadow .15s, background .15s;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.form-group select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 34px;
+    cursor: pointer;
+}
+
+.form-group input[type="text"]::placeholder,
+.form-group textarea::placeholder {
+    color: #a1a1aa;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #111;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(17,17,17,.06);
+}
+
+.form-group textarea {
+    resize: vertical;
+    line-height: 1.6;
+}
+
+/* Checkbox grid */
+.checkbox-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 13px;
+    border: 1px solid #e4e4e7;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+    font-size: 13.5px;
+    color: #3f3f46;
+    font-weight: 500;
+}
+
+.check-item:hover {
+    border-color: #111;
+    background: #fafafa;
+}
+
+.check-item input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    accent-color: #111;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* File upload zone */
+.file-upload-zone {
+    position: relative;
+    border: 1.5px dashed #d4d4d8;
+    border-radius: 10px;
+    padding: 22px 16px;
+    text-align: center;
+    background: #fafafa;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+}
+
+.file-upload-zone:hover {
+    border-color: #111;
+    background: #f4f4f5;
+}
+
+.file-upload-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+
+.upload-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #3f3f46;
+    margin-bottom: 3px;
+}
+
+.upload-hint {
+    font-size: 11.5px;
+    color: #a1a1aa;
+}
+
+.file-name {
+    margin-top: 7px;
+    font-size: 12px;
+    color: #3f3f46;
+    font-weight: 500;
+    min-height: 16px;
+}
+
+/* Files side by side */
+.files-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* Divider between sections in right card */
+.right-divider {
+    border: none;
+    border-top: 1px solid #f4f4f5;
+    margin: 22px 0;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid #f4f4f5;
+}
+
+.btn-cancel {
+    height: 40px;
+    padding: 0 18px;
+    border: 1px solid #e4e4e7;
+    border-radius: 10px;
+    background: transparent;
+    color: #71717a;
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background .15s, color .15s;
+}
+
+.btn-cancel:hover {
+    background: #f4f4f5;
+    color: #111;
+}
+
+.btn-upload {
+    height: 40px;
+    padding: 0 22px;
+    border: none;
+    border-radius: 10px;
+    background: #111;
+    color: #fff;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background .15s;
+}
+
+.btn-upload:hover {
+    background: #27272a;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .upload-layout { grid-template-columns: 1fr; }
+    .files-grid { grid-template-columns: 1fr; }
+    .upload-page { padding: 20px; }
+}

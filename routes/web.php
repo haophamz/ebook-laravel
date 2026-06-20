@@ -11,6 +11,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Admin\BookController;
 //dang ki dang nhap
+route::get("/test", function () {
+    return view('welcome');
+});
 Route::get('/register', [RegisterController::class, 'index'])
     ->name('register');
 
@@ -142,6 +145,7 @@ Route::post('/reset-password', function (Request $request) {
 })->name('password.update');
 //admin
 Route::prefix('admin')
+    ->name('admin.')
     ->middleware([
         'auth',
         'verified',
@@ -149,14 +153,10 @@ Route::prefix('admin')
     ])
     ->group(function () {
 
-        Route::get('/', function () {
-            return view('admin.dashboard');
-        })->name('admin.dashboard');
-
-        Route::get('/books/create', [BookController::class, 'create'])
-            ->name('admin.books.create');
-
-        Route::post('/books/store', [BookController::class, 'store'])
-            ->name('admin.books.store');
+    Route::resource('books', BookController::class);
+    Route::get('/dashboard', function () {
+    return view('admin.dashboard');
+})->name('dashboard');
 
     });
+
