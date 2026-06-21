@@ -35,19 +35,21 @@
             </a>
         </li>
 
-        <li>
-            <a href="#">
-                <i class="ti ti-category"></i>
-                Danh mục
-            </a>
-        </li>
+<li>
+    <a href="{{ route('admin.categories.index') }}"
+       class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+        <i class="ti ti-category"></i>
+        Danh mục
+    </a>
+</li>
 
         <li>
-            <a href="#">
-                <i class="ti ti-user-star"></i>
-                Tác giả
-            </a>
-        </li>
+    <a href="{{ route('admin.members.index') }}"
+       class="{{ request()->routeIs('admin.members.*') ? 'active' : '' }}">
+        <i class="ti ti-user"></i>
+        Hội viên
+    </a>
+</li>
 
     </ul>
 

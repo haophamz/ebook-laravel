@@ -10,6 +10,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Admin\BookController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\MemberController;
 //dang ki dang nhap
 route::get("/test", function () {
     return view('welcome');
@@ -152,14 +154,21 @@ Route::prefix('admin')
         'admin'
     ])
     ->group(function () {
+Route::get('/books/drafts', [BookController::class, 'drafts'])
+->name('books.drafts');
 
     Route::resource('books', BookController::class);
     Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->name('dashboard');
-Route::get('/books/drafts', [BookController::class, 'drafts'])
-->name('books.drafts');
 
+//danh muc
+Route::resource('categories', CategoryController::class);
+Route::patch('/members/{member}/lock', [MemberController::class, 'lock'])
+    ->name('members.lock');
 
+Route::patch('/members/{member}/unlock', [MemberController::class, 'unlock'])
+    ->name('members.unlock');
+ Route::resource('members', MemberController::class);
     });
 

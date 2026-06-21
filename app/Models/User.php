@@ -23,6 +23,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'email_verified_at',
+        'membership_type',
+    'vip_expires_at',
+    'is_active'
     ];
 
     /**
@@ -47,4 +50,10 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+    public function isVip()
+{
+    return $this->membership_type === 'vip'
+        && $this->vip_expires_at
+        && $this->vip_expires_at->isFuture();
+}
 }
