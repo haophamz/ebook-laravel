@@ -11,6 +11,7 @@ class BookController extends Controller
 {
 public function index(Request $request)
 {
+    
     $books = Book::query();
 
     if ($request->filled('keyword')) {
@@ -33,11 +34,11 @@ public function index(Request $request)
     }
 
     if ($request->type == 'banner') {
-        $books->where('is_top',1);
+        $books->where('is_top',1); 
+    }    
     if ($request->type == 'featured') {
-    $books->where('is_featured', 1);
+    $books->where('featured', 1);
 }    
-    }
 
     $books = $books
         ->latest()

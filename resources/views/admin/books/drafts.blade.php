@@ -97,12 +97,6 @@
         </div>
 
         <div style="margin-top:16px;text-align:center;">
-
-            <a href="{{ route('admin.books.index') }}"
-               class="btn-edit">
-               Quay lại
-            </a>
-
         </div>
 
     </div>

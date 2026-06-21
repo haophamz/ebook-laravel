@@ -11,7 +11,7 @@
 <div class="page-head">
     <div>
         <h1>Danh sách Ebook</h1>
-        <p>Quản lý tất cả ebook trong hệ thống.</p>
+      <p>Tổng số ebook:{{ $books->total() }} sách</p>
     </div>
 </div>
 

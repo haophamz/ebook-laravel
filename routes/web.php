@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\MemberController;
+use App\Http\Controllers\Admin\BannerController;
 //dang ki dang nhap
 route::get("/test", function () {
     return view('welcome');
@@ -161,7 +162,11 @@ Route::get('/books/drafts', [BookController::class, 'drafts'])
     Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->name('dashboard');
-
+//banner
+Route::resource(
+    'banners',
+    BannerController::class
+);
 //danh muc
 Route::resource('categories', CategoryController::class);
 Route::patch('/members/{member}/lock', [MemberController::class, 'lock'])

@@ -57,7 +57,13 @@
         Hội viên
     </a>
 </li>
-
+<li>
+    <a href="{{ route('admin.banners.index') }}"
+       class="{{ request()->routeIs('admin.banners.*') ? 'active' : '' }}">
+        <i class="ti ti-photo"></i>
+        Banner
+    </a>
+</li>
     </ul>
 
     <div class="sidebar-section-title">
