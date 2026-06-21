@@ -9,13 +9,44 @@ use Illuminate\Support\Str;
 use App\Models\Category;
 class BookController extends Controller
 {
-    public function index()
+public function index(Request $request)
 {
-$books = Book::with('category')
-->latest()
-->paginate(15);
-return view('admin.books.index', compact('books'));
+    $books = Book::query();
 
+    if ($request->filled('keyword')) {
+
+        $books->where('title','like',
+            '%'.$request->keyword.'%'
+        );
+    }
+
+    if ($request->type == 'published') {
+        $books->where('status','published');
+    }
+
+    if ($request->type == 'draft') {
+        $books->where('status','draft');
+    }
+
+    if ($request->type == 'vip') {
+        $books->where('is_vip',1);
+    }
+
+    if ($request->type == 'banner') {
+        $books->where('is_top',1);
+    if ($request->type == 'featured') {
+    $books->where('is_featured', 1);
+}    
+    }
+
+    $books = $books
+        ->latest()
+        ->paginate(20);
+
+    return view(
+        'admin.books.index',
+        compact('books')
+    );
 }   
 public function create() {
 $categories = Category::where('status', 1)

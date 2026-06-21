@@ -27,14 +27,21 @@
                 Upload Ebook
             </a>
         </li>
+<li>
+    <a href="{{ route('admin.books.index') }}"
+       class="{{ request()->routeIs('admin.books.index') ? 'active' : '' }}">
+        <i class="ti ti-books"></i>
+        <span>Danh sách Ebook</span>
+    </a>
+</li>
 
-        <li>
-            <a href="{{ route('admin.books.index') }}"  class="{{ request()->routeIs('admin.books.index') ? 'active' : '' }}">
-                <i class="ti ti-books"></i>
-                Danh sách Ebook
-            </a>
-        </li>
-
+<li>
+    <a href="{{ route('admin.books.drafts') }}"
+       class="{{ request()->routeIs('admin.books.drafts') ? 'active' : '' }}">
+        <i class="ti ti-book-off"></i>
+        <span>Bản nháp Ebook</span>
+    </a>
+</li>
 <li>
     <a href="{{ route('admin.categories.index') }}"
        class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
