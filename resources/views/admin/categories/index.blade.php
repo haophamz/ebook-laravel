@@ -39,6 +39,7 @@
                 <th>ID</th>
                 <th>Tên</th>
                 <th>Slug</th>
+                <th>Trạng thái</th>
 
                 <th width="180">Thao tác</th>
             </tr>
@@ -56,8 +57,25 @@
 
                 <td>{{ $category->slug }}</td>
 
-                <td class="action-cell">
+<td>
 
+@if($category->status)
+
+    <span class="status active">
+        Hiển thị
+    </span>
+
+@else
+
+    <span class="status inactive">
+        Đã ẩn
+    </span>
+
+@endif
+
+</td>
+
+<td class="action-cell">
                     <div class="action-group">
 
                         <a href="{{ route('admin.categories.edit',$category->id) }}"

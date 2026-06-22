@@ -6,10 +6,6 @@
 
 @section('content')
 
-<a href="{{ route('admin.categories.index') }}" class="page-head-back">
-    ← Quay lại danh sách
-</a>
-
 <div class="page-head">
     <div>
         <h1>Chỉnh sửa danh mục</h1>
@@ -39,6 +35,7 @@
                     <div class="form-error">{{ $message }}</div>
                 @enderror
             </div>
+            
 
             <div class="form-group">
                 <label for="slug" class="form-label">Slug</label>
@@ -49,7 +46,16 @@
                        class="form-control">
                 <div class="form-hint">Slug được tạo tự động, không thể sửa trực tiếp</div>
             </div>
+<div class="field">
+    <label>
+        <input type="checkbox"
+               name="status"
+               value="1"
+               {{ $category->status ? 'checked' : '' }}>
 
+        Hiển thị danh mục
+    </label>
+</div>
         </div>
 
         <div class="card-footer">

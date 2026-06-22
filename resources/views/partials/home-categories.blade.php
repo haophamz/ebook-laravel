@@ -1,5 +1,82 @@
-<section class="section">
+@foreach($categories as $category)
 
-    <h2>Danh mục</h2>
+    @if($category->books->count())
 
-</section>
+    <section class="section">
+
+        <div class="section-head">
+
+            <h2 class="section-title">
+                {{ $category->name }}
+            </h2>
+        </div>
+
+        <div class="book-grid">
+
+            @foreach($category->books as $book)
+
+                <div class="book-card">
+
+                    @if($book->is_vip)
+
+                        <div class="member-badge">
+
+                            <img src="{{ asset('storage/img/hoivien.png') }}"
+                                 alt="Hội viên">
+
+                        </div>
+
+                    @endif
+
+                    <div class="book-cover">
+
+                        @if($book->cover)
+
+                            <img src="{{ asset('storage/'.$book->cover) }}"
+                                 alt="{{ $book->title }}">
+
+                        @else
+
+                            <img src="https://placehold.co/400x600?text=No+Cover"
+                                 alt="No Cover">
+
+                        @endif
+
+                        <div class="book-overlay">
+
+                            <h4>
+                                {{ $book->title }}
+                            </h4>
+
+                            <p>
+                                {{ \Illuminate\Support\Str::limit(strip_tags($book->description),120) }}
+                            </p>
+
+                            <div class="overlay-actions">
+
+                                <a href="#"
+                                   class="btn-read">
+                                    Đọc sách
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="book-title">
+                        {{ $book->title }}
+                    </div>
+
+                </div>
+
+            @endforeach
+
+        </div>
+
+    </section>
+
+    @endif
+
+@endforeach

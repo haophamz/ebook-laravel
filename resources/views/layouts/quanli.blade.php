@@ -41,6 +41,29 @@ body{
     display:flex;
     min-height:100vh;
 }
+.status{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    min-width:90px;
+    height:34px;
+
+    border-radius:999px;
+
+    font-size:13px;
+    font-weight:600;
+}
+
+.status.active{
+    background:#ecfdf5;
+    color:#059669;
+}
+
+.status.inactive{
+    background:#fef2f2;
+    color:#dc2626;
+}
 
 /* ============================= */
 /* SIDEBAR                        */

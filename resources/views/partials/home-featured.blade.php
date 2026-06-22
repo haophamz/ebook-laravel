@@ -1,103 +1,78 @@
+
 <section class="section">
 
-    <h2>Ebook nổi bật</h2>
+    <h2 class="section-title">
+        Ebook nổi bật
+    </h2>
 
     <div class="book-grid">
 
-        @for($i = 1; $i <= 10; $i++)
+        @forelse($featuredBooks as $book)
 
             <div class="book-card">
 
+                @if($book->is_vip)
+
+                    <div class="member-badge">
+
+                        <img src="{{ asset('storage/img/hoivien.png') }}"
+                             alt="Hội viên">
+
+                    </div>
+
+                @endif
+
                 <div class="book-cover">
-                    {{ $i }}
+
+                    @if($book->cover)
+
+                        <img src="{{ asset('storage/'.$book->cover) }}"
+                             alt="{{ $book->title }}">
+
+                    @else
+
+                        <img src="https://placehold.co/400x600?text=No+Cover"
+                             alt="No Cover">
+
+                    @endif
+
+                    <div class="book-overlay">
+
+                        <h4>
+                            {{ $book->title }}
+                        </h4>
+
+                        <p>
+                            {{ \Illuminate\Support\Str::limit(strip_tags($book->description),120) }}
+                        </p>
+
+                        <div class="overlay-actions">
+
+<a href="{{ route('home.watch',$book->slug) }}"
+   class="btn-read">
+    Đọc sách
+</a>
+                        </div>
+
+                    </div>
+
                 </div>
 
-                <div class="book-info">
-                    <h3>Sách test {{ $i }}</h3>
-                    <p>Tác giả test</p>
+                <div class="book-title">
+                    {{ $book->title }}
                 </div>
 
             </div>
 
-        @endfor
+        @empty
+
+            <div class="empty-books">
+                Chưa có ebook nổi bật
+            </div>
+
+        @endforelse
 
     </div>
 
 </section>
 
-<style>
-
-.section{
-    padding:40px;
-}
-
-.section h2{
-    color:#fff;
-    font-size:28px;
-    margin-bottom:25px;
-}
-
-.book-grid{
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-    gap:20px;
-}
-
-.book-card{
-    background:#0d121c;
-    border-radius:14px;
-    overflow:hidden;
-    transition:.2s;
-}
-
-.book-card:hover{
-    transform:translateY(-4px);
-}
-
-.book-cover{
-    height:260px;
-    background:#182131;
-    color:#16d6a5;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    font-size:60px;
-    font-weight:900;
-}
-
-.book-info{
-    padding:15px;
-}
-
-.book-info h3{
-    color:#fff;
-    font-size:16px;
-    margin-bottom:8px;
-}
-
-.book-info p{
-    color:#94a3b8;
-    font-size:14px;
-}
-
-@media(max-width:1200px){
-    .book-grid{
-        grid-template-columns:repeat(4,1fr);
-    }
-}
-
-@media(max-width:900px){
-    .book-grid{
-        grid-template-columns:repeat(3,1fr);
-    }
-}
-
-@media(max-width:600px){
-    .book-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-}
-
-</style>

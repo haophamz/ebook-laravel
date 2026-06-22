@@ -32,6 +32,8 @@ public function store(Request $request)
     Category::create([
         'name'   => $request->name,
         'slug'   => Str::slug($request->name), 
+                'status' => $request->has('status')
+
     ]);
 
     return redirect()
@@ -62,6 +64,8 @@ public function update(Request $request, Category $category)
     $category->update([
         'name' => $request->name,
         'slug' => Str::slug($request->name),
+                'status' => $request->has('status')
+
     ]);
 
     return redirect()

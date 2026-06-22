@@ -3,8 +3,6 @@
 <html lang="vi">
 
 <head>
-
-```
 <meta charset="UTF-8">
 
 <meta name="viewport"
@@ -29,7 +27,7 @@
 
 body{
     background:#05080f;
-    min-height:100vh;
+  
 }
 
 a{
@@ -201,9 +199,172 @@ footer{
 
     color:#9ca3af;
 }
+//them
+//hien thi ebook
 .section{
-    min-height:1000px;
+    width:95%;
+    margin:auto;
+    margin-bottom:60px;
 }
+
+.section-title{
+    color:#fff;
+    font-size:34px;
+    font-weight:800;
+    margin-bottom:30px;
+}
+
+.book-grid{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:24px;
+}
+
+.book-card{
+    position:relative;
+    transition:.25s;
+}
+
+.book-card:hover{
+    transform:translateY(-6px);
+}
+
+.member-badge{
+    position:absolute;
+    top:-10px;
+    right:-1px;
+    z-index:30;
+}
+
+.member-badge img{
+    width:130px;
+    display:block;
+}
+
+.book-cover{
+    position:relative;
+    height:340px;
+    border-radius:16px;
+    overflow:hidden;
+    background:#111827;
+}
+
+.book-cover img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.book-overlay{
+    position:absolute;
+    inset:0;
+
+    opacity:0;
+
+    padding:18px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+
+    background:
+    linear-gradient(
+        to top,
+        rgba(0,0,0,.95),
+        rgba(0,0,0,.15)
+    );
+
+    transition:.25s;
+}
+
+.book-card:hover .book-overlay{
+    opacity:1;
+}
+
+.book-overlay h4{
+    color:#fff;
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.book-overlay p{
+    color:#cbd5e1;
+    font-size:13px;
+    line-height:1.7;
+    margin-bottom:16px;
+}
+
+.overlay-actions{
+    display:flex;
+    align-items:center;
+}
+
+.btn-read{
+    display:inline-block;
+
+    padding:10px 16px;
+
+    background:#18d5a6;
+    color:#fff;
+
+    border-radius:10px;
+
+    font-size:14px;
+    font-weight:700;
+
+    text-decoration:none;
+}
+
+.book-title{
+    color:#fff;
+    margin-top:12px;
+    font-size:15px;
+    font-weight:700;
+
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.empty-books{
+    color:#fff;
+}
+
+@media(max-width:1600px){
+
+    .book-grid{
+        grid-template-columns:repeat(5,1fr);
+    }
+
+}
+
+@media(max-width:1200px){
+
+    .book-grid{
+        grid-template-columns:repeat(4,1fr);
+    }
+
+}
+
+@media(max-width:900px){
+
+    .book-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+}
+
+@media(max-width:600px){
+
+    .book-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+
 </style>
 ```
 
@@ -211,7 +372,7 @@ footer{
 
 <body>
 
-```
+
 @include('includes.header')
 
 <main>
@@ -221,13 +382,11 @@ footer{
 </main>
 
 @include('includes.footer')
-```
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 <script>
-
-document.addEventListener('DOMContentLoaded', function(){
+    document.addEventListener('DOMContentLoaded', function(){
 
     new Swiper('.bannerSwiper', {
 
@@ -253,6 +412,5 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 </script>
-
 </body>
 </html>

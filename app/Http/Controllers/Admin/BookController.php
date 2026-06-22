@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\Models\Category;
 class BookController extends Controller
 {
+    
 public function index(Request $request)
 {
     
@@ -173,5 +174,33 @@ public function update(Request $request, Book $book)
         ->route('admin.books.index')
         ->with('success', 'Cập nhật ebook thành công');
 }
+public function watch($slug)
+    {
+        $book = Book::where('slug',$slug)
+            ->firstOrFail();
 
+        return view(
+'home.watch',compact('book')
+        );
+    }
+    public function streamEpub($slug)
+{
+    $book = Book::where('slug', $slug)->first();
+
+    if (!$book) {
+        abort(404, 'Book not found.');
+    }
+
+    $path = storage_path('app/public/' . $book->epub_file);
+
+    if (!file_exists($path)) {
+        abort(404, 'Book file not found.');
+    }
+
+    return response()->file($path, [
+        'Content-Type' => 'application/epub+zip',
+        'Content-Disposition' => 'inline; filename="' . basename($path) . '"',
+    ]);
+
+}
 }

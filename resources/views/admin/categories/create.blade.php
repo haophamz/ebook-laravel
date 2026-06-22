@@ -26,7 +26,16 @@
                required>
 
     </div>
+<div class="field">
+    <label>
+        <input type="checkbox"
+               name="status"
+               value="1"
+               checked>
 
+        Hiển thị danh mục
+    </label>
+</div>
     <div class="actions">
 
         <a href="{{ route('admin.categories.index') }}"

@@ -13,7 +13,11 @@ use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\BannerController;
-//dang ki dang nhap
+Route::get('/sach/{slug}', [BookController::class,'watch'])
+    ->name('home.watch');
+    Route::get('/books/{id}/stream', [BookController::class, 'streamEpub'])
+    ->name('books.stream');
+//dang ki dang nap
 route::get("/test", function () {
     return view('welcome');
 });
