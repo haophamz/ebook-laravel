@@ -1,233 +1,402 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <script src="https://cdn.jsdelivr.net/npm/jszip/dist/jszip.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $book->title }}</title>
-    <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+@extends('layouts.app')
 
-        body {
-            font-family: 'Georgia', serif;
-            background: #1a1a1a;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
+@section('content')
 
-        .reader-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 24px;
-            height: 52px;
-            background: #111;
-            border-bottom: 1px solid #2e2e2e;
-            flex-shrink: 0;
-        }
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        .reader-header h1 {
-            font-size: 14px;
-            font-weight: 400;
-            letter-spacing: 0.06em;
-            color: #aaa;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 60%;
-        }
+body{
+    font-family:'Inter',sans-serif;
+    background:#121212;
+    color:#fff;
+}
 
-        .header-back {
-            font-size: 13px;
-            color: #666;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .header-back:hover { color: #ccc; }
+.page{
+    width:1400px;
+    max-width:95%;
+    margin:auto;
+    padding:100px 0 80px;
+}
 
-        .reader-body {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
+/* ===== TOP ===== */
 
-        #viewer {
-            width: 720px;
-            max-width: 100%;
-            height: 100%;
-            background: #fdf8f0;
-            box-shadow: 0 0 60px rgba(0,0,0,0.6);
-            position: relative;
-        }
+.detail{
+    display:flex;
+    gap:50px;
+    align-items:flex-start;
+}
 
-        .reader-status {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            background: #fdf8f0;
-            color: #888;
-            font-size: 14px;
-            font-family: Georgia, serif;
-            z-index: 5;
-        }
-        .spinner {
-            width: 28px;
-            height: 28px;
-            border: 2px solid #ddd;
-            border-top-color: #888;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .reader-status.error { color: #c0504d; }
-        .reader-status.error .spinner { display: none; }
+/* ===== COVER ===== */
 
-        .nav-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 44px;
-            height: 44px;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 50%;
-            color: #aaa;
-            font-size: 22px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s, color 0.2s;
-            z-index: 10;
-            user-select: none;
-        }
-        .nav-btn:hover { background: rgba(255,255,255,0.14); color: #fff; }
-        .nav-btn:active { background: rgba(255,255,255,0.22); }
-        #prev-btn { left: 16px; }
-        #next-btn { right: 16px; }
+.cover{
+    width:340px;
+    flex-shrink:0;
+    position:relative;
+}
 
-        .reader-footer {
-            height: 36px;
-            background: #111;
-            border-top: 1px solid #2e2e2e;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        #page-info {
-            font-size: 12px;
-            color: #555;
-            letter-spacing: 0.05em;
-        }
-    </style>
-</head>
-<body>
+.cover img{
+    width:100%;
+    aspect-ratio: 2 / 3;   /* tỉ lệ bìa sách chuẩn, cao hơn rộng */
+    object-fit: cover; 
+    border-radius:10px;
+    display:block;
+    box-shadow:0 20px 50px rgba(0,0,0,.45);
+}
 
-<header class="reader-header">
-    <a href="{{ url()->previous() }}" class="header-back">← Quay lại</a>
-    <h1>{{ $book->title }}</h1>
-    <div></div>
-</header>
+.vip-tag{
+    position:absolute;
+    top:14px;
+    left:14px;
+    background:#b8860b;
+    color:#fff;
+    font-size:13px;
+    font-weight:700;
+    padding:6px 14px;
+    border-radius:6px;
+}
 
-<div class="reader-body">
-    <button class="nav-btn" id="prev-btn">&#8249;</button>
+/* ===== INFO ===== */
 
-    <div id="viewer">
-        <div class="reader-status" id="status">
-            <div class="spinner"></div>
-            <span>Đang tải sách…</span>
-        </div>
-    </div>
+.info{
+    flex:1;
+    position:relative;
+}
 
-    <button class="nav-btn" id="next-btn">&#8250;</button>
-</div>
+.info:before{
+    content:'';
+    position:absolute;
+    width:800px;
+    height:800px;
+    background:radial-gradient(circle,#0abf8d30 0%,transparent 70%);
+    left:-250px;
+    top:-250px;
+    z-index:-1;
+}
 
-<footer class="reader-footer">
-    <span id="page-info">—</span>
-</footer>
+.title{
+    font-size:58px;
+    font-weight:800;
+    line-height:1.15;
+    margin-bottom:18px;
+}
 
-<script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
-<script>
-(function () {
-    const url        = "{{ asset('storage/' . $book->epub_file) }}";
-    const statusEl   = document.getElementById('status');
-    const pageInfoEl = document.getElementById('page-info');
+/* ===== RATE ===== */
 
-    function showError(msg) {
-        statusEl.classList.add('error');
-        statusEl.querySelector('.spinner').style.display = 'none';
-        statusEl.querySelector('span').textContent = msg;
+.rating{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:30px;
+}
+
+.rating strong{
+    font-size:24px;
+}
+
+.stars{
+    color:#ffc107;
+    letter-spacing:2px;
+}
+
+.rating span{
+    color:#ccc;
+}
+
+/* ===== META ===== */
+
+.meta{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:40px;
+    margin-bottom:25px;
+}
+
+.meta label{
+    display:block;
+    color:#808080;
+    margin-bottom:10px;
+}
+
+.meta div{
+    font-size:22px;
+    font-weight:600;
+}
+
+/* ===== LINE ===== */
+
+.line{
+    height:1px;
+    background:#2d2d2d;
+    margin:30px 0;
+}
+
+/* ===== OPTION ===== */
+
+.row{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    margin-bottom:15px;
+}
+
+.row span{
+    color:#b9b9b9;
+    width:120px;
+}
+
+.tabs{
+    display:flex;
+    gap:10px;
+}
+
+.tab{
+    padding:12px 25px;
+    border-radius:10px;
+    background:#2a2a2a;
+    color:#c9c9c9;
+    border:none;
+    cursor:pointer;
+}
+
+.tab.active{
+    background:#4b5c59;
+    color:#fff;
+}
+
+/* ===== ACTION ===== */
+
+.actions{
+    display:flex;
+    gap:14px;
+    margin:35px 0;
+}
+
+.read-btn{
+    height:60px;
+    min-width:220px;
+    border:none;
+    border-radius:35px;
+    background:#18c29c;
+    color:white;
+    font-size:20px;
+    font-weight:700;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.circle{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    border:none;
+    background:#2f3a39;
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+}
+
+/* ===== DESC ===== */
+
+.desc{
+    max-width:900px;
+    color:#e4e4e4;
+    font-size:21px;
+    line-height:1.9;
+}
+
+.more{
+    color:#18c29c;
+    text-decoration:none;
+}
+
+/* ===== REVIEW ===== */
+
+.review{
+    margin-top:80px;
+}
+
+.review h2{
+    font-size:46px;
+    margin-bottom:25px;
+    font-weight:800;
+}
+
+.review-menu{
+    display:flex;
+    gap:40px;
+    border-bottom:1px solid #252525;
+    padding-bottom:15px;
+}
+
+.review-menu a{
+    color:#18c29c;
+    text-decoration:none;
+    font-size:22px;
+}
+
+.empty-state{
+    margin-top:25px;
+    color:#666;
+    font-size:18px;
+}
+
+/* ===== MOBILE ===== */
+
+@media(max-width:1000px){
+
+    .detail{
+        flex-direction:column;
     }
 
-    // Fetch dưới dạng ArrayBuffer để bypass lỗi MIME type null
-    fetch(url)
-        .then(r => {
-            if (!r.ok) throw new Error('HTTP ' + r.status);
-            return r.arrayBuffer();
-        })
-        .then(buffer => {
-            const book      = ePub(buffer);
-            const rendition = book.renderTo('viewer', {
-                width : '100%',
-                height: '100%',
-                spread: 'none',
-                flow  : 'paginated',
-            });
+    .cover{
+        width:100%;
+        max-width:350px;
+    }
 
-            rendition.display().then(() => {
-                statusEl.remove();
-            }).catch(err => {
-                console.error(err);
-                showError('Không render được: ' + err.message);
-            });
+    .title{
+        font-size:40px;
+    }
 
-            // Nút điều hướng
-            document.getElementById('prev-btn').addEventListener('click', () => rendition.prev());
-            document.getElementById('next-btn').addEventListener('click', () => rendition.next());
+    .meta{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
 
-            // Phím mũi tên
-            document.addEventListener('keydown', e => {
-                if (e.key === 'ArrowLeft')  rendition.prev();
-                if (e.key === 'ArrowRight') rendition.next();
-            });
+@media(max-width:700px){
 
-            // Vuốt mobile
-            let touchStartX = 0;
-            document.getElementById('viewer').addEventListener('touchstart', e => {
-                touchStartX = e.changedTouches[0].screenX;
-            }, { passive: true });
-            document.getElementById('viewer').addEventListener('touchend', e => {
-                const diff = touchStartX - e.changedTouches[0].screenX;
-                if (Math.abs(diff) > 40) {
-                    diff > 0 ? rendition.next() : rendition.prev();
-                }
-            }, { passive: true });
+    .meta{
+        grid-template-columns:1fr;
+    }
 
-            // % tiến độ
-            rendition.on('relocated', location => {
-                try {
-                    const pct = Math.round(location.start.percentage * 100);
-                    pageInfoEl.textContent = isNaN(pct) ? '—' : pct + '%';
-                } catch (_) {}
-            });
-        })
-        .catch(err => {
-            console.error(err);
-            showError('Không tải được file: ' + err.message);
-        });
-})();
-</script>
+    .title{
+        font-size:32px;
+    }
 
-</body>
-</html>
+    .review h2{
+        font-size:30px;
+    }
+}
+
+</style>
+
+<div class="page">
+
+    <div class="detail">
+
+        <div class="cover">
+            <img src="{{ asset('storage/'.$book->cover) }}" alt="{{ $book->title }}">
+            @if($book->is_vip)
+                <div class="vip-tag">HỘI VIÊN</div>
+            @endif
+        </div>
+
+        <div class="info">
+
+            <h1 class="title">
+                {{ $book->title }}
+            </h1>
+
+            <div class="rating">
+                <strong>5.0</strong>
+                <div class="stars">★★★★★</div>
+                <span>1 đánh giá</span>
+            </div>
+
+            <div class="meta">
+
+                <div>
+                    <label>Tác giả</label>
+                    <div>{{ $book->author ?? 'Đang cập nhật' }}</div>
+                </div>
+
+                <div>
+                    <label>Thể loại</label>
+                    <div>{{ $book->category->name ?? 'Sách điện tử' }}</div>
+                </div>
+
+
+
+                <div>
+                    <label>Gói cước</label>
+                    <div>{{ $book->is_vip ? 'Hội viên' : 'Miễn phí' }}</div>
+                </div>
+
+            </div>
+
+            <div class="line"></div>
+
+            <div class="row">
+    
+                <div class="tabs">
+    
+                </div>
+            </div>
+
+            <div class="row">
+  
+                <div class="tabs">
+
+                </div>
+            </div>
+
+<div class="actions">
+
+    <a href="#" class="read-btn">
+        Đọc sách
+    </a>
+
+    <form action="{{ route('book.favorite',$book) }}"
+          method="POST">
+
+        @csrf
+
+        <button type="submit" class="circle favorite-btn">
+
+            @if($isFavorite)
+                ❤️
+            @else
+                🤍
+            @endif
+
+        </button>
+
+    </form>
+
+</div>
+
+            <div class="desc">
+                {!! nl2br(e($book->description)) !!}
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="review">
+
+        <h2>
+            Độc giả nói gì về "{{ $book->title }}"
+        </h2>
+
+        <div class="review-menu">
+            <a href="#">Bình luận (0)</a>
+            <a href="#">Đánh giá &amp; nhận xét</a>
+            <a href="#">Hỏi đáp về cuốn sách này</a>
+        </div>
+
+        <div class="empty-state">
+            Chưa có bình luận nào. Hãy là người đầu tiên!
+        </div>
+
+    </div>
+
+</div>
+
+@endsection

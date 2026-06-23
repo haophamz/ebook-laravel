@@ -14,7 +14,7 @@
         <div class="book-grid">
 
             @foreach($category->books as $book)
-
+        <a href="{{ route('home.watch',$book->slug) }}" >
                 <div class="book-card">
 
                     @if($book->is_vip)
@@ -54,11 +54,6 @@
 
                             <div class="overlay-actions">
 
-                                <a href="#"
-                                   class="btn-read">
-                                    Đọc sách
-                                </a>
-
                             </div>
 
                         </div>
@@ -70,13 +65,9 @@
                     </div>
 
                 </div>
-
+   </a>
             @endforeach
-
         </div>
-
     </section>
-
     @endif
-
 @endforeach

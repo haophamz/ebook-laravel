@@ -1,29 +1,276 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 
-<header>
-   <div class="header-container">
+<header class="header">
 
-        <div class="left">
+<style>
 
-            <a href="#" class="logo">HIKI</a>
+.header{
+    position:sticky;
+    top:0;
+    z-index:9999;
+    background:#111;
+    border-bottom:1px solid #222;
+}
 
-            <nav class="menu">
-                <a href="#">Sách điện tử</a>
-                <a href="#">Sách hội viên</a>
-                <a href="#">Danh Mục</a>
-            </nav>
+.header-container{
+    max-width:1400px;
+    margin:auto;
+    padding:0 24px;
+    height:76px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
 
-        </div>
+.left{
+    display:flex;
+    align-items:center;
+    gap:45px;
+}
 
-        <div class="right">
+.logo{
+    text-decoration:none;
+    font-size:34px;
+    font-weight:800;
+    color:#18c29c;
+}
 
-            <button class="search">
-                <i class="ti ti-search"></i>
-            </button>
+.menu{
+    display:flex;
+    gap:30px;
+}
 
-            <a href="#" class="package">
-                <i class="ti ti-crown"></i>
-                Gói cước
+.menu a{
+    color:#ddd;
+    text-decoration:none;
+    font-weight:500;
+    transition:.3s;
+}
+
+.menu a:hover{
+    color:#18c29c;
+}
+
+.right{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.search{
+    width:45px;
+    height:45px;
+    border:none;
+    border-radius:50%;
+    background:#1e1e1e;
+    color:white;
+    cursor:pointer;
+}
+
+.package{
+    height:45px;
+    padding:0 18px;
+    border-radius:25px;
+    background:#222;
+    color:white;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.register{
+    height:45px;
+    padding:0 20px;
+    border-radius:25px;
+    background:#18c29c;
+    color:white;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    font-weight:600;
+}
+
+.login{
+    height:45px;
+    padding:0 20px;
+    border-radius:25px;
+    border:1px solid #333;
+    color:white;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+}
+
+/* USER */
+
+.user-menu{
+    position:relative;
+    padding-bottom:15px;
+}
+
+.user-trigger{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:6px 12px;
+    cursor:pointer;
+
+    transform:translateY(8px);
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:2px solid #18c29c;
+}
+
+.user-info{
+    line-height:1.2;
+}
+
+.user-name{
+    color:#fff;
+    font-size:14px;
+    font-weight:600;
+}
+
+.user-role{
+    color:#18c29c;
+    font-size:11px;
+}
+
+.dropdown{
+    position:absolute;
+    top:100%;
+    right:0;
+    width:320px;
+    background:#181818;
+    border:1px solid #2b2b2b;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 20px 50px rgba(0,0,0,.45);
+
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(10px);
+
+    transition:.25s;
+}
+
+.user-menu:hover .dropdown{
+    opacity:1;
+    visibility:visible;
+    transform:none;
+}
+
+.dropdown-top{
+    padding:20px;
+    display:flex;
+    gap:15px;
+    align-items:center;
+}
+
+.dropdown-top img{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+}
+
+.dropdown-top h4{
+    margin:0;
+    color:#fff;
+}
+
+.dropdown-top p{
+    margin-top:5px;
+    color:#888;
+    font-size:13px;
+}
+
+.line{
+    height:1px;
+    background:#2a2a2a;
+}
+
+.dropdown a,
+.dropdown button{
+    width:100%;
+    border:none;
+    background:none;
+    color:#ddd;
+    text-decoration:none;
+    padding:15px 20px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.dropdown a:hover,
+.dropdown button:hover{
+    background:#252525;
+    color:#18c29c;
+}
+
+@media(max-width:900px){
+
+    .menu{
+        display:none;
+    }
+
+    .package{
+        display:none;
+    }
+
+    .user-info{
+        display:none;
+    }
+
+}
+
+</style>
+
+<div class="header-container">
+
+    <div class="left">
+
+        <a href="/" class="logo">
+            HIKI
+        </a>
+
+        <nav class="menu">
+
+            <a href="#">
+                Sách điện tử
             </a>
+
+            <a href="#">
+                Sách hội viên
+            </a>
+
+            <a href="#">
+                Danh mục
+            </a>
+
+        </nav>
+
+    </div>
+
+    <div class="right">
+
+        <button class="search">
+            <i class="ti ti-search"></i>
+        </button>
+
+        <a href="#" class="package">
+            <i class="ti ti-crown"></i>
+            Gói cước
+        </a>
+
+        @guest
 
             <a href="{{ route('register') }}" class="register">
                 Đăng ký
@@ -33,7 +280,97 @@
                 Đăng nhập
             </a>
 
-        </div>
+        @endguest
+
+        @auth
+
+            <div class="user-menu">
+
+                <div class="user-trigger">
+
+                    <img
+                        src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=18c29c&color=fff"
+                        class="avatar">
+
+                    <div class="user-info">
+
+                        <div class="user-name">
+                            {{ Auth::user()->name }}
+                        </div>
+
+                        <div class="user-role">
+                            @if(Auth::user()->isVip())
+                                VIP MEMBER
+                            @else
+                                FREE MEMBER
+                            @endif
+                        </div>
+
+                    </div>
+
+                    <i class="ti ti-chevron-down"></i>
+
+                </div>
+
+                <div class="dropdown">
+
+                    <div class="dropdown-top">
+
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=18c29c&color=fff">
+
+                        <div>
+
+                            <h4>{{ Auth::user()->name }}</h4>
+
+                            <p>{{ Auth::user()->email }}</p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="line"></div>
+
+                    <a href="{{ route('account.profile') }}">
+                        <i class="ti ti-user"></i>
+                        Hồ sơ
+                    </a>
+
+                    <a href="{{ route('account.favorites') }}">
+                        <i class="ti ti-heart"></i>
+                        Sách yêu thích
+                    </a>
+
+
+
+                    <a href="#">
+                        <i class="ti ti-crown"></i>
+                        Nâng cấp VIP
+                    </a>
+
+                    <div class="line"></div>
+
+                    <form method="POST" a  action="{{ route('logout') }}">
+
+                        @csrf
+
+                        <button type="submit">
+
+                            <i class="ti ti-logout"></i>
+
+                            Đăng xuất
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        @endauth
 
     </div>
-    </header>
+
+</div>
+
+</header>

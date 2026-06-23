@@ -8,8 +8,10 @@
     <div class="book-grid">
 
         @forelse($featuredBooks as $book)
+        <a href="{{ route('home.watch',$book->slug) }}" >
 
-            <div class="book-card">
+
+            <div class="book-card"> 
 
                 @if($book->is_vip)
 
@@ -48,10 +50,7 @@
 
                         <div class="overlay-actions">
 
-<a href="{{ route('home.watch',$book->slug) }}"
-   class="btn-read">
-    Đọc sách
-</a>
+
                         </div>
 
                     </div>
@@ -73,6 +72,7 @@
         @endforelse
 
     </div>
+    </a>
 
 </section>
 

@@ -26,7 +26,7 @@
 }
 
 body{
-    background:#05080f;
+    background:#121214;
   
 }
 
@@ -366,7 +366,7 @@ footer{
 
 
 </style>
-```
+
 
 </head>
 
@@ -385,32 +385,129 @@ footer{
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
+</main>
+
+@include('includes.footer')
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function(){
 
-    new Swiper('.bannerSwiper', {
+document.addEventListener('DOMContentLoaded', function(){
 
-        loop:true,
+    const banner = document.querySelector('.bannerSwiper');
 
-        autoplay:{
-            delay:4000,
-            disableOnInteraction:false,
-        },
+    if(banner){
 
-        pagination:{
-            el:'.swiper-pagination',
-            clickable:true,
-        },
+        new Swiper('.bannerSwiper', {
 
-        navigation:{
-            nextEl:'.swiper-button-next',
-            prevEl:'.swiper-button-prev',
-        }
+            loop:true,
 
-    });
+            autoplay:{
+                delay:4000,
+                disableOnInteraction:false,
+            },
+
+            pagination:{
+                el:'.swiper-pagination',
+                clickable:true,
+            },
+
+            navigation:{
+                nextEl:'.swiper-button-next',
+                prevEl:'.swiper-button-prev',
+            }
+
+        });
+
+    }
 
 });
 
 </script>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+
+toastr.options = {
+
+    closeButton:true,
+
+    progressBar:true,
+
+    newestOnTop:true,
+
+    preventDuplicates:true,
+
+    positionClass:"toast-top-right",
+
+    timeOut:3000
+
+};
+
+</script>
+
+@if($errors->any())
+
+<script>
+
+@foreach($errors->all() as $error)
+
+toastr.error(@json($error));
+
+@endforeach
+
+</script>
+
+@endif
+
+@if(session('success'))
+
+<script>
+
+toastr.success(@json(session('success')));
+
+</script>
+
+@endif
+
+@if(session('error'))
+
+<script>
+
+toastr.error(@json(session('error')));
+
+</script>
+
+@endif
+
+@if(session('warning'))
+
+<script>
+
+toastr.warning(@json(session('warning')));
+
+</script>
+
+@endif
+
+@if(session('info'))
+
+<script>
+
+toastr.info(@json(session('info')));
+
+</script>
+
+@endif
+
+</body>
+</html>
 </body>
 </html>

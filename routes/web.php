@@ -13,11 +13,27 @@ use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\AccountController;
 Route::get('/sach/{slug}', [BookController::class,'watch'])
     ->name('home.watch');
-    Route::get('/books/{id}/stream', [BookController::class, 'streamEpub'])
-    ->name('books.stream');
+    //iu
+    Route::post(
+    '/favorite/{book}',
+    [BookController::class,'favorite']
+)->middleware('auth')
+ ->name('book.favorite');
 //dang ki dang nap
+Route::post('/logout', function (Request $request) {
+
+    Auth::logout();
+
+    $request->session()->invalidate();
+
+    $request->session()->regenerateToken();
+
+    return redirect('/');
+
+})->name('logout');
 route::get("/test", function () {
     return view('welcome');
 });
@@ -181,3 +197,29 @@ Route::patch('/members/{member}/unlock', [MemberController::class, 'unlock'])
  Route::resource('members', MemberController::class);
     });
 
+//account 
+Route::middleware('auth')->prefix('tai-khoan')->group(function () {
+
+    Route::get('/', [AccountController::class,'profile'])
+        ->name('account.profile');
+
+    Route::post('/cap-nhat', [AccountController::class,'update'])
+        ->name('account.update');
+    Route::get('/yeu-thich', [AccountController::class,'favorites'])
+        ->name('account.favorites');
+
+    Route::get('/lich-su-doc', [AccountController::class,'history'])
+        ->name('account.history');
+
+    Route::get('/vip', [AccountController::class,'vip'])
+        ->name('account.vip');
+
+Route::get('/doi-mat-khau',
+    [AccountController::class,'password'])
+    ->name('account.password');
+
+Route::post('/doi-mat-khau',
+    [AccountController::class,'updatePassword'])
+    ->name('account.password.update');
+
+});

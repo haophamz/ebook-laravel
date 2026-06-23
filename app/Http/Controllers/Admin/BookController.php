@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Book;
 use Illuminate\Support\Str;
 use App\Models\Category;
+use App\Models\UserBook;
 class BookController extends Controller
 {
     
@@ -175,14 +176,50 @@ public function update(Request $request, Book $book)
         ->with('success', 'Cập nhật ebook thành công');
 }
 public function watch($slug)
-    {
-        $book = Book::where('slug',$slug)
-            ->firstOrFail();
+{
+    $book = Book::where('slug', $slug)
+        ->firstOrFail();
 
-        return view(
-'home.watch',compact('book')
+    $isFavorite = false;
+
+    if(auth()->check()){
+
+        UserBook::updateOrCreate(
+
+            [
+                'user_id' => auth()->id(),
+                'book_id' => $book->id
+            ],
+
+            [
+                'last_read_at' => now()
+            ]
+
         );
+
+        $isFavorite = UserBook::where(
+                'user_id',
+                auth()->id()
+            )
+            ->where(
+                'book_id',
+                $book->id
+            )
+            ->where(
+                'is_favorite',
+                true
+            )
+            ->exists();
     }
+
+    return view(
+        'home.watch',
+        compact(
+            'book',
+            'isFavorite'
+        )
+    );
+}
     public function streamEpub($slug)
 {
     $book = Book::where('slug', $slug)->first();
@@ -202,5 +239,29 @@ public function watch($slug)
         'Content-Disposition' => 'inline; filename="' . basename($path) . '"',
     ]);
 
+}
+//iu thich
+public function favorite(Book $book)
+{
+    $favorite = UserBook::firstOrNew([
+        'user_id' => auth()->id(),
+        'book_id' => $book->id,
+    ]);
+
+    $favorite->is_favorite = ! $favorite->is_favorite;
+
+    $favorite->save();
+
+    if ($favorite->is_favorite) {
+        return back()->with(
+            'success',
+            'Đã thêm "' . $book->title . '" vào yêu thích'
+        );
+    }
+
+    return back()->with(
+        'success',
+        'Đã bỏ "' . $book->title . '" khỏi yêu thích'
+    );
 }
 }
