@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CommentController; 
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\Admin\VipPlanController;
+//login noi bo
 
 Route::post(
     '/book/{book}/review',
@@ -30,6 +32,9 @@ Route::post(
 
 Route::get('/sach/{slug}', [BookController::class,'watch'])
     ->name('home.watch');
+    //render
+    Route::get('/render/{slug}', [BookController::class, 'render'])
+    ->name('home.render');
     //iu
     Route::post(
     '/favorite/{book}',
@@ -180,6 +185,21 @@ Route::post('/reset-password', function (Request $request) {
         ]);
 
 })->name('password.update');
+//goi vip
+Route::get(
+    '/goi-thanh-vien',
+    [VipPlanController::class,'pricing']
+)->name('pricing');
+// checkout goi vip
+Route::post(
+    '/vip/subscribe',
+    [VipController::class,'subscribe']
+)->name('vip.subscribe');
+//checkout qr
+Route::get(
+    '/vip/checkout/{order}',
+    [VipController::class,'checkout']
+)->name('vip.checkout');
 //admin
 Route::prefix('admin')
     ->name('admin.')
@@ -187,8 +207,14 @@ Route::prefix('admin')
         'auth',
         'verified',
         'admin'
-    ])
-    ->group(function () {
+    ])    ->group(function () {
+    //VIP
+Route::resource(
+    'vip-plans',
+    VipPlanController::class
+);
+
+
 Route::get('/books/drafts', [BookController::class, 'drafts'])
 ->name('books.drafts');
 
@@ -224,10 +250,6 @@ Route::middleware('auth')->prefix('tai-khoan')->group(function () {
 
     Route::get('/lich-su-doc', [AccountController::class,'history'])
         ->name('account.history');
-
-    Route::get('/vip', [AccountController::class,'vip'])
-        ->name('account.vip');
-
 Route::get('/doi-mat-khau',
     [AccountController::class,'password'])
     ->name('account.password');

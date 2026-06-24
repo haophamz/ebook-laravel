@@ -14,7 +14,7 @@
         <div class="book-grid">
 
             @foreach($category->books as $book)
-        <a href="{{ route('home.watch',$book->slug) }}" >
+<a href="{{ route('home.watch',$book->slug) }}" >
                 <div class="book-card">
 
                     @if($book->is_vip)
@@ -65,9 +65,10 @@
                     </div>
 
                 </div>
-   </a>
+</a>
             @endforeach
         </div>
+        
     </section>
     @endif
 @endforeach

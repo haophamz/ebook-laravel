@@ -1,12 +1,12 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 
-<header class="header">
-
 <style>
 
 .header{
-    position:sticky;
+    position:fixed;
     top:0;
+    left:0;
+    width:100%;
     z-index:9999;
     background:#111;
     border-bottom:1px solid #222;
@@ -102,11 +102,8 @@
     align-items:center;
 }
 
-/* USER */
-
 .user-menu{
     position:relative;
-    padding-bottom:15px;
 }
 
 .user-trigger{
@@ -115,8 +112,6 @@
     gap:10px;
     padding:6px 12px;
     cursor:pointer;
-
-    transform:translateY(8px);
 }
 
 .avatar{
@@ -179,7 +174,6 @@
 }
 
 .dropdown-top h4{
-    margin:0;
     color:#fff;
 }
 
@@ -233,144 +227,131 @@
 
 </style>
 
+<header class="header">
+
 <div class="header-container">
 
-    <div class="left">
 
-        <a href="/" class="logo">
-            HIKI
+<div class="left">
+
+    <a href="/" class="logo">
+        HIKI
+    </a>
+
+    <nav class="menu">
+
+        <a href="#">
+            Sách điện tử
         </a>
 
-        <nav class="menu">
-
-            <a href="#">
-                Sách điện tử
-            </a>
-
-            <a href="#">
-                Sách hội viên
-            </a>
-
-            <a href="#">
-                Danh mục
-            </a>
-
-        </nav>
-
-    </div>
-
-    <div class="right">
-
-        <button class="search">
-            <i class="ti ti-search"></i>
-        </button>
-
-        <a href="#" class="package">
-            <i class="ti ti-crown"></i>
-            Gói cước
+        <a href="#">
+            Sách hội viên
         </a>
 
-        @guest
+        <a href="#">
+            Danh mục
+        </a>
 
-            <a href="{{ route('register') }}" class="register">
-                Đăng ký
-            </a>
+    </nav>
 
-            <a href="{{ route('login') }}" class="login">
-                Đăng nhập
-            </a>
+</div>
 
-        @endguest
+<div class="right">
 
-        @auth
+    <button class="search">
+        <i class="ti ti-search"></i>
+    </button>
 
-            <div class="user-menu">
+    <a href="{{ route('pricing') }}">
+        <i class="ti ti-crown"></i>
+        Gói cước
+    </a>
 
-                <div class="user-trigger">
+    @guest
 
-                    <img
-                        src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=18c29c&color=fff"
-                        class="avatar">
+        <a href="{{ route('register') }}" class="register">
+            Đăng ký
+        </a>
 
-                    <div class="user-info">
+        <a href="{{ route('login') }}" class="login">
+            Đăng nhập
+        </a>
 
-                        <div class="user-name">
-                            {{ Auth::user()->name }}
-                        </div>
+    @endguest
 
-                        <div class="user-role">
-                            @if(Auth::user()->isVip())
-                                VIP MEMBER
-                            @else
-                                FREE MEMBER
-                            @endif
-                        </div>
+    @auth
 
-                    </div>
+    <div class="user-menu">
 
-                    <i class="ti ti-chevron-down"></i>
+        <div class="user-trigger">
 
+            <img
+                src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=18c29c&color=fff"
+                class="avatar">
+
+            <div class="user-info">
+
+                <div class="user-name">
+                    {{ Auth::user()->name }}
                 </div>
 
-                <div class="dropdown">
-
-                    <div class="dropdown-top">
-
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=18c29c&color=fff">
-
-                        <div>
-
-                            <h4>{{ Auth::user()->name }}</h4>
-
-                            <p>{{ Auth::user()->email }}</p>
-
-                        </div>
-
-                    </div>
-
-                    <div class="line"></div>
-
-                    <a href="{{ route('account.profile') }}">
-                        <i class="ti ti-user"></i>
-                        Hồ sơ
-                    </a>
-
-                    <a href="{{ route('account.favorites') }}">
-                        <i class="ti ti-heart"></i>
-                        Sách yêu thích
-                    </a>
-
-
-
-                    <a href="#">
-                        <i class="ti ti-crown"></i>
-                        Nâng cấp VIP
-                    </a>
-
-                    <div class="line"></div>
-
-                    <form method="POST" a  action="{{ route('logout') }}">
-
-                        @csrf
-
-                        <button type="submit">
-
-                            <i class="ti ti-logout"></i>
-
-                            Đăng xuất
-
-                        </button>
-
-                    </form>
-
+                <div class="user-role">
+                    {{ Auth::user()->isVip() ? 'VIP MEMBER' : 'FREE MEMBER' }}
                 </div>
 
             </div>
 
-        @endauth
+            <i class="ti ti-chevron-down"></i>
+
+        </div>
+
+        <div class="dropdown">
+
+            <div class="dropdown-top">
+
+                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=18c29c&color=fff">
+
+                <div>
+                    <h4>{{ Auth::user()->name }}</h4>
+                    <p>{{ Auth::user()->email }}</p>
+                </div>
+
+            </div>
+
+            <div class="line"></div>
+
+            <a href="{{ route('account.profile') }}">
+                <i class="ti ti-user"></i>
+                Hồ sơ
+            </a>
+
+            <a href="{{ route('account.favorites') }}">
+                <i class="ti ti-heart"></i>
+                Sách yêu thích
+            </a>
+
+
+
+            <div class="line"></div>
+
+            <form method="POST" action="{{ route('logout') }}">
+
+                @csrf
+
+                <button type="submit">
+                    <i class="ti ti-logout"></i>
+                    Đăng xuất
+                </button>
+
+            </form>
+
+        </div>
 
     </div>
 
+    @endauth
+
+</div>
 </div>
 
 </header>

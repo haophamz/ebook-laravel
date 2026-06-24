@@ -61,10 +61,11 @@
                     {{ $book->title }}
                 </div>
 
-            </div>
+    </div>
 
-        @empty
+</a>
 
+@empty
             <div class="empty-books">
                 Chưa có ebook nổi bật
             </div>
@@ -72,7 +73,5 @@
         @endforelse
 
     </div>
-    </a>
-
 </section>
 

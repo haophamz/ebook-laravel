@@ -6,7 +6,7 @@
 
     <div class="book-grid">
         @forelse($latestBooks as $book)
-
+        <a href="{{ route('home.watch',$book->slug) }}" >
             <div class="book-card">
 
                 @if($book->is_vip)
@@ -45,12 +45,6 @@
                         </p>
 
                         <div class="overlay-actions">
-
-                            <a href="#"
-                               class="btn-read">
-                               Đọc sách
-                            </a>
-
                         </div>
 
                     </div>
@@ -62,7 +56,7 @@
                 </div>
 
             </div>
-
+</a>
         @empty
 
             <div class="empty-books">

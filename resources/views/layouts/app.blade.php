@@ -30,6 +30,7 @@ body{
   
 }
 
+
 a{
     text-decoration:none;
 }
@@ -199,8 +200,6 @@ footer{
 
     color:#9ca3af;
 }
-//them
-//hien thi ebook
 .section{
     width:95%;
     margin:auto;
@@ -385,12 +384,6 @@ footer{
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-</main>
-
-@include('includes.footer')
-
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
 <script>
 
 document.addEventListener('DOMContentLoaded', function(){
@@ -509,5 +502,4 @@ toastr.info(@json(session('info')));
 
 </body>
 </html>
-</body>
-</html>
+

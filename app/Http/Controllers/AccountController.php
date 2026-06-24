@@ -100,4 +100,8 @@ public function updatePassword(Request $request)
         'Đổi mật khẩu thành công'
     );
 }
+public function vip()
+{
+    return view('account.vip');
+}
 }

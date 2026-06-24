@@ -280,5 +280,21 @@ public function favorite(Book $book)
         'Đã bỏ "' . $book->title . '" khỏi yêu thích'
     );
 }
+public function render($slug)
+{
+    $book = Book::where('slug',$slug)->firstOrFail();
 
+    if ($book->is_vip) {
+
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        if (auth()->user()->membership_type !== 'vip') {
+            abort(403, 'Sách này dành cho thành viên VIP');
+        }
+    }
+
+    return view('home.render', compact('book'));
+}
 }

@@ -64,6 +64,41 @@
         Banner
     </a>
 </li>
+<li>
+    <a href="{{ route('admin.vip-plans.index') }}"
+       class="{{ request()->routeIs('admin.vip-plans.*') ? 'active' : '' }}">
+        <i class="ti ti-crown"></i>
+        Gói thành viên
+    </a>
+</li>
+
+<li>
+
+        <i class="ti ti-ticket"></i>
+        Mã giảm giá
+    </a>
+</li>
+
+<li>
+
+        <i class="ti ti-shopping-cart"></i>
+        Đơn hàng
+    </a>
+</li>
+
+<li>
+
+        <i class="ti ti-credit-card"></i>
+        Giao dịch
+    </a>
+</li>
+
+<li>
+
+        <i class="ti ti-chart-bar"></i>
+        Doanh thu
+    </a>
+</li>
     </ul>
 
     <div class="sidebar-section-title">

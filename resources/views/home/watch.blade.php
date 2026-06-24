@@ -366,7 +366,7 @@ body{
 
 <div class="actions">
 
-    <a href="#" class="read-btn">
+    <a href="{{ route('home.render', $book->slug) }}" class="read-btn">
         Đọc sách
     </a>
 
@@ -389,9 +389,23 @@ body{
 
 </div>
 
-            <div class="desc">
-                {!! nl2br(e($book->description)) !!}
-            </div>
+           <div class="desc">
+
+    <div id="shortDesc">
+        {{ \Illuminate\Support\Str::limit(strip_tags($book->description), 250) }}
+    </div>
+
+    <div id="fullDesc" style="display:none;">
+        {!! nl2br(e($book->description)) !!}
+    </div>
+
+    @if(strlen(strip_tags($book->description)) > 250)
+        <a href="#" id="toggleDesc" class="more">
+            Xem thêm
+        </a>
+    @endif
+
+</div>
 
         </div>
 
@@ -456,9 +470,11 @@ body{
     {{-- ===================== BÌNH LUẬN ===================== --}}
     <div id="rvs-tab-comments" class="rvs-panel">
 
-        @auth
         <div class="rvs-formbox">
-            <form action="{{ route('comments.store', $book) }}" method="POST">
+            <form action="{{ route('comments.store', $book) }}"
+                  method="POST"
+                  class="rvs-guest-form"
+                  data-guest="{{ auth()->check() ? '0' : '1' }}">
                 @csrf
                 <textarea class="rvs-textarea"
                           name="content"
@@ -476,7 +492,6 @@ body{
                 </button>
             </form>
         </div>
-        @endauth
 
         @if(isset($comments) && $comments->count())
             @foreach($comments as $comment)
@@ -511,18 +526,33 @@ body{
     {{-- ===================== ĐÁNH GIÁ ===================== --}}
     <div id="rvs-tab-reviews" class="rvs-panel" style="display:none">
 
-        @auth
         <div class="rvs-formbox">
             <h3 class="rvs-formbox-title">Gửi đánh giá của bạn</h3>
-            <form action="{{ route('reviews.store', $book) }}" method="POST">
+            <form action="{{ route('reviews.store', $book) }}"
+                  method="POST"
+                  class="rvs-guest-form"
+                  data-guest="{{ auth()->check() ? '0' : '1' }}">
                 @csrf
-                <select class="rvs-select" name="rating">
-                    <option value="5">⭐⭐⭐⭐⭐ — Xuất sắc</option>
-                    <option value="4">⭐⭐⭐⭐ — Rất tốt</option>
-                    <option value="3">⭐⭐⭐ — Tạm ổn</option>
-                    <option value="2">⭐⭐ — Chưa hay</option>
-                    <option value="1">⭐ — Thất vọng</option>
-                </select>
+
+                {{-- Star rating picker (click để chọn số sao) --}}
+                <input type="hidden" name="rating" id="rvs-rating-input" value="5">
+                <div class="rvs-starpicker" id="rvs-starpicker" role="radiogroup" aria-label="Chọn số sao đánh giá">
+                    @for($s = 1; $s <= 5; $s++)
+                        <button type="button"
+                                class="rvs-star-btn"
+                                data-value="{{ $s }}"
+                                role="radio"
+                                aria-checked="{{ $s == 5 ? 'true' : 'false' }}"
+                                aria-label="{{ $s }} sao">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
+                                 viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                            </svg>
+                        </button>
+                    @endfor
+                    <span class="rvs-starpicker-label" id="rvs-starpicker-label">Xuất sắc</span>
+                </div>
+
                 <textarea class="rvs-textarea"
                           name="content"
                           rows="3"
@@ -538,7 +568,6 @@ body{
                 </button>
             </form>
         </div>
-        @endauth
 
         @if(isset($reviews) && $reviews->count())
             @foreach($reviews as $review)
@@ -593,6 +622,13 @@ body{
 
 {{-- ===================== CSS (prefix: rvs-) ===================== --}}
 <style>
+    .more{
+    display:inline-block;
+    margin-top:12px;
+    color:#18c29c;
+    font-weight:600;
+    text-decoration:none;
+}
 .rvs-wrap {
     padding: 2rem 0;
     font-family: inherit;
@@ -694,6 +730,40 @@ body{
     outline: none;
     border-color: #555;
 }
+
+/* ── Star rating picker ── */
+.rvs-starpicker {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 14px;
+}
+.rvs-star-btn {
+    background: transparent;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: #3a3a3a;
+    line-height: 0;
+    transition: color .15s, transform .1s;
+}
+.rvs-star-btn svg {
+    display: block;
+    pointer-events: none;
+}
+.rvs-star-btn:hover {
+    transform: scale(1.12);
+}
+.rvs-star-btn.is-filled {
+    color: #f0a800;
+}
+.rvs-starpicker-label {
+    margin-left: 10px;
+    font-size: 13px;
+    color: #888;
+    font-weight: 500;
+}
+
 .rvs-select {
     display: block;
     width: 100%;
@@ -845,4 +915,93 @@ function rvsSwitchTab(name, btn) {
     document.getElementById('rvs-tab-' + name).style.display = 'block';
     btn.classList.add('active');
 }
+
+// ===== Star rating picker (click sao -> set rating) =====
+(function () {
+    var picker = document.getElementById('rvs-starpicker');
+    if (!picker) return;
+
+    var input = document.getElementById('rvs-rating-input');
+    var label = document.getElementById('rvs-starpicker-label');
+    var buttons = picker.querySelectorAll('.rvs-star-btn');
+
+    var labels = {
+        1: 'Thất vọng',
+        2: 'Chưa hay',
+        3: 'Tạm ổn',
+        4: 'Rất tốt',
+        5: 'Xuất sắc'
+    };
+
+    function paint(value) {
+        buttons.forEach(function (btn) {
+            var v = parseInt(btn.dataset.value, 10);
+            btn.classList.toggle('is-filled', v <= value);
+            btn.setAttribute('aria-checked', v === value ? 'true' : 'false');
+        });
+        if (label) label.textContent = labels[value] || '';
+    }
+
+    buttons.forEach(function (btn) {
+        var value = parseInt(btn.dataset.value, 10);
+        
+
+        // Click = chốt số sao được chọn
+        btn.addEventListener('click', function () {
+            input.value = value;
+            paint(value);
+        });
+
+        // Hover = xem trước, rời chuột thì trả về giá trị đã chọn
+        btn.addEventListener('mouseenter', function () {
+            paint(value);
+        });
+    });
+
+    picker.addEventListener('mouseleave', function () {
+        paint(parseInt(input.value, 10));
+    });
+
+    // Khởi tạo trạng thái ban đầu (5 sao)
+    paint(parseInt(input.value, 10));
+})();
+const btn = document.getElementById('toggleDesc');
+
+if(btn){
+
+    btn.addEventListener('click', function(e){
+
+        e.preventDefault();
+
+        const shortDesc = document.getElementById('shortDesc');
+        const fullDesc = document.getElementById('fullDesc');
+
+        if(fullDesc.style.display === 'none'){
+
+            fullDesc.style.display = 'block';
+            shortDesc.style.display = 'none';
+            btn.textContent = 'Thu gọn';
+
+        }else{
+
+            fullDesc.style.display = 'none';
+            shortDesc.style.display = 'block';
+            btn.textContent = 'Xem thêm';
+        }
+    });
+}
+// ===== Chặn submit nếu chưa đăng nhập -> lưu lại trang hiện tại rồi chuyển sang login =====
+(function () {
+    var goToLoginUrl = "{{ route('go-to-login') }}";
+
+    document.querySelectorAll('.rvs-guest-form').forEach(function (form) {
+        if (form.dataset.guest !== '1') return; // đã đăng nhập, cho submit bình thường
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            window.location.href = goToLoginUrl + '?redirect=' + encodeURIComponent(window.location.href);
+        });
+    });
+})();
+
 </script>
