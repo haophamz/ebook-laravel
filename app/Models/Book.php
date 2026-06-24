@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\UserBook;
+use App\Models\Review;
+use App\Models\Comment;
 class Book extends Model
 {
     protected $fillable = [
@@ -38,4 +40,13 @@ class Book extends Model
     {
         return $this->belongsTo(Category::class);
     }
+    public function reviews()
+{
+    return $this->hasMany(Review::class);
+}
+
+public function comments()
+{
+    return $this->hasMany(Comment::class);
+}
 }

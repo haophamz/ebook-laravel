@@ -178,6 +178,7 @@ public function update(Request $request, Book $book)
 public function watch($slug)
 {
     $book = Book::where('slug', $slug)
+        ->with(['category'])
         ->firstOrFail();
 
     $isFavorite = false;
@@ -185,16 +186,13 @@ public function watch($slug)
     if(auth()->check()){
 
         UserBook::updateOrCreate(
-
             [
                 'user_id' => auth()->id(),
                 'book_id' => $book->id
             ],
-
             [
                 'last_read_at' => now()
             ]
-
         );
 
         $isFavorite = UserBook::where(
@@ -212,11 +210,29 @@ public function watch($slug)
             ->exists();
     }
 
+    $avgRating = $book->reviews()->avg('rating') ?? 0;
+
+    $reviewCount = $book->reviews()->count();
+
+    $reviews = $book->reviews()
+        ->with('user')
+        ->latest()
+        ->get();
+
+    $comments = $book->comments()
+        ->with('user')
+        ->latest()
+        ->get();
+
     return view(
         'home.watch',
         compact(
             'book',
-            'isFavorite'
+            'isFavorite',
+            'avgRating',
+            'reviewCount',
+            'reviews',
+            'comments'
         )
     );
 }
@@ -264,4 +280,5 @@ public function favorite(Book $book)
         'Đã bỏ "' . $book->title . '" khỏi yêu thích'
     );
 }
+
 }

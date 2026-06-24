@@ -7,6 +7,8 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Review;
+use App\Models\Comment;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -55,5 +57,14 @@ class User extends Authenticatable implements MustVerifyEmail
     return $this->membership_type === 'vip'
         && $this->vip_expires_at
         && $this->vip_expires_at->isFuture();
+}
+public function reviews()
+{
+    return $this->hasMany(Review::class);
+}
+
+public function comments()
+{
+    return $this->hasMany(Comment::class);
 }
 }

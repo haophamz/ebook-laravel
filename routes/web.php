@@ -14,6 +14,20 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\CommentController; 
+use App\Http\Controllers\ReviewController;
+
+Route::post(
+    '/book/{book}/review',
+    [ReviewController::class, 'store']
+)->middleware('auth')
+ ->name('reviews.store');
+Route::post(
+    '/book/{book}/comment',
+    [CommentController::class, 'store']
+)->middleware('auth')
+ ->name('comments.store');
+
 Route::get('/sach/{slug}', [BookController::class,'watch'])
     ->name('home.watch');
     //iu

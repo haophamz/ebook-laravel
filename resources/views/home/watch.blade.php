@@ -303,11 +303,29 @@ body{
                 {{ $book->title }}
             </h1>
 
-            <div class="rating">
-                <strong>5.0</strong>
-                <div class="stars">★★★★★</div>
-                <span>1 đánh giá</span>
-            </div>
+<div class="rating">
+
+    <strong>
+        {{ number_format($avgRating ?? 0,1) }}
+    </strong>
+
+    <div class="stars">
+        @for($i = 1; $i <= 5; $i++)
+
+            @if($i <= round($avgRating ?? 0))
+                ★
+            @else
+                ☆
+            @endif
+
+        @endfor
+    </div>
+
+    <span>
+        {{ $reviewCount ?? 0 }} đánh giá
+    </span>
+
+</div>
 
             <div class="meta">
 
@@ -379,24 +397,452 @@ body{
 
     </div>
 
-    <div class="review">
+{{-- ============================================================
+     review.blade.php  –  Section bình luận / đánh giá / hỏi đáp
+     CSS prefix: rvs-  (tránh xung đột với Bootstrap/global CSS)
+     ============================================================ --}}
 
-        <h2>
-            Độc giả nói gì về "{{ $book->title }}"
-        </h2>
+<div class="rvs-wrap">
 
-        <div class="review-menu">
-            <a href="#">Bình luận (0)</a>
-            <a href="#">Đánh giá &amp; nhận xét</a>
-            <a href="#">Hỏi đáp về cuốn sách này</a>
+    <h2 class="rvs-title">
+        Độc giả nói gì về <em>"{{ $book->title }}"</em>
+    </h2>
+
+    {{-- TAB BAR --}}
+    <div class="rvs-tabbar" role="tablist">
+
+        <button class="rvs-tab active"
+                onclick="rvsSwitchTab('comments', this)"
+                role="tab">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true" style="vertical-align:-2px;flex-shrink:0">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            Bình luận
+            <span class="rvs-tab-count">({{ isset($comments) ? $comments->count() : 0 }})</span>
+        </button>
+
+        <button class="rvs-tab"
+                onclick="rvsSwitchTab('reviews', this)"
+                role="tab">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true" style="vertical-align:-2px;flex-shrink:0">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            Đánh giá
+            <span class="rvs-tab-count">({{ $reviewCount ?? 0 }})</span>
+        </button>
+
+        <button class="rvs-tab"
+                onclick="rvsSwitchTab('qa', this)"
+                role="tab">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true" style="vertical-align:-2px;flex-shrink:0">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            Hỏi đáp
+        </button>
+
+    </div>
+
+    {{-- ===================== BÌNH LUẬN ===================== --}}
+    <div id="rvs-tab-comments" class="rvs-panel">
+
+        @auth
+        <div class="rvs-formbox">
+            <form action="{{ route('comments.store', $book) }}" method="POST">
+                @csrf
+                <textarea class="rvs-textarea"
+                          name="content"
+                          rows="3"
+                          placeholder="Chia sẻ cảm nhận của bạn về cuốn sách..."></textarea>
+                <button type="submit" class="rvs-submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         aria-hidden="true">
+                        <line x1="22" y1="2" x2="11" y2="13"/>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                    </svg>
+                    Gửi bình luận
+                </button>
+            </form>
         </div>
+        @endauth
 
-        <div class="empty-state">
-            Chưa có bình luận nào. Hãy là người đầu tiên!
+        @if(isset($comments) && $comments->count())
+            @foreach($comments as $comment)
+                <div class="rvs-card">
+                    <div class="rvs-card-head">
+                        <div class="rvs-avatar">
+                            {{ strtoupper(substr($comment->user->name, 0, 2)) }}
+                        </div>
+                        <div>
+                            <div class="rvs-username">{{ $comment->user->name }}</div>
+                            <div class="rvs-timestamp">{{ $comment->created_at->diffForHumans() }}</div>
+                        </div>
+                    </div>
+                    <p class="rvs-body">{{ $comment->content }}</p>
+                </div>
+            @endforeach
+        @else
+            <div class="rvs-empty">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                     aria-hidden="true" class="rvs-empty-icon">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                <p class="rvs-empty-title">Chưa có bình luận nào.</p>
+                <span class="rvs-empty-sub">Hãy là người đầu tiên chia sẻ!</span>
+            </div>
+        @endif
+
+    </div>
+
+    {{-- ===================== ĐÁNH GIÁ ===================== --}}
+    <div id="rvs-tab-reviews" class="rvs-panel" style="display:none">
+
+        @auth
+        <div class="rvs-formbox">
+            <h3 class="rvs-formbox-title">Gửi đánh giá của bạn</h3>
+            <form action="{{ route('reviews.store', $book) }}" method="POST">
+                @csrf
+                <select class="rvs-select" name="rating">
+                    <option value="5">⭐⭐⭐⭐⭐ — Xuất sắc</option>
+                    <option value="4">⭐⭐⭐⭐ — Rất tốt</option>
+                    <option value="3">⭐⭐⭐ — Tạm ổn</option>
+                    <option value="2">⭐⭐ — Chưa hay</option>
+                    <option value="1">⭐ — Thất vọng</option>
+                </select>
+                <textarea class="rvs-textarea"
+                          name="content"
+                          rows="3"
+                          placeholder="Nhận xét chi tiết..."></textarea>
+                <button type="submit" class="rvs-submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         aria-hidden="true">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                    Gửi đánh giá
+                </button>
+            </form>
         </div>
+        @endauth
 
+        @if(isset($reviews) && $reviews->count())
+            @foreach($reviews as $review)
+                <div class="rvs-card">
+                    <div class="rvs-card-head">
+                        <div class="rvs-avatar">
+                            {{ strtoupper(substr($review->user->name, 0, 2)) }}
+                        </div>
+                        <div style="flex:1">
+                            <div class="rvs-username">{{ $review->user->name }}</div>
+                            <div class="rvs-stars">{{ str_repeat('⭐', $review->rating) }}</div>
+                        </div>
+                        <span class="rvs-rating-badge">{{ $review->rating }} / 5</span>
+                    </div>
+                    @if($review->content)
+                        <p class="rvs-body">{{ $review->content }}</p>
+                    @endif
+                </div>
+            @endforeach
+        @else
+            <div class="rvs-empty">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                     aria-hidden="true" class="rvs-empty-icon">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+                <p class="rvs-empty-title">Chưa có đánh giá nào.</p>
+                <span class="rvs-empty-sub">Hãy để lại đánh giá đầu tiên!</span>
+            </div>
+        @endif
+
+    </div>
+
+    {{-- ===================== HỎI ĐÁP ===================== --}}
+    <div id="rvs-tab-qa" class="rvs-panel" style="display:none">
+        <div class="rvs-qabox">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true" class="rvs-qabox-icon">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <p class="rvs-qabox-title">Chức năng hỏi đáp đang được phát triển</p>
+            <span class="rvs-qabox-sub">Vui lòng quay lại sau nhé!</span>
+        </div>
     </div>
 
 </div>
 
-@endsection
+{{-- ===================== CSS (prefix: rvs-) ===================== --}}
+<style>
+.rvs-wrap {
+    padding: 2rem 0;
+    font-family: inherit;
+    color: #e8e8e8;
+    box-sizing: border-box;
+}
+.rvs-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: #fff;
+    margin: 0 0 1.5rem;
+    line-height: 1.4;
+}
+.rvs-title em {
+    font-style: italic;
+    color: #a0c4ff;
+}
+
+/* ── Tab bar ── */
+.rvs-tabbar {
+    display: flex;
+    gap: 4px;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 14px;
+    padding: 4px;
+    margin-bottom: 1.5rem;
+}
+.rvs-tab {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 8px;
+    border: 1px solid transparent;
+    background: transparent;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #666;
+    cursor: pointer;
+    transition: color .2s, background .2s, border-color .2s;
+    white-space: nowrap;
+    line-height: 1;
+}
+.rvs-tab.active {
+    background: #2a2a2a;
+    color: #fff;
+    border-color: #383838;
+}
+.rvs-tab:hover:not(.active) {
+    color: #bbb;
+}
+.rvs-tab-count {
+    font-weight: 400;
+    color: #555;
+    font-size: 12px;
+}
+.rvs-tab.active .rvs-tab-count {
+    color: #888;
+}
+
+/* ── Panel ── */
+.rvs-panel { display: block; }
+
+/* ── Form box ── */
+.rvs-formbox {
+    background: #181818;
+    border: 1px solid #2a2a2a;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 1rem;
+}
+.rvs-formbox-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+    margin: 0 0 14px;
+}
+.rvs-textarea {
+    display: block;
+    width: 100%;
+    background: #222;
+    border: 1px solid #333;
+    color: #e8e8e8;
+    border-radius: 10px;
+    padding: 13px 15px;
+    resize: none;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.65;
+    margin-bottom: 12px;
+    transition: border-color .2s;
+    box-sizing: border-box;
+}
+.rvs-textarea::placeholder { color: #555; }
+.rvs-textarea:focus {
+    outline: none;
+    border-color: #555;
+}
+.rvs-select {
+    display: block;
+    width: 100%;
+    padding: 11px 14px;
+    background: #222;
+    border: 1px solid #333;
+    color: #e8e8e8;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    box-sizing: border-box;
+    appearance: auto;
+}
+.rvs-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 20px;
+    background: #fff;
+    color: #111;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity .15s;
+    line-height: 1;
+}
+.rvs-submit:hover { opacity: .85; }
+
+/* ── Cards ── */
+.rvs-card {
+    background: #181818;
+    border: 1px solid #252525;
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-top: 10px;
+}
+.rvs-card-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+.rvs-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #1e3a5f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: #7ab8f5;
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
+}
+.rvs-username {
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    margin: 0;
+}
+.rvs-timestamp {
+    font-size: 12px;
+    color: #555;
+    margin-top: 2px;
+}
+.rvs-body {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #aaa;
+    margin: 0;
+}
+.rvs-stars {
+    font-size: 14px;
+    margin-top: 4px;
+    line-height: 1;
+}
+.rvs-rating-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #2a1f00;
+    color: #f0a800;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 11px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* ── Empty state ── */
+.rvs-empty {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    border: 1px dashed #2a2a2a;
+    border-radius: 14px;
+    margin-top: 4px;
+}
+.rvs-empty-icon {
+    color: #333;
+    display: block;
+    margin: 0 auto 12px;
+}
+.rvs-empty-title {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 4px;
+}
+.rvs-empty-sub {
+    font-size: 12px;
+    color: #444;
+}
+
+/* ── QA box ── */
+.rvs-qabox {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+.rvs-qabox-icon {
+    color: #333;
+    display: block;
+    margin: 0 auto 14px;
+}
+.rvs-qabox-title {
+    font-size: 14px;
+    color: #777;
+    margin: 0 0 6px;
+}
+.rvs-qabox-sub {
+    font-size: 12px;
+    color: #444;
+}
+</style>
+
+{{-- ===================== JS ===================== --}}
+<script>
+function rvsSwitchTab(name, btn) {
+    document.querySelectorAll('.rvs-panel').forEach(function(p) {
+        p.style.display = 'none';
+    });
+    document.querySelectorAll('.rvs-tab').forEach(function(b) {
+        b.classList.remove('active');
+    });
+    document.getElementById('rvs-tab-' + name).style.display = 'block';
+    btn.classList.add('active');
+}
+</script>
