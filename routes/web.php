@@ -17,8 +17,40 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CommentController; 
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Admin\VipPlanController;
-//login noi bo
+use App\Http\Controllers\VipController;
+//goi thanh vien
+Route::get(
+    '/goi-thanh-vien',
+    [VipPlanController::class,'pricing']
+)->name('pricing');
+//mua goi
+Route::middleware('auth')->group(function () {
+Route::post('/vip/subscribe', [VipController::class, 'subscribe'])
+    ->name('vip.subscribe');
+    Route::get(
+        '/vip/order/{order}',
+        [VipController::class,'order']
+    )->name('vip.order');
 
+    Route::get(
+        '/vip/checkout/{order}',
+        [VipController::class,'checkout']
+    )->name('vip.checkout');
+
+    Route::get(
+        '/vip/check-payment/{order}',
+        [VipController::class,'checkPayment']
+    )->name('vip.check-payment');
+
+});
+//login noi bo
+Route::get('/go-to-login', function () {
+
+    session(['url.intended' => url()->previous()]);
+
+    return redirect()->route('login');
+
+})->name('go-to-login');
 Route::post(
     '/book/{book}/review',
     [ReviewController::class, 'store']
@@ -186,20 +218,7 @@ Route::post('/reset-password', function (Request $request) {
 
 })->name('password.update');
 //goi vip
-Route::get(
-    '/goi-thanh-vien',
-    [VipPlanController::class,'pricing']
-)->name('pricing');
-// checkout goi vip
-Route::post(
-    '/vip/subscribe',
-    [VipController::class,'subscribe']
-)->name('vip.subscribe');
-//checkout qr
-Route::get(
-    '/vip/checkout/{order}',
-    [VipController::class,'checkout']
-)->name('vip.checkout');
+
 //admin
 Route::prefix('admin')
     ->name('admin.')

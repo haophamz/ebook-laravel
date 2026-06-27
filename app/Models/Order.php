@@ -33,13 +33,17 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function plan()
-    {
-        return $this->belongsTo(VipPlan::class,'vip_plan_id');
-    }
+public function vipPlan()
+{
+    return $this->belongsTo(VipPlan::class);
+}
 
     public function coupon()
     {
         return $this->belongsTo(Coupon::class);
     }
+    public function plan()
+{
+    return $this->belongsTo(VipPlan::class, 'vip_plan_id');
+}
 }

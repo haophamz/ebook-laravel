@@ -40,7 +40,7 @@ class VipPlanController extends Controller
             'months' => $request->months,
             'price' => $request->price,
             'description' => $request->description,
-            'active' => $request->has('active'),
+              'active' => 1,
             'is_popular' => $request->has('is_popular'),
         ]);
 
@@ -66,7 +66,7 @@ class VipPlanController extends Controller
             'months' => $request->months,
             'price' => $request->price,
             'description' => $request->description,
-            'active' => $request->has('active'),
+             'active' => 1,
             'is_popular' => $request->has('is_popular'),
         ]);
 

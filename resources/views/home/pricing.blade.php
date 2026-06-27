@@ -2,48 +2,156 @@
 
 @section('content')
 <style>
+  /* ===== RESET & BASE ===== */
   .pkg-page {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     background: linear-gradient(135deg, #e8f0fe 0%, #dbeafe 50%, #ede9fe 100%);
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    padding: 40px 20px;
+    padding: 48px 20px 60px;
     box-sizing: border-box;
   }
   .pkg-page * { box-sizing: border-box; }
-
   .pkg-container { max-width: 1100px; width: 100%; }
 
-  .pkg-header { text-align: center; margin-bottom: 48px; }
+  /* ===== VIP ACTIVE BANNER ===== */
+  .vip-banner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #3b82f6 100%);
+    border-radius: 20px;
+    padding: 24px 28px;
+    margin-bottom: 40px;
+    box-shadow: 0 12px 40px rgba(37,99,235,0.30);
+    position: relative;
+    overflow: hidden;
+  }
+  /* decorative glow ring */
+  .vip-banner::before {
+    content: '';
+    position: absolute;
+    right: -60px;
+    top: -60px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    pointer-events: none;
+  }
+  .vip-banner::after {
+    content: '';
+    position: absolute;
+    right: 60px;
+    bottom: -80px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    pointer-events: none;
+  }
 
-  .pkg-back-btn {
-    display: inline-flex;
+  .vip-banner-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    flex-shrink: 0;
+    border: 2px solid rgba(255,255,255,0.2);
+  }
+
+  .vip-banner-body { flex: 1; min-width: 0; }
+
+  .vip-banner-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 4px;
+    display: flex;
     align-items: center;
     gap: 8px;
-    color: #6b7280;
-    font-size: 14px;
-    cursor: pointer;
-    margin-bottom: 24px;
-    padding: 8px 16px;
-    border-radius: 10px;
-    border: 1.5px solid #e5e7eb;
-    background: white;
-    transition: all 0.2s;
   }
-  .pkg-back-btn:hover { background: #f9fafb; border-color: #d1d5db; }
 
+  .vip-active-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 3px rgba(74,222,128,0.3);
+    animation: pulse-dot 2s infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(74,222,128,0.3); }
+    50%       { box-shadow: 0 0 0 6px rgba(74,222,128,0.1); }
+  }
+
+  .vip-banner-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+    margin: 0 0 10px;
+  }
+  .vip-banner-sub strong { color: #fff; }
+
+  .vip-banner-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 30px;
+    padding: 5px 14px;
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.85);
+    font-weight: 500;
+  }
+
+  .vip-banner-expires {
+    text-align: center;
+    flex-shrink: 0;
+    padding: 14px 22px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 14px;
+  }
+  .vip-banner-expires .exp-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .vip-banner-expires .exp-date {
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 640px) {
+    .vip-banner { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .vip-banner-expires { width: 100%; }
+  }
+
+  /* ===== HEADER ===== */
+  .pkg-header { text-align: center; margin-bottom: 48px; }
   .pkg-header h1 {
-    font-size: 44px;
+    font-size: 40px;
     font-weight: 800;
     color: #111827;
     letter-spacing: -1.5px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
+  .pkg-subtitle { font-size: 16px; color: #6b7280; margin: 0; }
 
-  .pkg-subtitle { font-size: 17px; color: #6b7280; margin: 0; }
-
+  /* ===== CARDS ===== */
   .pkg-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -68,7 +176,6 @@
     box-shadow: 0 20px 48px rgba(59,130,246,0.15);
     border-color: #93c5fd;
   }
-
   .pkg-card.pkg-popular {
     background: linear-gradient(160deg, #1d4ed8 0%, #2563eb 40%, #3b82f6 100%);
     transform: scale(1.04);
@@ -86,7 +193,7 @@
     transform: translateX(-50%);
     background: linear-gradient(90deg, #f59e0b, #f97316);
     color: white;
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 700;
     padding: 6px 20px;
     border-radius: 20px;
@@ -198,8 +305,6 @@
   }
   .pkg-card.pkg-popular .pkg-check { background: rgba(255,255,255,0.25); color: white; }
 
-  .pkg-cta-form { width: 100%; }
-
   .pkg-cta-btn {
     width: 100%;
     padding: 16px;
@@ -228,6 +333,7 @@
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
   }
 
+  /* ===== FOOTER ===== */
   .pkg-footer { text-align: center; }
   .pkg-secure-note {
     font-size: 13px;
@@ -276,28 +382,54 @@
 <div class="pkg-page">
   <div class="pkg-container">
 
+    {{-- ===== VIP ACTIVE BANNER (bên trong container, không bị cắt) ===== --}}
+    @auth
+      @if(auth()->user()->isVip())
+        <div class="vip-banner">
+
+          <div class="vip-banner-icon">👑</div>
+
+          <div class="vip-banner-body">
+            <div class="vip-banner-title">
+              <span class="vip-active-dot"></span>
+              Bạn đang là Hội viên VIP
+            </div>
+            <p class="vip-banner-sub">
+              Gói hiện tại còn hiệu lực đến
+              <strong>{{ auth()->user()->vip_expires_at->format('d/m/Y H:i') }}</strong>
+            </p>
+            <span class="vip-banner-note">
+              ℹ️ Khi mua thêm, thời hạn sẽ được cộng dồn vào ngày hết hạn hiện tại.
+            </span>
+          </div>
+
+          <div class="vip-banner-expires">
+            <div class="exp-label">Hết hạn</div>
+            <div class="exp-date">{{ auth()->user()->vip_expires_at->format('d/m/Y') }}</div>
+          </div>
+
+        </div>
+      @endif
+    @endauth
+
+    {{-- ===== PAGE HEADER ===== --}}
     <div class="pkg-header">
       <h1>Đăng ký gói</h1>
       <p class="pkg-subtitle">Chọn gói phù hợp với nhu cầu của bạn</p>
     </div>
 
     @if($plans->isEmpty())
-
       <div class="pkg-empty">
         Hiện chưa có gói VIP nào khả dụng. Vui lòng quay lại sau.
       </div>
-
     @else
 
       @php
-        // Lấy giá/tháng rẻ nhất trong danh sách để tính % tiết kiệm cho các gói còn lại
         $cheapestPerMonth = $plans->min(fn ($p) => $p->months > 0 ? $p->price / $p->months : $p->price);
       @endphp
 
       <div class="pkg-cards">
-
         @foreach($plans as $plan)
-
           @php
             $perMonth = $plan->months > 0 ? $plan->price / $plan->months : $plan->price;
             $savingPercent = $cheapestPerMonth > 0
@@ -314,18 +446,16 @@
 
             <div class="pkg-duration">{{ $plan->months }} THÁNG</div>
 
-            <div class="pkg-tagline">
-                {{ $plan->name }}
-            </div>
+            <div class="pkg-tagline">{{ $plan->name }}</div>
 
             <div class="pkg-price">{{ number_format($plan->price, 0, ',', '.') }}đ</div>
 
             <div class="pkg-per-month">
-                <span>{{ number_format($perMonth, 0, ',', '.') }}đ / tháng</span>
+              <span>{{ number_format($perMonth, 0, ',', '.') }}đ / tháng</span>
             </div>
 
             <div class="pkg-savings @if($savingPercent <= 0) pkg-hidden @endif">
-                Tiết kiệm {{ $savingPercent }}%
+              🏷️ Tiết kiệm {{ $savingPercent }}%
             </div>
 
             <div class="pkg-divider"></div>
@@ -345,51 +475,48 @@
               @endif
             </ul>
 
-            <form action="#" method="POST" class="pkg-cta-form">
-                @csrf
-                <input type="hidden" name="plan_id" value="{{ $plan->id }}">
-                <button type="submit" class="pkg-cta-btn @if($isPopular) pkg-solid @else pkg-outline @endif">
-                    Đăng ký gói {{ $plan->months }} tháng
-                </button>
+            <form action="{{ route('vip.subscribe') }}" method="POST">
+              @csrf
+              <input type="hidden" name="plan_id" value="{{ $plan->id }}">
+              <button type="submit"
+                      class="pkg-cta-btn {{ $isPopular ? 'pkg-solid' : 'pkg-outline' }}">
+                @if(auth()->check() && auth()->user()->isVip())
+                  Gia hạn thêm {{ $plan->months }} tháng
+                @else
+                  Đăng ký gói {{ $plan->months }} tháng
+                @endif
+              </button>
             </form>
 
           </div>
-
         @endforeach
-
       </div>
 
     @endif
 
     <div class="pkg-footer">
-      <div class="pkg-secure-note">Thanh toán an toàn và bảo mật</div>
+      <div class="pkg-secure-note">🔒 Thanh toán an toàn và bảo mật</div>
       <div class="pkg-payment-methods">
-
         <div class="pkg-pm-chip">
           <img src="https://simg.zalopay.com.vn/zlp-website/assets/new_logo_6c5db2d21b.svg"
                alt="ZaloPay" height="22" style="object-fit:contain;">
         </div>
-
         <div class="pkg-pm-chip">
           <img src="https://homepage.momocdn.net/fileuploads/svg/momo-file-240411162904.svg"
                alt="MoMo" height="22" style="object-fit:contain;">
         </div>
-
         <div class="pkg-pm-chip">
           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpAu2kw1DdvmskCrDj6xxJJs_yTqAXoAamjdCzRGHQnA&s=10"
                alt="Visa" height="20" style="object-fit:contain;">
         </div>
-
         <div class="pkg-pm-chip">
           <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg"
                alt="Mastercard" height="22" style="object-fit:contain;">
         </div>
-
         <div class="pkg-pm-chip">
           <img src="https://static.vecteezy.com/system/resources/thumbnails/013/948/616/small/bank-icon-logo-design-vector.jpg"
                alt="Banking" height="22" style="object-fit:contain;">
         </div>
-
       </div>
     </div>
 

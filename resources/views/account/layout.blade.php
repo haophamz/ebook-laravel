@@ -15,12 +15,47 @@ href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 body{
     background:#121214;
 }
-
-.account-page{
-    width:100%;
-    padding:25px 30px;
+.vip-badge{
+    margin-top:15px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 14px;
+    border-radius:999px;
+    background:#18c29c;
+    color:#fff;
+    font-size:13px;
+    font-weight:600;
 }
 
+.free-badge{
+    margin-top:15px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 14px;
+    border-radius:999px;
+    background:#2a2a2e;
+    color:#bbb;
+    font-size:13px;
+    font-weight:600;
+}
+
+.vip-expire{
+    margin-top:10px;
+    color:#9ca3af;
+    font-size:13px;
+    line-height:1.6;
+}
+
+.vip-expire strong{
+    color:#18c29c;
+}
+.account-page{
+    width:100%;
+    margin-top:90px;
+    padding:30px;
+}
 .account-layout{
     display:grid;
     grid-template-columns:260px 1fr;
@@ -260,15 +295,38 @@ toastr.info("{{ session('info') }}");
 
         <aside class="account-sidebar">
 
-            <div class="profile-box">
+<div class="profile-box">
 
-                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=18c29c&color=fff">
+    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=18c29c&color=fff">
 
-                <h3>{{ Auth::user()->name }}</h3>
+    <h3>{{ Auth::user()->name }}</h3>
 
-                <p>{{ Auth::user()->email }}</p>
+    <p>{{ Auth::user()->email }}</p>
 
-            </div>
+    @if(Auth::user()->isVip())
+
+        <div class="vip-badge">
+            <i class="ti ti-crown"></i>
+            Hội viên VIP
+        </div>
+
+        <div class="vip-expire">
+            Hết hạn:
+            <strong>
+                {{ Auth::user()->vip_expires_at->format('d/m/Y H:i') }}
+            </strong>
+        </div>
+
+    @else
+
+        <div class="free-badge">
+            <i class="ti ti-user"></i>
+            Tài khoản miễn phí
+        </div>
+
+    @endif
+
+</div>
 
             <nav class="account-menu">
 
@@ -293,14 +351,6 @@ toastr.info("{{ session('info') }}");
 
         <i class="ti ti-history"></i>
         <span>Lịch sử đọc</span>
-
-    </a>
-
-    <a href="{{ route('account.vip') }}"
-       class="{{ request()->routeIs('account.vip') ? 'active' : '' }}">
-
-        <i class="ti ti-crown"></i>
-        <span>Hội viên VIP</span>
 
     </a>
 

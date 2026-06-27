@@ -1,78 +1,112 @@
 <?php
 
 namespace App\Models;
+
+use Database\Factories\UserFactory;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Review;
-use App\Models\Comment;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable , CanResetPassword;
+    use HasFactory, Notifiable, CanResetPassword;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
+
         'email_verified_at',
+
+        'is_admin',
+        'is_active',
+
         'membership_type',
-    'vip_expires_at',
-    'is_active'
+        'vip_expires_at',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
+
             'email_verified_at' => 'datetime',
+
+            'vip_expires_at' => 'datetime',
+
             'password' => 'hashed',
+
+            'is_admin' => 'boolean',
+
+            'is_active' => 'boolean',
+
         ];
     }
-    public function isVip()
-{
-    return $this->membership_type === 'vip'
-        && $this->vip_expires_at
-        && $this->vip_expires_at->isFuture();
-}
-public function reviews()
-{
-    return $this->hasMany(Review::class);
-}
 
-public function comments()
-{
-    return $this->hasMany(Comment::class);
-}
-public function orders()
-{
-    return $this->hasMany(Order::class);
-}
-public function transactions()
-{
-    return $this->hasMany(Transaction::class);
-}
+    /**
+     * Kiểm tra còn VIP hay không
+     */
+    public function isVip(): bool
+    {
+        return $this->membership_type === 'vip'
+            && $this->vip_expires_at !== null
+            && $this->vip_expires_at->isFuture();
+    }
+
+    /**
+     * Kiểm tra Admin
+     */
+    public function isAdmin(): bool
+    {
+        return (bool) $this->is_admin;
+    }
+
+    /**
+     * Reviews
+     */
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    /**
+     * Comments
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Orders
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
+     * User Books
+     */
+    public function userBooks()
+    {
+        return $this->hasMany(UserBook::class);
+    }
+
+    /**
+     * Favorite Books
+     */
+    public function favoriteBooks()
+    {
+        return $this->belongsToMany(
+            Book::class,
+            'user_books'
+        )->wherePivot('is_favorite', true);
+    }
 }

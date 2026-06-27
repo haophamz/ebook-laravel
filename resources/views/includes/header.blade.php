@@ -296,7 +296,7 @@
                 </div>
 
                 <div class="user-role">
-                    {{ Auth::user()->isVip() ? 'VIP MEMBER' : 'FREE MEMBER' }}
+                {{ auth()->user()->fresh()->isVip() ? 'VIP MEMBER' : 'FREE MEMBER' }}
                 </div>
 
             </div>

@@ -13,6 +13,17 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
+'sepay' => [
+
+    'bank' => env('SEPAY_BANK'),
+
+    'account' => env('SEPAY_ACCOUNT'),
+
+    'name' => env('SEPAY_NAME'),
+
+    'secret' => env('SEPAY_SECRET'),
+
+],
 
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),
