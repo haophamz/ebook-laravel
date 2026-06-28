@@ -72,87 +72,20 @@
     </a>
 </li>
 
-<li>
-
+<li class="{{ request()->routeIs('admin.coupons.*') ? 'active' : '' }}">
+    <a href="{{ route('admin.coupons.index') }}">
         <i class="ti ti-ticket"></i>
         Mã giảm giá
     </a>
 </li>
 
 <li>
-
-        <i class="ti ti-shopping-cart"></i>
-        Đơn hàng
-    </a>
-</li>
-
-<li>
-
-        <i class="ti ti-credit-card"></i>
-        Giao dịch
-    </a>
-</li>
-
-<li>
-
+    <li class="{{ request()->routeIs('admin.revenue.*') ? 'active' : '' }}">
+    <a href="{{ route('admin.revenue.index')}}">
         <i class="ti ti-chart-bar"></i>
-        Doanh thu
+        <span>Doanh thu</span>
     </a>
 </li>
-    </ul>
 
-    <div class="sidebar-section-title">
-        Quản lý
-    </div>
-
-    <ul class="sidebar-menu">
-
-        <li>
-            <a href="#">
-                <i class="ti ti-users"></i>
-                Người dùng
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                <i class="ti ti-heart"></i>
-                Yêu thích
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                <i class="ti ti-chart-bar"></i>
-                Thống kê
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                <i class="ti ti-settings"></i>
-                Cài đặt
-            </a>
-        </li>
-
-    </ul>
-
-    <div class="sidebar-footer">
-
-        <div class="sidebar-footer-card">
-
-            <p>
-                Tổng số Ebook:
-                <strong>0</strong>
-            </p>
-
-            <p>
-                Người dùng:
-                <strong>0</strong>
-            </p>
-
-        </div>
-
-    </div>
 
 </aside>

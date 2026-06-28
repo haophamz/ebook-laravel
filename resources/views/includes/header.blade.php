@@ -235,7 +235,7 @@
 <div class="left">
 
     <a href="/" class="logo">
-        HIKI
+       ECOBOOK
     </a>
 
     <nav class="menu">

@@ -22,11 +22,11 @@
     background: #fff;
     border-radius: 28px;
     overflow: hidden;
-    box-shadow: 0 24px 80px rgba(37,99,235,.13);
+    box-shadow: 0 24px 80px rgba(24,194,156,.13);
   }
 
   .pay-left {
-    background: linear-gradient(155deg, #1d4ed8 0%, #2563eb 55%, #3b82f6 100%);
+    background: linear-gradient(155deg, #0e9e7e 0%, #13b090 55%, #18c29c 100%);
     padding: 44px 36px;
     display: flex;
     flex-direction: column;
@@ -128,13 +128,13 @@
   .pay-right-header p  { font-size: 13px; color: #94a3b8; margin-top: 4px; }
 
   .pay-order-badge {
-    background: #eff6ff;
-    color: #2563eb;
+    background: rgba(24,194,156,.08);
+    color: #18c29c;
     font-size: 12px;
     font-weight: 700;
     padding: 6px 14px;
     border-radius: 50px;
-    border: 1px solid #bfdbfe;
+    border: 1px solid rgba(24,194,156,.25);
     white-space: nowrap;
   }
 
@@ -164,8 +164,8 @@
   .pay-info-item .pay-val { font-size: 15px; font-weight: 700; color: #0f172a; }
 
   .pay-amount-box {
-    background: linear-gradient(135deg, #eff6ff, #f0fdf4);
-    border: 1.5px solid #bfdbfe;
+    background: rgba(24,194,156,.06);
+    border: 1.5px solid rgba(24,194,156,.25);
     border-radius: 16px;
     padding: 18px 20px;
     display: flex;
@@ -175,12 +175,12 @@
   }
 
   .pay-amount-box .pay-lbl { font-size: 13px; color: #64748b; font-weight: 500; }
-  .pay-amount-box .pay-amount { font-size: 28px; font-weight: 900; color: #2563eb; }
+  .pay-amount-box .pay-amount { font-size: 28px; font-weight: 900; color: #18c29c; }
   .pay-amount-box .pay-amount span { font-size: 16px; font-weight: 600; margin-left: 2px; }
 
   .pay-content-box {
     background: #f8fafc;
-    border: 1.5px dashed #cbd5e1;
+    border: 1.5px dashed rgba(24,194,156,.35);
     border-radius: 16px;
     padding: 18px 20px;
     margin-bottom: 22px;
@@ -200,14 +200,14 @@
   .pay-content-val {
     font-size: 18px;
     font-weight: 800;
-    color: #2563eb;
+    color: #18c29c;
     flex: 1;
     word-break: break-all;
   }
 
   .pay-copy-btn {
     border: none;
-    background: #2563eb;
+    background: #18c29c;
     color: #fff;
     padding: 10px 18px;
     border-radius: 10px;
@@ -221,7 +221,7 @@
     transition: background .2s, transform .1s;
   }
 
-  .pay-copy-btn:hover  { background: #1d4ed8; }
+  .pay-copy-btn:hover  { background: #0e9e7e; }
   .pay-copy-btn:active { transform: scale(.97); }
 
   .pay-status-box {
@@ -293,7 +293,8 @@
     <p>Thanh toán bằng App ngân hàng</p>
 
     <div class="pay-qr-wrap">
-<img src="{{ $payment['qr_url'] }}" alt="QR thanh toán">    </div>
+      <img src="{{ $payment['qr_url'] }}" alt="QR thanh toán">
+    </div>
 
     <div class="pay-qr-label">
       Mở App ngân hàng → Chọn Quét mã QR<br>→ Hướng camera vào mã trên

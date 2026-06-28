@@ -1,14 +1,18 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <script src="https://cdn.jsdelivr.net/npm/jszip/dist/jszip.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $book->title }}</title>
+    <script src="https://cdn.jsdelivr.net/npm/jszip/dist/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
+    
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+        main {
+            padding-top: 0 !important;
+        }
         body {
             font-family: 'Georgia', serif;
             background: #1a1a1a;
@@ -157,7 +161,6 @@
     <span id="page-info">—</span>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
 <script>
 (function () {
     const url        = "{{ asset('storage/' . $book->epub_file) }}";
@@ -166,11 +169,12 @@
 
     function showError(msg) {
         statusEl.classList.add('error');
-        statusEl.querySelector('.spinner').style.display = 'none';
+        const spinner = statusEl.querySelector('.spinner');
+        if (spinner) spinner.style.display = 'none';
         statusEl.querySelector('span').textContent = msg;
     }
 
-    // Fetch dưới dạng ArrayBuffer để bypass lỗi MIME type null
+    // Tải sách dưới dạng ArrayBuffer để tránh lỗi CORS hoặc MIME type trên một số trình duyệt
     fetch(url)
         .then(r => {
             if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -185,46 +189,106 @@
                 flow  : 'paginated',
             });
 
-            rendition.display().then(() => {
-                statusEl.remove();
-            }).catch(err => {
-                console.error(err);
-                showError('Không render được: ' + err.message);
-            });
+            const lastPosition = @json($position);
+            rendition.display(lastPosition || undefined)
+                .then(() => {
+                    if (statusEl) statusEl.remove();
+                    
+                    // SỬA LỖI: Ép thư viện tính toán toàn bộ vị trí các trang ảo trong sách (Locations)
+                    // Nếu không có bước này, epub.js sẽ không thể tính tỷ lệ % chính xác và trả về số 0.
+                    return book.locations.generate(1024);
+                })
+                .then(() => {
+                    // Sau khi tính toán vị trí xong, cập nhật giao diện hiển thị % của trang hiện tại luôn
+                    const currentLocation = rendition.currentLocation();
+                    if (currentLocation && currentLocation.start) {
+                        updateProgressUI(currentLocation);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    showError('Không render được: ' + err.message);
+                });
 
-            // Nút điều hướng
+            // Hàm tính toán và cập nhật giao diện hiển thị số phần trăm (%)
+            function updateProgressUI(location) {
+                if (!location || !location.start) return;
+                
+                // Sử dụng mã định danh CFI đối chiếu vào danh sách locations đã tạo để tính % chính xác nhất
+                const progressFraction = book.locations.percentageFromCfi(location.start.cfi);
+                const pct = Math.round(progressFraction * 100);
+                
+                pageInfoEl.textContent = isNaN(pct) || pct < 0 ? "—" : pct + "%";
+            }
+
+            // 1. Điều hướng bằng các nút nhấn trên giao diện chính
             document.getElementById('prev-btn').addEventListener('click', () => rendition.prev());
             document.getElementById('next-btn').addEventListener('click', () => rendition.next());
 
-            // Phím mũi tên
+            // 2. Lắng nghe phím mũi tên khi tiêu điểm nằm ngoài tài liệu sách
             document.addEventListener('keydown', e => {
                 if (e.key === 'ArrowLeft')  rendition.prev();
                 if (e.key === 'ArrowRight') rendition.next();
             });
 
-            // Vuốt mobile
-            let touchStartX = 0;
-            document.getElementById('viewer').addEventListener('touchstart', e => {
-                touchStartX = e.changedTouches[0].screenX;
-            }, { passive: true });
-            document.getElementById('viewer').addEventListener('touchend', e => {
-                const diff = touchStartX - e.changedTouches[0].screenX;
-                if (Math.abs(diff) > 40) {
-                    diff > 0 ? rendition.next() : rendition.prev();
-                }
-            }, { passive: true });
+            // 3. Đăng ký hook vào nội dung của iframe (Xử lý sự kiện bàn phím và vuốt chạm khi đang click trong trang sách)
+            rendition.hooks.content.register(function(contents) {
+                // Sự kiện phím bấm trong iframe sách
+                contents.document.addEventListener('keydown', e => {
+                    if (e.key === 'ArrowLeft')  rendition.prev();
+                    if (e.key === 'ArrowRight') rendition.next();
+                });
 
-            // % tiến độ
-            rendition.on('relocated', location => {
-                try {
-                    const pct = Math.round(location.start.percentage * 100);
-                    pageInfoEl.textContent = isNaN(pct) ? '—' : pct + '%';
-                } catch (_) {}
+                // Sự kiện vuốt chạm mobile trên màn hình đọc
+                let touchStartX = 0;
+                contents.document.addEventListener('touchstart', e => {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, { passive: true });
+
+                contents.document.addEventListener('touchend', e => {
+                    const diff = touchStartX - e.changedTouches[0].screenX;
+                    if (Math.abs(diff) > 40) {
+                        diff > 0 ? rendition.next() : rendition.prev();
+                    }
+                }, { passive: true });
+            });
+
+            // 4. Lắng nghe sự kiện chuyển trang (Relocated) để tính toán tiến độ và gửi API (Debounce)
+            let saveTimer;
+            rendition.on("relocated", function(location) {
+                
+                // Cập nhật % trực quan hiển thị dưới thanh footer ngay lập tức khi qua trang
+                updateProgressUI(location);
+
+                clearTimeout(saveTimer);
+                saveTimer = setTimeout(function() {
+                    // Đối chiếu CFI của trang hiện tại sang tỉ lệ % số thập phân thực tế
+                    const progressFraction = book.locations.percentageFromCfi(location.start.cfi);
+                    let finalPercent = Math.round(progressFraction * 100);
+                    
+                    // Ràng buộc giới hạn dữ liệu chống lỗi NaN hoặc số âm ngoài ý muốn
+                    if (isNaN(finalPercent) || finalPercent < 0) finalPercent = 0;
+                    if (finalPercent > 100) finalPercent = 100;
+
+                    // Gửi request cập nhật tiến độ vào database của Laravel backend
+                    fetch("{{ route('reading.progress') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({
+                            book_id: {{ $book->id }},
+                            progress: finalPercent, // Số nguyên từ 0 -> 100 chuẩn xác
+                            cfi: location.start.cfi
+                        })
+                    }).catch(err => console.error('Lỗi lưu tiến độ:', err));
+                }, 1000); // Đợi 1 giây sau khi dừng chuyển trang mới gửi để tránh spam request liên tục
             });
         })
         .catch(err => {
             console.error(err);
-            showError('Không tải được file: ' + err.message);
+            showError('Không thể tải file sách: ' + err.message);
         });
 })();
 </script>

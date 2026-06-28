@@ -282,19 +282,42 @@ public function favorite(Book $book)
 }
 public function render($slug)
 {
-    $book = Book::where('slug',$slug)->firstOrFail();
+    $book = Book::where('slug', $slug)->firstOrFail();
 
-    if ($book->is_vip) {
+    // kiểm tra quyền VIP...
 
-        if (!auth()->check()) {
-            return redirect()->route('login');
-        }
+    $position = null;
 
-        if (auth()->user()->membership_type !== 'vip') {
-            abort(403, 'Sách này dành cho thành viên VIP');
-        }
+    if (auth()->check()) {
+
+        $userBook = UserBook::where('user_id', auth()->id())
+            ->where('book_id', $book->id)
+            ->first();
+
+        $position = $userBook?->reading_position;
     }
 
-    return view('home.render', compact('book'));
+    return view('home.render', compact(
+        'book',
+        'position'
+    ));
+}
+public function saveProgress(Request $request)
+{
+    UserBook::updateOrCreate(
+        [
+            'user_id' => auth()->id(),
+            'book_id' => $request->book_id,
+        ],
+        [
+            'progress' => $request->progress,
+            'reading_position' => $request->cfi,
+            'last_read_at' => now(),
+        ]
+    );
+
+    return response()->json([
+        'success' => true,
+    ]);
 }
 }

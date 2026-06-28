@@ -10,7 +10,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    padding: 48px 20px 60px;
+    padding: 100px 20px 60px;
     box-sizing: border-box;
   }
   .pkg-page * { box-sizing: border-box; }
@@ -18,126 +18,123 @@
 
   /* ===== VIP ACTIVE BANNER ===== */
   .vip-banner {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #3b82f6 100%);
-    border-radius: 20px;
-    padding: 24px 28px;
-    margin-bottom: 40px;
-    box-shadow: 0 12px 40px rgba(37,99,235,0.30);
     position: relative;
+    background: #18c29c;
+    border-radius: 20px;
+    padding: 0;
+    margin-bottom: 40px;
+    box-shadow: 0 16px 40px rgba(15,23,42,0.18);
     overflow: hidden;
+    isolation: isolate;
   }
-  /* decorative glow ring */
+
+  /* subtle gold accent line on top */
   .vip-banner::before {
     content: '';
     position: absolute;
-    right: -60px;
-    top: -60px;
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.06);
-    pointer-events: none;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #fbbf24, #f59e0b 50%, #fbbf24);
+    z-index: 2;
   }
+
+  /* faint diagonal sheen */
   .vip-banner::after {
     content: '';
     position: absolute;
-    right: 60px;
-    bottom: -80px;
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.04);
+    inset: 0;
+    background: linear-gradient(120deg, rgba(255,255,255,0.05) 0%, transparent 40%);
     pointer-events: none;
+    z-index: 0;
   }
 
-  .vip-banner-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.15);
+  .vip-banner-inner {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 30px;
-    flex-shrink: 0;
-    border: 2px solid rgba(255,255,255,0.2);
+    justify-content: space-between;
+    gap: 24px;
+    padding: 22px 28px;
   }
 
-  .vip-banner-body { flex: 1; min-width: 0; }
+  .vip-banner-body { flex: 1 1 auto; min-width: 0; }
 
-  .vip-banner-title {
-    font-size: 18px;
-    font-weight: 800;
-    color: #fff;
-    margin: 0 0 4px;
-    display: flex;
+  .vip-banner-eyebrow {
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 7px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #fbbf24;
+    margin-bottom: 8px;
   }
 
   .vip-active-dot {
     display: inline-block;
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: #4ade80;
-    box-shadow: 0 0 0 3px rgba(74,222,128,0.3);
+    box-shadow: 0 0 0 3px rgba(74,222,128,0.25);
     animation: pulse-dot 2s infinite;
+    flex-shrink: 0;
   }
   @keyframes pulse-dot {
-    0%, 100% { box-shadow: 0 0 0 3px rgba(74,222,128,0.3); }
-    50%       { box-shadow: 0 0 0 6px rgba(74,222,128,0.1); }
+    0%, 100% { box-shadow: 0 0 0 3px rgba(74,222,128,0.25); }
+    50%       { box-shadow: 0 0 0 6px rgba(74,222,128,0.08); }
+  }
+
+  .vip-banner-title {
+    font-size: 19px;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 6px;
+    letter-spacing: -0.2px;
   }
 
   .vip-banner-sub {
-    font-size: 14px;
-    color: rgba(255,255,255,0.75);
-    margin: 0 0 10px;
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.55);
+    margin: 0;
+    line-height: 1.5;
   }
-  .vip-banner-sub strong { color: #fff; }
-
-  .vip-banner-note {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 30px;
-    padding: 5px 14px;
-    font-size: 12.5px;
-    color: rgba(255,255,255,0.85);
-    font-weight: 500;
-  }
+  .vip-banner-sub strong { color: rgba(255,255,255,0.85); font-weight: 600; }
 
   .vip-banner-expires {
-    text-align: center;
+    text-align: right;
     flex-shrink: 0;
-    padding: 14px 22px;
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.18);
-    border-radius: 14px;
+    padding-left: 24px;
+    border-left: 1px solid rgba(255,255,255,0.12);
   }
   .vip-banner-expires .exp-label {
-    font-size: 11px;
-    color: rgba(255,255,255,0.6);
+    font-size: 10.5px;
+    color: rgba(255,255,255,0.45);
     text-transform: uppercase;
-    letter-spacing: 0.8px;
+    letter-spacing: 1px;
     font-weight: 600;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
   }
   .vip-banner-expires .exp-date {
-    font-size: 18px;
+    font-size: 19px;
     font-weight: 800;
-    color: #fff;
+    color: #fbbf24;
     white-space: nowrap;
+    letter-spacing: -0.3px;
   }
 
   @media (max-width: 640px) {
-    .vip-banner { flex-direction: column; align-items: flex-start; gap: 16px; }
-    .vip-banner-expires { width: 100%; }
+    .vip-banner-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .vip-banner-expires {
+      text-align: left;
+      padding-left: 0;
+      border-left: none;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      padding-top: 14px;
+      width: 100%;
+    }
   }
 
   /* ===== HEADER ===== */
@@ -173,8 +170,8 @@
   }
   .pkg-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 20px 48px rgba(59,130,246,0.15);
-    border-color: #93c5fd;
+    box-shadow: 0 20px 48px rgba(24,194,156,0.18);
+    border-color: #18c29c;
   }
   .pkg-card.pkg-popular {
     background: linear-gradient(160deg, #1d4ed8 0%, #2563eb 40%, #3b82f6 100%);
@@ -227,7 +224,7 @@
     text-align: center;
     font-size: 40px;
     font-weight: 900;
-    color: #2563eb;
+    color: #18c29c;
     letter-spacing: -1px;
     margin-bottom: 8px;
   }
@@ -240,16 +237,18 @@
   }
   .pkg-per-month span {
     display: inline-block;
-    background: #eff6ff;
-    color: #3b82f6;
+    background: rgba(24,194,156,0.08);
+    color: #18c29c;
     font-size: 13px;
     font-weight: 600;
     padding: 5px 14px;
     border-radius: 30px;
+    border: 1px solid rgba(24,194,156,0.2);
   }
   .pkg-card.pkg-popular .pkg-per-month span {
     background: rgba(255,255,255,0.2);
     color: rgba(255,255,255,0.9);
+    border: none;
   }
 
   .pkg-savings {
@@ -265,8 +264,16 @@
     border-radius: 12px;
     margin-bottom: 14px;
   }
+  .pkg-savings svg {
+    width: 14px;
+    height: 14px;
+    stroke: #92400e;
+    fill: none;
+    flex-shrink: 0;
+  }
   .pkg-savings.pkg-hidden { visibility: hidden; }
   .pkg-card.pkg-popular .pkg-savings { background: rgba(255,255,255,0.18); color: white; }
+  .pkg-card.pkg-popular .pkg-savings svg { stroke: white; }
 
   .pkg-divider { height: 1px; background: #f3f4f6; margin: 20px 0; }
   .pkg-card.pkg-popular .pkg-divider { background: rgba(255,255,255,0.15); }
@@ -294,16 +301,21 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #dbeafe;
+    background: rgba(24,194,156,0.12);
+    border: 1px solid rgba(24,194,156,0.25);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    font-size: 11px;
-    color: #2563eb;
-    font-weight: 700;
   }
-  .pkg-card.pkg-popular .pkg-check { background: rgba(255,255,255,0.25); color: white; }
+  .pkg-check svg {
+    width: 11px;
+    height: 11px;
+    stroke: #18c29c;
+    fill: none;
+  }
+  .pkg-card.pkg-popular .pkg-check { background: rgba(255,255,255,0.25); border: none; }
+  .pkg-card.pkg-popular .pkg-check svg { stroke: white; }
 
   .pkg-cta-btn {
     width: 100%;
@@ -317,15 +329,15 @@
     letter-spacing: 0.3px;
   }
   .pkg-cta-btn.pkg-outline {
-    background: #eff6ff;
-    color: #2563eb;
-    border: 2px solid #bfdbfe;
+    background: rgba(24,194,156,0.08);
+    color: #18c29c;
+    border: 2px solid rgba(24,194,156,0.3);
   }
   .pkg-cta-btn.pkg-outline:hover {
-    background: #2563eb;
+    background: #18c29c;
     color: white;
-    border-color: #2563eb;
-    box-shadow: 0 8px 20px rgba(37,99,235,0.3);
+    border-color: #18c29c;
+    box-shadow: 0 8px 20px rgba(24,194,156,0.35);
   }
   .pkg-cta-btn.pkg-solid { background: white; color: #1d4ed8; }
   .pkg-cta-btn.pkg-solid:hover {
@@ -343,6 +355,12 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
+  }
+  .pkg-secure-note svg {
+    width: 14px;
+    height: 14px;
+    stroke: #9ca3af;
+    fill: none;
   }
   .pkg-payment-methods {
     display: flex;
@@ -382,32 +400,29 @@
 <div class="pkg-page">
   <div class="pkg-container">
 
-    {{-- ===== VIP ACTIVE BANNER (bên trong container, không bị cắt) ===== --}}
+    {{-- ===== VIP ACTIVE BANNER ===== --}}
     @auth
       @if(auth()->user()->isVip())
         <div class="vip-banner">
+          <div class="vip-banner-inner">
 
-          <div class="vip-banner-icon">👑</div>
-
-          <div class="vip-banner-body">
-            <div class="vip-banner-title">
-              <span class="vip-active-dot"></span>
-              Bạn đang là Hội viên VIP
+            <div class="vip-banner-body">
+              <div class="vip-banner-eyebrow">
+                <span class="vip-active-dot"></span>
+                Hội viên VIP
+              </div>
+              <div class="vip-banner-title">Tài khoản của bạn đang được kích hoạt VIP</div>
+              <p class="vip-banner-sub">
+                Khi gia hạn thêm, thời hạn mới sẽ <strong>cộng dồn</strong> vào ngày hết hạn hiện tại — không bị mất thời gian còn lại.
+              </p>
             </div>
-            <p class="vip-banner-sub">
-              Gói hiện tại còn hiệu lực đến
-              <strong>{{ auth()->user()->vip_expires_at->format('d/m/Y H:i') }}</strong>
-            </p>
-            <span class="vip-banner-note">
-              ℹ️ Khi mua thêm, thời hạn sẽ được cộng dồn vào ngày hết hạn hiện tại.
-            </span>
-          </div>
 
-          <div class="vip-banner-expires">
-            <div class="exp-label">Hết hạn</div>
-            <div class="exp-date">{{ auth()->user()->vip_expires_at->format('d/m/Y') }}</div>
-          </div>
+            <div class="vip-banner-expires">
+              <div class="exp-label">Hết hạn lúc</div>
+              <div class="exp-date">{{ auth()->user()->vip_expires_at->format('d/m/Y') }}</div>
+            </div>
 
+          </div>
         </div>
       @endif
     @endauth
@@ -455,7 +470,11 @@
             </div>
 
             <div class="pkg-savings @if($savingPercent <= 0) pkg-hidden @endif">
-              🏷️ Tiết kiệm {{ $savingPercent }}%
+              <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.59 13.41L11 3.83A2 2 0 0 0 9.59 3.24H4a1 1 0 0 0-1 1v5.59a2 2 0 0 0 .59 1.41l9.58 9.58a2 2 0 0 0 2.83 0l4.59-4.59a2 2 0 0 0 0-2.83z"/>
+                <circle cx="7.5" cy="7.5" r="1.2" fill="currentColor" stroke="none"/>
+              </svg>
+              Tiết kiệm {{ $savingPercent }}%
             </div>
 
             <div class="pkg-divider"></div>
@@ -464,14 +483,49 @@
               @if($plan->description)
                 @foreach(preg_split('/\r\n|\r|\n/', trim($plan->description)) as $line)
                   @if(trim($line) !== '')
-                    <li><span class="pkg-check">✓</span>{{ trim($line) }}</li>
+                    <li>
+                      <span class="pkg-check">
+                        <svg viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                      </span>
+                      {{ trim($line) }}
+                    </li>
                   @endif
                 @endforeach
               @else
-                <li><span class="pkg-check">✓</span>Đọc không giới hạn toàn bộ thư viện ebook</li>
-                <li><span class="pkg-check">✓</span>Cập nhật sách mới liên tục hàng tuần</li>
-                <li><span class="pkg-check">✓</span>Hỗ trợ khách hàng ưu tiên</li>
-                <li><span class="pkg-check">✓</span>Hủy gói bất kỳ lúc nào, không phí ẩn</li>
+                <li>
+                  <span class="pkg-check">
+                    <svg viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </span>
+                  Đọc không giới hạn toàn bộ thư viện ebook
+                </li>
+                <li>
+                  <span class="pkg-check">
+                    <svg viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </span>
+                  Cập nhật sách mới liên tục hàng tuần
+                </li>
+                <li>
+                  <span class="pkg-check">
+                    <svg viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </span>
+                  Hỗ trợ khách hàng ưu tiên
+                </li>
+                <li>
+                  <span class="pkg-check">
+                    <svg viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </span>
+                  Hủy gói bất kỳ lúc nào, không phí ẩn
+                </li>
               @endif
             </ul>
 
@@ -495,7 +549,13 @@
     @endif
 
     <div class="pkg-footer">
-      <div class="pkg-secure-note">🔒 Thanh toán an toàn và bảo mật</div>
+      <div class="pkg-secure-note">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="11" width="14" height="9" rx="2"/>
+          <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+        </svg>
+        Thanh toán an toàn và bảo mật
+      </div>
       <div class="pkg-payment-methods">
         <div class="pkg-pm-chip">
           <img src="https://simg.zalopay.com.vn/zlp-website/assets/new_logo_6c5db2d21b.svg"

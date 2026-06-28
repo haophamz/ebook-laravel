@@ -12,6 +12,7 @@ class UserBook extends Model
         'is_favorite',
         'progress',
         'last_read_at',
+         'reading_position',
     ];
 
     protected $casts = [

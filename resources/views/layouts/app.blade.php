@@ -362,7 +362,9 @@ footer{
     }
 
 }
-
+main {
+    padding-top: 78px;
+}
 
 </style>
 

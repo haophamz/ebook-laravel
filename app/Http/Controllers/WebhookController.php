@@ -94,6 +94,11 @@ class WebhookController extends Controller
                 'paid_at' => now(),
 
             ]);
+            if ($order->coupon) {
+
+    $order->coupon->increment('used_count');
+
+}
 
             $vip->activate(
                 $order->user,

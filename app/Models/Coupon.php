@@ -3,29 +3,34 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Coupon extends Model
 {
-    protected $fillable = [
+    use HasFactory;
 
+    protected $fillable = [
         'code',
         'name',
-
-        'discount_percent',
-        'discount_amount',
-
+        'type',
+        'value',
         'min_order_amount',
-
+        'max_discount',
         'usage_limit',
         'used_count',
-
+        'started_at',
         'expired_at',
-
-        'active'
+        'active',
     ];
 
     protected $casts = [
-        'expired_at' => 'datetime',
         'active' => 'boolean',
+        'started_at' => 'datetime',
+        'expired_at' => 'datetime',
     ];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

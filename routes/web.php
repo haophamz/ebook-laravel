@@ -18,6 +18,15 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Admin\VipPlanController;
 use App\Http\Controllers\VipController;
+use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\RevenueController;
+
+Route::get('/admin/revenue', [RevenueController::class, 'index'])
+    ->name('admin.revenue.index');
+//post prgress
+Route::post('/reading-progress', [BookController::class, 'saveProgress'])
+    ->middleware('auth')
+    ->name('reading.progress');
 //goi thanh vien
 Route::get(
     '/goi-thanh-vien',
@@ -41,6 +50,9 @@ Route::post('/vip/subscribe', [VipController::class, 'subscribe'])
         '/vip/check-payment/{order}',
         [VipController::class,'checkPayment']
     )->name('vip.check-payment');
+    Route::post('/order/{order}/coupon', [VipController::class, 'applyCoupon'])
+    ->name('order.coupon');
+    Route::delete('/order/{order}/coupon', [VipController::class, 'removeCoupon'])->name('order.coupon.remove');
 
 });
 //login noi bo
@@ -231,9 +243,10 @@ Route::prefix('admin')
 Route::resource(
     'vip-plans',
     VipPlanController::class
+    
 );
 
-
+ Route::resource('coupons', CouponController::class);
 Route::get('/books/drafts', [BookController::class, 'drafts'])
 ->name('books.drafts');
 
