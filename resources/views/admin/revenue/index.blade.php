@@ -208,6 +208,34 @@ body {
         padding: 12px 16px;
     }
 }
+.stats-grid a.stat-card{
+    display:block;
+    text-decoration:none !important;
+    color:inherit !important;
+}
+
+.stats-grid a.stat-card:visited{
+    color:inherit !important;
+}
+
+.stats-grid a.stat-card:hover{
+    color:inherit !important;
+    text-decoration:none !important;
+    transform:translateY(-4px);
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+
+.stats-grid a.stat-card:focus,
+.stats-grid a.stat-card:active{
+    color:inherit !important;
+    text-decoration:none !important;
+    outline:none;
+}
+
+.stats-grid a.stat-card .stat-title,
+.stats-grid a.stat-card .stat-value{
+    color:inherit;
+}
 </style>
 @endsection
 
@@ -221,103 +249,107 @@ body {
 </div>
 
 <div class="stats-grid">
-    <div class="stat-card">
+
+    <a href="{{ route('admin.dashboard.transactions',['range'=>'today']) }}" class="stat-card">
         <div class="stat-flex">
             <div>
                 <div class="stat-title">Doanh thu hôm nay</div>
                 <div class="stat-value">{{ number_format($todayRevenue) }}đ</div>
             </div>
             <div class="stat-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
             </div>
         </div>
-    </div>
+    </a>
 
-    <div class="stat-card">
+    <a href="{{ route('admin.dashboard.transactions',['range'=>'month']) }}" class="stat-card">
         <div class="stat-flex">
             <div>
                 <div class="stat-title">Doanh thu tháng</div>
                 <div class="stat-value">{{ number_format($monthRevenue) }}đ</div>
             </div>
             <div class="stat-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
             </div>
         </div>
-    </div>
+    </a>
 
-    <div class="stat-card">
+    <a href="{{ route('admin.dashboard.transactions',['range'=>'year']) }}" class="stat-card">
         <div class="stat-flex">
             <div>
                 <div class="stat-title">Doanh thu năm</div>
                 <div class="stat-value">{{ number_format($yearRevenue) }}đ</div>
             </div>
             <div class="stat-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
             </div>
         </div>
-    </div>
+    </a>
 
-    <div class="stat-card">
+    <a href="{{ route('admin.dashboard.transactions') }}" class="stat-card">
         <div class="stat-flex">
             <div>
                 <div class="stat-title">Tổng doanh thu</div>
-                <div class="stat-value" style="color: var(--primary-green);">{{ number_format($totalRevenue) }}đ</div>
+                <div class="stat-value" style="color:#10b981;">{{ number_format($totalRevenue) }}đ</div>
             </div>
-            <div class="stat-icon" style="background: #10b981; color: #fff;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+            <div class="stat-icon" style="background:#10b981;color:#fff;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
             </div>
         </div>
-    </div>
+    </a>
+
 </div>
 
 <div class="stats-grid">
-    <div class="stat-card">
+
+    <a href="{{ route('admin.dashboard.orders') }}" class="stat-card">
         <div class="stat-flex">
             <div>
                 <div class="stat-title">Tổng đơn hàng</div>
                 <div class="stat-value">{{ number_format($totalOrders) }}</div>
             </div>
-            <div class="stat-icon" style="background:#eff6ff; color:#3b82f6;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            <div class="stat-icon" style="background:#eff6ff;color:#3b82f6;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
             </div>
         </div>
-    </div>
+    </a>
 
-    <div class="stat-card">
+    <a href="{{ route('admin.dashboard.orders',['status'=>'paid']) }}" class="stat-card">
         <div class="stat-flex">
             <div>
                 <div class="stat-title">Đã thanh toán</div>
                 <div class="stat-value">{{ number_format($paidOrders) }}</div>
             </div>
-            <div class="stat-icon" style="background:#ecfdf5; color:#10b981;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <div class="stat-icon" style="background:#ecfdf5;color:#10b981;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
         </div>
-    </div>
+    </a>
 
-    <div class="stat-card">
+    <a href="{{ route('admin.dashboard.users') }}" class="stat-card">
         <div class="stat-flex">
             <div>
                 <div class="stat-title">Người dùng</div>
                 <div class="stat-value">{{ number_format($totalUsers) }}</div>
             </div>
-            <div class="stat-icon" style="background:#f5f3ff; color:#8b5cf6;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <div class="stat-icon" style="background:#f5f3ff;color:#8b5cf6;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             </div>
         </div>
-    </div>
+    </a>
 
-    <div class="stat-card">
+    <a href="{{ route('admin.dashboard.users',['vip'=>1]) }}" class="stat-card">
         <div class="stat-flex">
             <div>
                 <div class="stat-title">Thành viên VIP</div>
-                <div class="stat-value" style="color: #b45309;">{{ number_format($vipUsers) }}</div>
+                <div class="stat-value" style="color:#b45309;">{{ number_format($vipUsers) }}</div>
             </div>
-            <div class="stat-icon" style="background:#fffbeb; color:#f59e0b;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            <div class="stat-icon" style="background:#fffbeb;color:#f59e0b;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             </div>
         </div>
-    </div>
+    </a>
+
 </div>
 
 <div class="custom-card">

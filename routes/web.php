@@ -20,6 +20,22 @@ use App\Http\Controllers\Admin\VipPlanController;
 use App\Http\Controllers\VipController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\RevenueController;
+use App\Http\Controllers\Admin\DashboardController;
+//dash
+Route::prefix('admin/dashboard')
+    ->name('admin.dashboard.')
+    ->group(function () {
+
+        Route::get('/transactions', [DashboardController::class, 'transactions'])
+            ->name('transactions');
+
+        Route::get('/orders', [DashboardController::class, 'orders'])
+            ->name('orders');
+
+        Route::get('/users', [DashboardController::class, 'users'])
+            ->name('users');
+
+    });
 
 Route::get('/admin/revenue', [RevenueController::class, 'index'])
     ->name('admin.revenue.index');

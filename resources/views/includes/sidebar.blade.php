@@ -14,12 +14,13 @@
 
     <ul class="sidebar-menu">
 
-        <li>
-            <a href="{{ route('admin.dashboard') }}"  class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                <i class="ti ti-layout-dashboard"></i>
-                Dashboard
-            </a>
-        </li>
+<li>
+    <li class="{{ request()->routeIs('admin.revenue.*') ? 'active' : '' }}">
+    <a href="{{ route('admin.revenue.index')}}">
+        <i class="ti ti-chart-bar"></i>
+        <span>Doanh thu</span>
+    </a>
+</li>
 
         <li>
             <a href="{{ route('admin.books.create') }}"  class="{{ request()->routeIs('admin.books.create') ? 'active' : '' }}">
@@ -79,13 +80,7 @@
     </a>
 </li>
 
-<li>
-    <li class="{{ request()->routeIs('admin.revenue.*') ? 'active' : '' }}">
-    <a href="{{ route('admin.revenue.index')}}">
-        <i class="ti ti-chart-bar"></i>
-        <span>Doanh thu</span>
-    </a>
-</li>
+
 
 
 </aside>
