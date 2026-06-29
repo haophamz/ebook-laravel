@@ -342,8 +342,29 @@ body{
 
 
                 <div>
-                    <label>Gói cước</label>
-                    <div>{{ $book->is_vip ? 'Hội viên' : 'Miễn phí' }}</div>
+                    <label>Loại truy cập</label>
+
+<div>
+
+@if($book->access_type == 'free')
+
+    Miễn phí
+
+@elseif($book->access_type == 'vip')
+
+    Hội viên VIP
+
+@else
+
+    Bán lẻ
+
+@endif
+<div>
+
+
+</div>
+
+</div>
                 </div>
 
             </div>
@@ -366,10 +387,35 @@ body{
 
 <div class="actions">
 
-    <a href="{{ route('home.render', $book->slug) }}" class="read-btn">
-        Đọc sách
-    </a>
+@if($book->access_type == 'paid')
 
+    @if($isPurchased)
+
+        <a href="{{ route('home.render',$book->slug) }}" class="read-btn">
+            Đọc sách
+        </a>
+
+    @else
+
+        <form action="{{ route('book.order.store', $book) }}" method="POST" style="display:inline">
+            @csrf
+            <button type="submit" class="read-btn" style="border:none;">
+                Mua ngay • {{ number_format($book->price) }}đ
+            </button>
+        </form>
+
+    @endif
+
+@endif
+<form action="{{ route('cart.store') }}" method="POST">
+    @csrf
+
+    <input type="hidden" name="book_id" value="{{ $book->id }}">
+
+    <button class="btn-cart">
+        🛒 Thêm vào giỏ hàng
+    </button>
+</form>
     <form action="{{ route('book.favorite',$book) }}"
           method="POST">
 

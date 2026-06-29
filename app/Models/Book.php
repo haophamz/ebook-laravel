@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\UserBook;
 use App\Models\Review;
 use App\Models\Comment;
+
 class Book extends Model
 {
     protected $fillable = [
@@ -21,32 +22,44 @@ class Book extends Model
         'favorites',
         'featured',
         'is_top',
-        'is_vip',
+        'access_type',
+        'price',
         'status',
     ];
 
     protected $casts = [
-        'featured' => 'boolean',
-        'is_top' => 'boolean',
-        'is_vip' => 'boolean',
-        'views' => 'integer',
-        'favorites' => 'integer',
+        'featured'    => 'boolean',
+        'is_top'      => 'boolean',
+        'views'       => 'integer',
+        'favorites'   => 'integer',
+        'price'       => 'decimal:0',
     ];
 
     /**
-     * Danh mục của sách
+     * Danh mục
      */
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
-    public function reviews()
-{
-    return $this->hasMany(Review::class);
-}
 
-public function comments()
+    /**
+     * Đánh giá
+     */
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    /**
+     * Bình luận
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+    public function purchases()
 {
-    return $this->hasMany(Comment::class);
+    return $this->hasMany(BookPurchase::class);
 }
 }

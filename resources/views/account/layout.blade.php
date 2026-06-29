@@ -337,7 +337,11 @@ toastr.info("{{ session('info') }}");
         <span>Quản lý tài khoản</span>
 
     </a>
-
+<a href="{{ route('account.purchased') }}"
+       class="{{ request()->routeIs('account.purchased') ? 'active' : '' }}">
+        <i class="ti ti-book-download"></i>
+        <span>Sách đã mua</span>
+    </a>
     <a href="{{ route('account.favorites') }}"
        class="{{ request()->routeIs('account.favorites') ? 'active' : '' }}">
 

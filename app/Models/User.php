@@ -109,4 +109,14 @@ class User extends Authenticatable implements MustVerifyEmail
             'user_books'
         )->wherePivot('is_favorite', true);
     }
+    public function bookPurchases()
+{
+    return $this->hasMany(BookPurchase::class);
+}
+public function purchasedBooks()
+{
+    return $this->belongsToMany(\App\Models\Book::class, 'orders', 'user_id', 'book_id')
+                ->where('orders.status', 'paid') // Chỉ lấy sách đã thanh toán
+                ->withTimestamps();
+}
 }

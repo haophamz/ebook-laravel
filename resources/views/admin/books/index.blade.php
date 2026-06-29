@@ -3,7 +3,7 @@
 @include('includes.alert')
 
 @section('styles')
-@include('admin.partials.admin-ui')
+    @include('admin.partials.admin-ui')
 @endsection
 
 @section('content')
@@ -11,225 +11,282 @@
 <div class="page-head">
     <div>
         <h1>Danh sách Ebook</h1>
-      <p>Tổng số ebook:{{ $books->total() }} sách</p>
+        <p>Tổng số ebook: {{ $books->total() }} sách</p>
     </div>
 </div>
 
 <div class="card">
-<div class="table-head">
-     <form method="GET" class="search-form">
 
-        @if(request('type'))
-            <input type="hidden"
-                   name="type"
-                   value="{{ request('type') }}">
-        @endif
+    <div class="table-head">
 
-        <input type="text"
-               name="keyword"
-               value="{{ request('keyword') }}"
-               placeholder="Tìm kiếm ebook...">
+        <form method="GET" class="search-form">
 
-        <button type="submit">
-            Tìm kiếm
-        </button>
+            @if(request('type'))
+                <input type="hidden"
+                       name="type"
+                       value="{{ request('type') }}">
+            @endif
 
-    </form>
+            <input type="text"
+                   name="keyword"
+                   value="{{ request('keyword') }}"
+                   placeholder="Tìm kiếm ebook...">
 
-    <a href="{{ route('admin.books.create') }}"
-       class="btn-create">
-        + Thêm Ebook
-    </a>
+            <button type="submit">
+                Tìm kiếm
+            </button>
 
-</div>
+        </form>
 
-<div class="card-body">
-
-   
-
-    <div class="filters">
-
-        <a href="{{ route('admin.books.index') }}"
-           class="{{ !request('type') ? 'active' : '' }}">
-            Tất cả
+        <a href="{{ route('admin.books.create') }}"
+           class="btn-create">
+            + Thêm Ebook
         </a>
-        <a href="{{ route('admin.books.index',['type'=>'vip']) }}"
-           class="{{ request('type') == 'vip' ? 'active' : '' }}">
-            VIP
-        </a>
-        <a href="{{ route('admin.books.index',['type'=>'banner']) }}"
-           class="{{ request('type') == 'banner' ? 'active' : '' }}">
-            Banner
-        </a>
-<a href="{{ route('admin.books.index',['type'=>'featured']) }}" class="{{ request('type') == 'featured' ? 'active' : '' }}"> Nổi bật </a>
+
     </div>
 
-</div>
+    <div class="card-body">
 
-<div class="table-wrap">
+        <div class="filters">
 
-    <table class="table">
+            <a href="{{ route('admin.books.index') }}"
+               class="{{ !request('type') ? 'active' : '' }}">
+                Tất cả
+            </a>
 
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Ảnh</th>
-                <th>Tên sách</th>
-                <th>Danh mục</th>
-                <th>Lượt xem</th>
-                <th>VIP</th>
-                <th>Banner</th>
-                <th>Trạng thái</th>
-                <th width="180">Thao tác</th>
-            </tr>
-        </thead>
+            <a href="{{ route('admin.books.index',['type'=>'free']) }}"
+               class="{{ request('type') == 'free' ? 'active' : '' }}">
+                Free
+            </a>
 
-        <tbody>
+            <a href="{{ route('admin.books.index',['type'=>'vip']) }}"
+               class="{{ request('type') == 'vip' ? 'active' : '' }}">
+                VIP
+            </a>
 
-        @forelse($books as $book)
+            <a href="{{ route('admin.books.index',['type'=>'paid']) }}"
+               class="{{ request('type') == 'paid' ? 'active' : '' }}">
+                Bán lẻ
+            </a>
 
-            <tr>
+            <a href="{{ route('admin.books.index',['type'=>'banner']) }}"
+               class="{{ request('type') == 'banner' ? 'active' : '' }}">
+                Banner
+            </a>
 
-                <td>#{{ $book->id }}</td>
+            <a href="{{ route('admin.books.index',['type'=>'featured']) }}"
+               class="{{ request('type') == 'featured' ? 'active' : '' }}">
+                Nổi bật
+            </a>
 
-                <td>
+        </div>
 
-                    @if($book->cover)
+    </div>
 
-                        <img src="{{ asset('storage/'.$book->cover) }}"
-                             class="book-cover">
+    <div class="table-wrap">
 
-                    @else
+        <table class="table">
 
-                        <div class="no-cover">
-                            No Image
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Ảnh</th>
+                    <th>Tên sách</th>
+                    <th>Danh mục</th>
+                    <th>Lượt xem</th>
+                    <th>Loại truy cập</th>
+                    <th>Giá bán</th>
+                    <th>Banner</th>
+                    <th>Trạng thái</th>
+                    <th width="180">Thao tác</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            @forelse($books as $book)
+
+                <tr>
+
+                    <td>#{{ $book->id }}</td>
+
+                    <td>
+
+                        @if($book->cover)
+
+                            <img src="{{ asset('storage/'.$book->cover) }}"
+                                 class="book-cover">
+
+                        @else
+
+                            <div class="no-cover">
+                                No Image
+                            </div>
+
+                        @endif
+
+                    </td>
+
+                    <td>
+
+                        <div class="book-title">
+                            {{ $book->title }}
                         </div>
 
-                    @endif
+                        <div class="book-author">
+                            {{ $book->author ?? 'Không rõ tác giả' }}
+                        </div>
 
-                </td>
+                    </td>
 
-                <td>
+                    <td>
+                        {{ $book->category->name ?? '-' }}
+                    </td>
 
-                    <div class="book-title">
-                        {{ $book->title }}
-                    </div>
+                    <td>
+                        {{ number_format($book->views) }}
+                    </td>
 
-                    <div class="book-author">
-                        {{ $book->author ?? 'Không rõ tác giả' }}
-                    </div>
+                    <td>
 
-                </td>
+                        @if($book->access_type == 'free')
 
-                <td>
-                    {{ $book->category->name ?? '-' }}
-                </td>
+                            <span class="status active">
+                                FREE
+                            </span>
 
-                <td>
-                    {{ number_format($book->views) }}
-                </td>
+                        @elseif($book->access_type == 'vip')
 
-                <td>
+                            <span class="status warning">
+                                VIP
+                            </span>
 
-                    @if($book->is_vip)
-                        <span class="badge bg-warning">
-                            Có
-                        </span>
-                    @else
-                        <span class="badge bg-secondary">
-                            Không
-                        </span>
-                    @endif
+                        @elseif($book->access_type == 'paid')
 
-                </td>
+                            <span class="status inactive">
+                                BÁN
+                            </span>
 
-                <td>
+                        @else
 
-                    @if($book->is_top)
-                        <span class="badge bg-warning">
-                            Có
-                        </span>
-                    @else
-                        <span class="badge bg-secondary">
-                            Không
-                        </span>
-                    @endif
+                            <span class="status active">
+                                FREE
+                            </span>
 
-                </td>
+                        @endif
 
-                <td>
+                    </td>
 
-                    @if($book->status == 'published')
+                    <td>
 
-                        <span class="status-link status-active">
-                            Xuất bản
-                        </span>
+                        @if($book->access_type == 'paid')
 
-                    @else
+                            {{ number_format($book->price) }}đ
 
-                        <span class="status-link status-locked">
-                            Bản nháp
-                        </span>
+                        @else
 
-                    @endif
+                            -
 
-                </td>
+                        @endif
 
-                <td class="action-cell">
+                    </td>
 
-                    <div class="action-group">
+                    <td>
 
-                        <a href="{{ route('admin.books.edit',$book->id) }}"
-                           class="btn-edit">
-                            Sửa
-                        </a>
+                        @if($book->is_top)
 
-                        <form action="{{ route('admin.books.destroy',$book->id) }}"
-                              method="POST"
-                              class="delete-form"
-                              style="display:inline;">
+                            <span class="status active">
+                                Có
+                            </span>
 
-                            @csrf
-                            @method('DELETE')
+                        @else
 
-                            <button type="submit"
-                                    class="btn-delete">
-                                Xóa
-                            </button>
+                            <span class="status inactive">
+                                Không
+                            </span>
 
-                        </form>
+                        @endif
 
-                    </div>
+                    </td>
 
-                </td>
+                    <td>
 
-            </tr>
+                        @if($book->status == 'published')
 
-        @empty
+                            <span class="status active">
+                                Xuất bản
+                            </span>
 
-            <tr>
+                        @else
 
-                <td colspan="9"
-                    class="text-center">
+                            <span class="status inactive">
+                                Bản nháp
+                            </span>
 
-                    Chưa có ebook nào
+                        @endif
 
-                </td>
+                    </td>
 
-            </tr>
+                    <td class="action-cell">
 
-        @endforelse
+                        <div class="action-group">
 
-        </tbody>
+                            <a href="{{ route('admin.books.edit',$book->id) }}"
+                               class="btn-edit">
+                                Sửa
+                            </a>
 
-    </table>
+                            <form action="{{ route('admin.books.destroy',$book->id) }}"
+                                  method="POST"
+                                  class="delete-form"
+                                  style="display:inline;">
 
-</div>
+                                @csrf
+                                @method('DELETE')
 
-<div class="card-footer">
-    {{ $books->withQueryString()->links() }}
-</div>
+                                <button type="submit"
+                                        class="btn-delete"
+                                        onclick="return confirm('Bạn có chắc muốn xóa ebook này?')">
+                                    Xóa
+                                </button>
 
+                            </form>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            @empty
+
+                <tr>
+
+                    <td colspan="10"
+                        class="text-center"
+                        style="padding:40px;">
+
+                        Chưa có ebook nào
+
+                    </td>
+
+                </tr>
+
+            @endforelse
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="card-footer">
+        {{ $books->withQueryString()->links() }}
+    </div>
 
 </div>
 

@@ -21,7 +21,9 @@ class Order extends Model
         'payment_method',
         'status',
 
-        'paid_at'
+        'paid_at',
+         'book_id',
+         'cart_group_code',
     ];
 
     protected $casts = [
@@ -45,5 +47,9 @@ public function vipPlan()
     public function plan()
 {
     return $this->belongsTo(VipPlan::class, 'vip_plan_id');
+}
+public function book()
+{
+    return $this->belongsTo(Book::class);
 }
 }

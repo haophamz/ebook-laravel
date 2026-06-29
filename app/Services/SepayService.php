@@ -7,6 +7,34 @@ use Illuminate\Http\Request;
 
 class SepayService
 {
+    public function qrCustom(Order $order, int $customAmount): array
+    {
+        $bank = config('services.sepay.bank');
+        $account = config('services.sepay.account');
+        $name = config('services.sepay.name');
+
+        // Sử dụng số tiền được chỉ định ép buộc từ Controller truyền sang
+        $amount = $customAmount;
+
+        $content = 'Thanh toan don hang ' . $order->order_code;
+
+        $qr = 'https://vietqr.app/img?' . http_build_query([
+            'bank'     => $bank,
+            'acc'      => $account,
+            'amount'   => $amount,
+            'des'      => $content,
+            'template' => 'compact',
+        ]);
+
+        return [
+            'qr_url'         => $qr,
+            'bank_name'      => $bank,
+            'account_number' => $account,
+            'account_name'   => $name,
+            'amount'         => $amount,
+            'content'        => $content,
+        ];
+    }
     /**
      * Kiểm tra chữ ký webhook
      */
@@ -118,5 +146,6 @@ public function verify(Request $request): bool
         return (int) $order->final_amount ===
                (int) ($data['transferAmount'] ?? 0);
 
-    }
+ 
+            }
 }

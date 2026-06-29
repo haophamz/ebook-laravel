@@ -104,4 +104,33 @@ public function vip()
 {
     return view('account.vip');
 }
+public function purchased()
+{
+    // Lấy tất cả đơn hàng gộp hoặc đơn lẻ đã paid của user
+    $orders = \App\Models\Order::where('user_id', auth()->id())
+        ->where('status', 'paid')
+        ->get();
+
+    $bookIds = [];
+    foreach ($orders as $order) {
+        if ($order->cart_group_code) {
+            // Nếu dùng giỏ hàng gộp mới (mỗi cuốn 1 dòng order lẻ trong group)
+            if ($order->book_id) $bookIds[] = $order->book_id;
+        } elseif ($order->book_id && str_starts_with($order->book_id, 'cart_')) {
+            // Phòng hờ chuỗi cũ "cart_1,2,3"
+            $ids = explode(',', str_replace('cart_', '', $order->book_id));
+            $bookIds = array_merge($bookIds, $ids);
+        } elseif ($order->book_id) {
+            // Mua lẻ đơn chiếc
+            $bookIds[] = $order->book_id;
+        }
+    }
+
+    // Lọc trùng và lấy danh sách sách
+    $uniqueIds = array_unique(array_filter($bookIds));
+    $purchasedBooks = \App\Models\Book::whereIn('id', $uniqueIds)->get();
+
+    // Trả về view Sách đã mua riêng biệt
+    return view('account.purchased', compact('purchasedBooks'));
+}
 }

@@ -21,6 +21,50 @@ use App\Http\Controllers\VipController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\RevenueController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\BookOrderController;
+//gi hang
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartOrderController; // Đảm bảo đã có Controller xử lý đơn hàng giỏ hàng này
+
+Route::middleware(['auth'])->group(function () {
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+    Route::delete('/cart/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
+
+    // 🌟 XỬ LÝ THANH TOÁN GIỎ HÀNG GỘP (Đã fix chuẩn tên hàm và URL độc lập)
+    Route::post('/cart/process-checkout', [CartOrderController::class, 'store'])->name('cart.checkout-all');
+    
+    // Trang hiển thị danh sách sách vừa gộp đơn (Hàm xử lý đúng là 'order')
+    Route::get('/cart/order/{order}', [CartOrderController::class, 'order'])->name('book.order');
+    
+    // Trang hiển thị giao diện quét mã QR SePay tổng cho giỏ hàng
+    Route::get('/cart/checkout/{order}', [CartOrderController::class, 'checkout'])->name('book.checkout');
+
+});
+
+
+Route::middleware('auth')->group(function () {
+
+    Route::post('/book/{book}/order', [BookOrderController::class, 'store'])
+        ->name('book.order.store');
+
+    Route::get('/book/order/{order}', [BookOrderController::class, 'order'])
+        ->name('book.order');
+
+    Route::get('/book/checkout/{order}', [BookOrderController::class, 'checkout'])
+        ->name('book.checkout');
+
+    Route::get('/book/checkout/{order}/check', [BookOrderController::class, 'checkPayment'])
+        ->name('book.check-payment');
+        
+
+    Route::post('/book/order/{order}/coupon', [BookOrderController::class, 'applyCoupon'])
+        ->name('order.coupon');
+
+    Route::delete('/book/order/{order}/coupon', [BookOrderController::class, 'removeCoupon'])
+        ->name('order.coupon.remove');
+
+});
 //dash
 Route::prefix('admin/dashboard')
     ->name('admin.dashboard.')
@@ -305,5 +349,6 @@ Route::get('/doi-mat-khau',
 Route::post('/doi-mat-khau',
     [AccountController::class,'updatePassword'])
     ->name('account.password.update');
+    Route::get('/sach-da-mua', [AccountController::class, 'purchased'])->name('account.purchased'); 
 
 });

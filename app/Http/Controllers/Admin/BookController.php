@@ -1,13 +1,13 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use Illuminate\Support\Str;
 use App\Models\Category;
 use App\Models\UserBook;
+use App\Models\BookPurchase;
+
 class BookController extends Controller
 {
     
@@ -31,9 +31,17 @@ public function index(Request $request)
         $books->where('status','draft');
     }
 
-    if ($request->type == 'vip') {
-        $books->where('is_vip',1);
-    }
+if ($request->type == 'free') {
+    $books->where('access_type', 'free');
+}
+
+if ($request->type == 'vip') {
+    $books->where('access_type', 'vip');
+}
+
+if ($request->type == 'paid') {
+    $books->where('access_type', 'paid');
+}
 
     if ($request->type == 'banner') {
         $books->where('is_top',1); 
@@ -67,6 +75,8 @@ $request->validate([
 'description' => 'nullable|string',
     'cover'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
     'epub_file'   => 'required|file|mimes:epub|max:20480',
+    'access_type' => 'required|in:free,vip,paid',
+'price' => 'nullable|numeric|min:0',
 ]);
 if (Book::where('title', $request->title)->exists()) {
 
@@ -84,7 +94,9 @@ $book->category_id = $request->category_id;
 
 $book->featured = $request->has('featured');
 $book->is_top   = $request->has('is_top');
-$book->is_vip   = $request->has('is_vip');
+
+$book->access_type = $request->access_type ?? 'free';
+$book->price = $request->price ?? 0;
 
 $book->status = $request->status ?? 'published';
 
@@ -144,6 +156,8 @@ public function update(Request $request, Book $book)
         'description' => 'nullable|string',
         'cover'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
         'epub_file'   => 'nullable|file|mimes:epub|max:20480',
+        'access_type' => 'required|in:free,vip,paid',
+'price' => 'nullable|numeric|min:0',
     ]);
 
     $book->title = $request->title;
@@ -153,9 +167,11 @@ public function update(Request $request, Book $book)
     $book->description = $request->description;
     $book->category_id = $request->category_id;
 
-    $book->featured = $request->has('featured');
-    $book->is_top = $request->has('is_top');
-    $book->is_vip = $request->has('is_vip');
+$book->featured = $request->has('featured');
+$book->is_top = $request->has('is_top');
+
+$book->access_type = $request->access_type ?? 'free';
+$book->price = $request->price ?? 0;
 
     $book->status = $request->status;
 
@@ -182,6 +198,7 @@ public function watch($slug)
         ->firstOrFail();
 
     $isFavorite = false;
+    $isPurchased = false;
 
     if(auth()->check()){
 
@@ -208,6 +225,16 @@ public function watch($slug)
                 true
             )
             ->exists();
+
+        $isPurchased = BookPurchase::where(
+                'user_id',
+                auth()->id()
+            )
+            ->where(
+                'book_id',
+                $book->id
+            )
+            ->exists();
     }
 
     $avgRating = $book->reviews()->avg('rating') ?? 0;
@@ -229,6 +256,7 @@ public function watch($slug)
         compact(
             'book',
             'isFavorite',
+            'isPurchased',
             'avgRating',
             'reviewCount',
             'reviews',
@@ -284,7 +312,39 @@ public function render($slug)
 {
     $book = Book::where('slug', $slug)->firstOrFail();
 
-    // kiểm tra quyền VIP...
+if ($book->access_type == 'vip') {
+
+    // kiểm tra user có VIP
+
+}
+
+if ($book->access_type == 'paid') {
+
+    if (!auth()->check()) {
+
+        return redirect()->route('login');
+
+    }
+
+    $owned = BookPurchase::where(
+        'user_id',
+        auth()->id()
+    )
+    ->where(
+        'book_id',
+        $book->id
+    )
+    ->exists();
+
+    if (!$owned) {
+
+        return redirect()
+            ->route('book.order', $book)
+            ->with('error', 'Bạn cần mua ebook trước khi đọc.');
+
+    }
+
+}
 
     $position = null;
 
@@ -321,3 +381,4 @@ public function saveProgress(Request $request)
     ]);
 }
 }
+
