@@ -34,9 +34,17 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+public function show($slug)
     {
-        //
+        // 1. Tìm danh mục theo slug, nếu không thấy trả về trang 404
+        $category = Category::where('slug', $slug)->firstOrFail();
+
+        // 2. Lấy danh sách sách thuộc danh mục này và phân trang (ví dụ: 12 cuốn một trang)
+        // Dùng 'with' nếu cần eagers load quan hệ (như reviews hay tags nếu có)
+        $books = $category->books()->paginate(12);
+
+        // 3. Trả về view kèm dữ liệu
+        return view('category.show', compact('category', 'books'));
     }
 
     /**

@@ -10,7 +10,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Admin\BookController;
-use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\AccountController;
@@ -22,6 +22,8 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\RevenueController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\BookOrderController;
+//danh muc
+Route::get('/danh-muc/{slug}', [CategoryController::class, 'show'])->name('category.show');
 //gi hang
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartOrderController; // Đảm bảo đã có Controller xử lý đơn hàng giỏ hàng này

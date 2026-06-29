@@ -197,66 +197,49 @@ public function watch($slug)
         ->with(['category'])
         ->firstOrFail();
 
+    // 1. Khởi tạo giá trị mặc định ngay từ đầu
     $isFavorite = false;
     $isPurchased = false;
+    $isVip = false;
+    $avgRating = 0;
+    $reviewCount = 0;
+    $reviews = collect(); // Collection rỗng
+    $comments = collect(); // Collection rỗng
 
-    if(auth()->check()){
+    // 2. Nếu đã đăng nhập thì mới ghi đè giá trị thật
+    if (auth()->check()) {
+        $user = auth()->user();
+        $isVip = (bool) ($user->is_vip ?? false);
 
         UserBook::updateOrCreate(
-            [
-                'user_id' => auth()->id(),
-                'book_id' => $book->id
-            ],
-            [
-                'last_read_at' => now()
-            ]
+            ['user_id' => $user->id, 'book_id' => $book->id],
+            ['last_read_at' => now()]
         );
 
-        $isFavorite = UserBook::where(
-                'user_id',
-                auth()->id()
-            )
-            ->where(
-                'book_id',
-                $book->id
-            )
-            ->where(
-                'is_favorite',
-                true
-            )
+        $isFavorite = UserBook::where('user_id', $user->id)
+            ->where('book_id', $book->id)
+            ->where('is_favorite', true)
             ->exists();
 
-        $isPurchased = BookPurchase::where(
-                'user_id',
-                auth()->id()
-            )
-            ->where(
-                'book_id',
-                $book->id
-            )
+        $isPurchased = \App\Models\BookPurchase::where('user_id', $user->id)
+            ->where('book_id', $book->id)
             ->exists();
     }
 
+    // 3. Lấy dữ liệu rating/comments (kể cả khi chưa đăng nhập)
     $avgRating = $book->reviews()->avg('rating') ?? 0;
-
     $reviewCount = $book->reviews()->count();
+    $reviews = $book->reviews()->with('user')->latest()->get();
+    $comments = $book->comments()->with('user')->latest()->get();
 
-    $reviews = $book->reviews()
-        ->with('user')
-        ->latest()
-        ->get();
-
-    $comments = $book->comments()
-        ->with('user')
-        ->latest()
-        ->get();
-
+    // 4. Trả về view
     return view(
         'home.watch',
         compact(
             'book',
             'isFavorite',
             'isPurchased',
+            'isVip',
             'avgRating',
             'reviewCount',
             'reviews',

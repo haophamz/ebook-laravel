@@ -58,11 +58,9 @@
 
 </div>
 
-@if(method_exists($purchasedBooks, 'links') && $purchasedBooks->count())
 <div class="pagination-wrap">
     {{ $purchasedBooks->links() }}
 </div>
-@endif
 
 <style>
 

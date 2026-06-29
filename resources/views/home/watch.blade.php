@@ -386,55 +386,44 @@ body{
             </div>
 
 <div class="actions">
-
-@if($book->access_type == 'paid')
-
-    @if($isPurchased)
-
-        <a href="{{ route('home.render',$book->slug) }}" class="read-btn">
-            Đọc sách
-        </a>
-
+    {{-- Kiểm tra quyền đọc: Đã mua hoặc là VIP --}}
+    @if($isPurchased || $isVip)
+        <a href="{{ route('home.render', $book->slug) }}" class="read-btn">Đọc sách</a>
+    
     @else
-
-        <form action="{{ route('book.order.store', $book) }}" method="POST" style="display:inline">
-            @csrf
-            <button type="submit" class="read-btn" style="border:none;">
-                Mua ngay • {{ number_format($book->price) }}đ
-            </button>
-        </form>
-
+        {{-- Nếu chưa có quyền, hiện nút theo loại sách --}}
+        @if($book->access_type == 'free')
+            <a href="{{ route('home.render', $book->slug) }}" class="read-btn">Đọc ngay</a>
+            
+        @elseif($book->access_type == 'vip')
+            {{-- Giữ nguyên class cũ, không thêm style lạ --}}
+            <a href="{{ route('pricing') }}" class="read-btn">Đăng ký hội viên</a>
+            
+        @elseif($book->access_type == 'paid')
+            <form action="{{ route('book.order.store', $book) }}" method="POST" style="display:inline">
+                @csrf
+                <button type="submit" class="read-btn" style="border:none; cursor:pointer;">
+                    Mua ngay • {{ number_format($book->price) }}đ
+                </button>
+            </form>
+        @endif
     @endif
 
-@endif
-<form action="{{ route('cart.store') }}" method="POST">
-    @csrf
-
-    <input type="hidden" name="book_id" value="{{ $book->id }}">
-
-    <button class="btn-cart">
-        🛒 Thêm vào giỏ hàng
-    </button>
-</form>
-    <form action="{{ route('book.favorite',$book) }}"
-          method="POST">
-
+{{-- BƯỚC 3: Giỏ hàng (Chỉ hiện cho sách trả phí và chưa mua) --}}
+@if($book->access_type == 'paid' && !$isPurchased)
+    <form action="{{ route('cart.store') }}" method="POST" style="display:inline-flex;">
         @csrf
-
-        <button type="submit" class="circle favorite-btn">
-
-            @if($isFavorite)
-                ❤️
-            @else
-                🤍
-            @endif
-
+        <input type="hidden" name="book_id" value="{{ $book->id }}">
+        <button type="submit" class="btn-cart" title="Thêm vào giỏ hàng">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
         </button>
-
     </form>
-
+@endif
 </div>
-
            <div class="desc">
 
     <div id="shortDesc">
@@ -668,6 +657,42 @@ body{
 
 {{-- ===================== CSS (prefix: rvs-) ===================== --}}
 <style>
+    /* ===== CART BUTTON ===== */
+.btn-cart {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid #2d2d2d;
+    background: #1e1e1e;
+    color: #18c29c; /* Màu xanh đồng bộ hệ thống */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    padding: 0;
+}
+
+.btn-cart:hover {
+    background: #18c29c;
+    color: #fff;
+    border-color: #18c29c;
+    box-shadow: 0 0 15px rgba(24, 194, 156, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-cart svg {
+    display: block;
+    transition: transform 0.2s;
+}
+
+.btn-cart:hover svg {
+    transform: scale(1.05);
+}
+
+.btn-cart:active {
+    transform: translateY(0);
+}
     .more{
     display:inline-block;
     margin-top:12px;
