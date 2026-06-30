@@ -292,7 +292,7 @@ body{
 
         <div class="cover">
             <img src="{{ asset('storage/'.$book->cover) }}" alt="{{ $book->title }}">
-            @if($book->is_vip)
+            @if($book->access_type == 'vip')
                 <div class="vip-tag">HỘI VIÊN</div>
             @endif
         </div>

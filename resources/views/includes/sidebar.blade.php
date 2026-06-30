@@ -80,7 +80,12 @@
     </a>
 </li>
 
-
+<li class="{{ request()->routeIs('admin.support.*') ? 'active' : '' }}">
+    <a href="{{ route('admin.support.index') }}">
+        <i class="ti ti-headset"></i>
+        Hỗ trợ
+    </a>
+</li>
 
 
 </aside>

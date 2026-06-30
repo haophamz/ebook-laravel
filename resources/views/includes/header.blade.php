@@ -1,7 +1,110 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 
 <style>
+    .search-form{
+    width:160px;
+}
+.search-form{
+    display:flex;
+    align-items:center;
+    width:220px;
+    max-width:220px;
+    height:45px;
+    background:#1e1e1e;
+    border:1px solid #2b2b2b;
+    border-radius:999px;
+    overflow:hidden;
+    flex-shrink:1;
+}
 
+.search-form input{
+    flex:1;
+    min-width:0;
+    height:100%;
+    padding:0 14px;
+    border:none;
+    outline:none;
+    background:transparent;
+    color:#fff;
+    font-size:14px;
+}
+
+.search-form input::placeholder{
+    color:#777;
+}
+
+.search-form button{
+    width:44px;
+    height:100%;
+    border:none;
+    background:transparent;
+    color:#bbb;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.search-form button:hover{
+    color:#18c29c;
+}
+.menu{
+    display:flex;
+    gap:30px;
+    align-items:center;
+}
+
+.menu-item{
+    position:relative;
+}
+
+.menu-item>a{
+    color:#ddd;
+    text-decoration:none;
+    font-weight:500;
+    transition:.3s;
+}
+
+.menu-item>a:hover{
+    color:#18c29c;
+}
+
+.menu-dropdown{
+    position:absolute;
+    top:100%;
+    left:0;
+    min-width:240px;
+    background:#181818;
+    border:1px solid #2b2b2b;
+    border-radius:12px;
+    padding:10px 0;
+    margin-top:16px;
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(10px);
+    transition:.25s;
+    z-index:9999;
+    box-shadow:0 20px 40px rgba(0,0,0,.45);
+}
+
+.menu-item:hover .menu-dropdown{
+    opacity:1;
+    visibility:visible;
+    transform:none;
+}
+
+.menu-dropdown a{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 18px;
+    color:#ddd;
+    text-decoration:none;
+    transition:.2s;
+}
+
+.menu-dropdown a:hover{
+    background:#252525;
+    color:#18c29c;
+}
 .header{
     position:fixed;
     top:0;
@@ -295,17 +398,48 @@
     </a>
 
     <nav class="menu">
-        <a href="#">Sách điện tử</a>
-        <a href="#">Sách hội viên</a>
-        <a href="#">Danh mục</a>
-    </nav>
+<a href="{{ route('books.free') }}">
+   Miễn phí
+</a>
+<a href="{{ route('books.member') }}">Hội viên</a>        
+<a href="{{ route('books.paid') }}">
+    Mua lẻ
+</a>
+@php
+    $categories = \App\Models\Category::where('status',1)
+        ->orderBy('name')
+        ->get();
+@endphp
+
+<div class="menu-item">
+    <a href="#">
+        Danh mục
+        <i class="ti ti-chevron-down"></i>
+    </a>
+
+    <div class="menu-dropdown">
+        @foreach($categories as $category)
+            <a href="{{ route('category.show',$category->slug) }}">
+                <i class="ti ti-book"></i>
+                {{ $category->name }}
+            </a>
+        @endforeach
+    </div>
 </div>
 
 <div class="right">
+<form action="{{ route('books.search') }}" method="GET" class="search-form">
+    <input
+        type="text"
+        name="q"
+        placeholder="Tên sách hoặc tác giả..."
+        value="{{ request('q') }}"
+    >
 
-    <button class="search">
+    <button type="submit">
         <i class="ti ti-search"></i>
     </button>
+</form>
 
     <a href="{{ route('cart.index') }}" class="cart-btn-wrap">
         <div class="cart-trigger">
@@ -366,6 +500,9 @@
             <a href="{{ route('account.favorites') }}">
                 <i class="ti ti-heart"></i> Sách yêu thích
             </a>
+            <a href="{{ route('support.index') }}">
+    <i class="ti ti-headset"></i> Hỗ trợ
+</a>
 
             <div class="line"></div>
 

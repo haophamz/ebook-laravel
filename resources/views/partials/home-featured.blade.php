@@ -1,5 +1,17 @@
 <section class="section">
-    <h2 class="section-title">Ebook nổi bật</h2>
+
+    <div class="section-head">
+        <h2 class="section-title">
+            Ebook nổi bật
+        </h2>
+
+        <a href="{{ route('books.featured') }}" class="view-more-btn">
+            Xem thêm
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </a>
+    </div>
     <div class="book-grid">
         @forelse($featuredBooks as $book)
             <a href="{{ route('home.watch', $book->slug) }}">
@@ -45,5 +57,6 @@
     </div>
     <style>
         /* CSS hiện tại của bạn giữ nguyên ở đây */
+        
     </style>
 </section>

@@ -10,7 +10,6 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Admin\BookController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\AccountController;
@@ -22,12 +21,55 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\RevenueController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\BookOrderController;
-//danh muc
-Route::get('/danh-muc/{slug}', [CategoryController::class, 'show'])->name('category.show');
-//gi hang
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\SupportTicketController;
+use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartOrderController; // Đảm bảo đã có Controller xử lý đơn hàng giỏ hàng này
+Route::middleware('auth')->group(function () {
 
+    Route::get('/tai-khoan/support', [SupportTicketController::class, 'index'])
+        ->name('support.index');
+Route::post('/support-ticket/store', [SupportTicketController::class, 'store'])
+        ->name('support-ticket.store');
+    Route::get('/tai-khoan/support/{ticket}', [SupportTicketController::class, 'show'])
+        ->name('support.show');
+
+    Route::post('/tai-khoan/support/{ticket}/reply', [SupportTicketController::class, 'reply'])
+        ->name('support.reply');
+                Route::get('support/{ticket}/messages', [SupportTicketController::class, 'messages'])
+            ->name('support.messages');
+
+});
+Route::prefix('admin')
+    ->name('admin.')
+    ->middleware(['auth','verified','admin'])
+    ->group(function () {
+Route::resource('support', SupportController::class);
+Route::post(
+            'support/{support}/reply',
+            [SupportController::class, 'reply']
+        )->name('support.reply');
+          Route::get('support/{ticket}/messages', [SupportTicketController::class, 'messages'])
+            ->name('support.messages');
+
+//danh muc
+});
+Route::get('/tim-kiem', [HomeController::class, 'search'])
+    ->name('books.search');
+Route::get('/sach-mua-le', [HomeController::class, 'paidBooks'])
+    ->name('books.paid');
+Route::get('/sach-mien-phi', [HomeController::class, 'freeBooks'])
+    ->name('books.free');
+Route::get('/sach-thanh-vien', [HomeController::class, 'memberBooks'])
+    ->name('books.member');
+Route::get('/ebook-noi-bat', [HomeController::class, 'featured'])
+    ->name('books.featured');
+Route::get('/sach-moi', [HomeController::class, 'latest'])
+    ->name('books.latest');
+Route::get('/danh-muc/{slug}', [CategoryController::class, 'show'])->name('category.show');
+
+//gi hang
 Route::middleware(['auth'])->group(function () {
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
@@ -321,8 +363,9 @@ Route::resource(
     'banners',
     BannerController::class
 );
+Route::resource('categories',CategoryController::class);
+
 //danh muc
-Route::resource('categories', CategoryController::class);
 Route::patch('/members/{member}/lock', [MemberController::class, 'lock'])
     ->name('members.lock');
 

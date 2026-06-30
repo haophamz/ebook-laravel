@@ -1,9 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="page" style="width:1400px; max-width:95%; margin:auto; padding:100px 0 80px;">
-    
-    <section class="section" style="margin-bottom: 40px;">
+    <section class="section" style="width:1400px; max-width:95%; margin:0 auto 40px; padding:100px 0 80px;">
         {{-- Tiêu đề danh mục: Giữ nguyên gốc --}}
         <div class="section-head">
             <h2 class="section-title">
@@ -68,7 +66,6 @@
             </div>
         @endif
     </section>
-</div>
 
 <style>
 /* ===== UI TIÊU ĐỀ ĐỒNG BỘ ===== */
@@ -98,7 +95,7 @@
 /* ===== FIX KÍCH THƯỚC CARD KHÔNG BỊ CO GIÃN SAI LỆCH ===== */
 .book-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+    grid-template-columns: repeat(6, 1fr); 
     gap: 20px;
     width: 100%;
 }
@@ -244,3 +241,4 @@
     pointer-events: none;
 }
 </style>
+@endsection

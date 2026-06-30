@@ -335,6 +335,9 @@ toastr.info("{{ session('info') }}");
 
         <i class="ti ti-user-circle"></i>
         <span>Quản lý tài khoản</span>
+        <a href="{{ route('support.index') }}">
+    <i class="ti ti-headset"></i> Hỗ trợ
+</a>
 
     </a>
 <a href="{{ route('account.purchased') }}"

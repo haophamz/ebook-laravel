@@ -21,7 +21,7 @@
                         <div class="book-card" style="position: relative;"> 
                             
                             {{-- Badge hiển thị loại sách đồng bộ --}}
-                            @if($book->access_type == 'vip' || $book->is_vip)
+                            @if($book->access_type == 'vip')
                                 <div class="member-badge">
                                     <img src="{{ asset('storage/img/hoivien.png') }}" alt="Hội viên">
                                 </div>
