@@ -10,7 +10,49 @@
 href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+.sidebar-logo{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:6px 0;
+}
 
+.sidebar-logo-mark{
+    width:46px;
+    height:46px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#18c29c,#16a34a);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    font-weight:900;
+    color:#fff;
+    box-shadow:0 10px 24px rgba(24,194,156,.35);
+    flex-shrink:0;
+}
+
+.sidebar-logo-text{
+    display:flex;
+    flex-direction:column;
+    line-height:1;
+}
+
+.sidebar-logo-text span{
+    font-size:20px;
+    font-weight:900;
+    color:#18c29c;
+    letter-spacing:.8px;
+}
+
+.sidebar-logo-text small{
+    margin-top:4px;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:4px;
+    color:#7ee7c9;
+    text-transform:uppercase;
+}
 :root{
     --bg:#ffffff;
     --bg-soft:#fafafa;
@@ -18,13 +60,15 @@ href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     --border:#eef0f3;
     --text:#16181d;
     --text-soft:#8a8f98;
-    --accent:#4f46e5;
-    --accent-soft:#eef0ff;
+--accent:#18c29c;
+    --accent-soft:rgba(24,194,156,.14);
     --good:#10b981;
     --radius:18px;
     --shadow:0 1px 2px rgba(16,24,40,0.04);
 }
-
+.page-head h1{
+    color:#18c29c !important;
+}
 *{
     margin:0;
     padding:0;
@@ -85,19 +129,7 @@ body{
     gap:12px;
 }
 
-.sidebar-logo-mark{
-    width:34px;
-    height:34px;
-    border-radius:10px;
-    background:linear-gradient(135deg, #6366f1, #4338ca);
-    color:#fff;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-weight:700;
-    font-size:16px;
-    box-shadow:0 4px 10px rgba(79,70,229,0.25);
-}
+
 
 .sidebar-logo-text{
     font-size:15px;
@@ -300,7 +332,67 @@ body{
 .content{
     padding:36px;
 }
+.admin-user{
+    position:relative;
+}
 
+.admin-dropdown{
+    position:absolute;
+    top:calc(100% + 12px);
+    right:0;
+    width:220px;
+    background:#fff;
+    border:1px solid #e8e8e8;
+    border-radius:14px;
+    box-shadow:0 20px 45px rgba(0,0,0,.12);
+    overflow:hidden;
+
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(10px);
+    transition:.25s;
+    z-index:9999;
+}
+
+.admin-user:hover .admin-dropdown{
+    opacity:1;
+    visibility:visible;
+    transform:none;
+}
+
+.admin-dropdown a,
+.admin-dropdown button{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 18px;
+    text-decoration:none;
+    border:none;
+    background:none;
+    color:#444;
+    cursor:pointer;
+    font-size:14px;
+    transition:.2s;
+}
+
+.admin-dropdown a:hover,
+.admin-dropdown button:hover{
+    background:rgba(24,194,156,.08);
+    color:#18c29c;
+}
+
+.dropdown-line{
+    height:1px;
+    background:#ececec;
+}
+
+.user{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+}
 @yield('styles')
 </style>
 
@@ -313,22 +405,67 @@ body{
 
     @include('includes.sidebar')
 
-    <main class="main">
-        <div class="topbar">
-            <div class="search-wrap">
-                <i class="ti ti-search"></i>
-                <input class="search" placeholder="Tìm kiếm tài liệu...">
-            </div>
-            <div class="right">
-                <div class="icon-btn"><i class="ti ti-bell"></i><span class="dot"></span></div>
-                <div class="icon-btn"><i class="ti ti-settings"></i></div>
-                <div class="user">
-                    <div class="avatar">{{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}</div>
-                    <span>{{ auth()->user()->name ?? 'Admin' }}</span>
-                </div>
-            </div>
+  <main class="main">
+
+    <div class="topbar">
+
+        <div class="search-wrap">
+
         </div>
 
+        <div class="right">
+
+            <div class="icon-btn">
+
+           
+            </div>
+
+            <div class="icon-btn">
+    
+            </div>
+
+            <div class="admin-user">
+
+                <div class="user">
+
+                    <div class="avatar">
+                        {{ strtoupper(substr(auth()->user()->name ?? 'A',0,1)) }}
+                    </div>
+
+                    <span>
+                        {{ auth()->user()->name ?? 'Admin' }}
+                    </span>
+
+                    <i class="ti ti-chevron-down"></i>
+
+                </div>
+
+                <div class="admin-dropdown">
+
+                    <a href="/">
+                        <i class="ti ti-home"></i>
+                        <span>Trang chủ</span>
+                    </a>
+
+                    <div class="dropdown-line"></div>
+
+                    <form method="POST"
+                          action="{{ route('logout') }}">
+                        @csrf
+
+                        <button type="submit">
+                            <i class="ti ti-logout"></i>
+                            <span>Đăng xuất</span>
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
         <div class="content">
             @yield('content')
         </div>

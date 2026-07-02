@@ -8,73 +8,42 @@
     Ticket hỗ trợ
 </h1>
 
-<div class="bookshelf-grid">
+<div class="support-ticket-list">
 
     @forelse($tickets as $ticket)
 
-        <div class="book-item">
+        <div class="support-ticket-card">
 
-            <div class="book-info">
+            <div class="support-ticket-main">
 
-                <div class="book-title">
-                    {{ $ticket->title }}
-                </div>
+                <div class="support-ticket-top">
 
-                <div class="book-meta">
-
-                    @switch($ticket->category)
-
-                        @case('payment')
-                            💳 Thanh toán
-                            @break
-
-                        @case('vip')
-                            👑 Hội viên VIP
-                            @break
-
-                        @case('ebook')
-                            📚 Ebook
-                            @break
-
-                        @case('account')
-                            👤 Tài khoản
-                            @break
-
-                        @default
-                            ❓ Khác
-
-                    @endswitch
-
-                    •
-
-                    {{ $ticket->created_at->format('d/m/Y H:i') }}
-
-                </div>
-
-                <div style="margin-top:10px;">
+                    <div class="support-ticket-title">
+                        {{ $ticket->title }}
+                    </div>
 
                     @switch($ticket->status)
 
                         @case('pending')
-                            <span class="status waiting">
+                            <span class="ticket-status status-waiting">
                                 Chờ xử lý
                             </span>
                             @break
 
                         @case('processing')
-                            <span class="status processing">
+                            <span class="ticket-status status-processing">
                                 Đang xử lý
                             </span>
                             @break
 
                         @case('resolved')
-                            <span class="status success">
+                            <span class="ticket-status status-success">
                                 Đã giải quyết
                             </span>
                             @break
 
                         @case('closed')
-                            <span class="status closed">
+                            <span class="ticket-status status-closed">
                                 Đã đóng
                             </span>
                             @break
@@ -83,16 +52,48 @@
 
                 </div>
 
+                <div class="support-ticket-meta">
+
+                    <span>
+                        @switch($ticket->category)
+
+                            @case('payment')
+                                Thanh toán
+                                @break
+
+                            @case('vip')
+                                Hội viên VIP
+                                @break
+
+                            @case('ebook')
+                                Ebook
+                                @break
+
+                            @case('account')
+                                Tài khoản
+                                @break
+
+                            @default
+                                Khác
+
+                        @endswitch
+                    </span>
+
+                    <span class="dot"></span>
+
+                    <span>
+                        {{ $ticket->created_at->format('d/m/Y H:i') }}
+                    </span>
+
+                </div>
+
             </div>
 
-            <div class="book-action">
+            <div class="support-ticket-action">
 
-                <a
-                    href="{{ route('support.show',$ticket) }}"
-                    class="btn-read">
-
+                <a href="{{ route('support.show', $ticket) }}"
+                   class="support-view-btn">
                     Xem hội thoại
-
                 </a>
 
             </div>
@@ -101,9 +102,11 @@
 
     @empty
 
-        <div class="empty-state">
+        <div class="support-empty">
 
-            <h3>Chưa có Ticket nào</h3>
+            <div class="support-empty-title">
+                Chưa có Ticket nào
+            </div>
 
             <p>
                 Khi bạn gửi yêu cầu hỗ trợ, Ticket sẽ hiển thị tại đây.
@@ -115,86 +118,168 @@
 
 </div>
 
-<div style="margin-top:35px;">
-
+<div class="support-pagination">
     {{ $tickets->links() }}
-
 </div>
 
 <style>
+    .support-ticket-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
 
-.status{
-    display:inline-block;
-    padding:5px 12px;
-    border-radius:30px;
-    font-size:12px;
-    font-weight:600;
-}
+    .support-ticket-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 22px;
+        padding: 22px 24px;
+        background: #ffffff;
+        border: 1px solid #edf0f2;
+        border-radius: 18px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, .05);
+        transition: .22s ease;
+    }
 
-.waiting{
-    background:#fff8e1;
-    color:#d97706;
-}
+    .support-ticket-card:hover {
+        border-color: rgba(24, 194, 156, .35);
+        box-shadow: 0 16px 38px rgba(15, 23, 42, .08);
+        transform: translateY(-2px);
+    }
 
-.processing{
-    background:#e0f2fe;
-    color:#0284c7;
-}
+    .support-ticket-main {
+        flex: 1;
+        min-width: 0;
+    }
 
-.success{
-    background:#dcfce7;
-    color:#16a34a;
-}
+    .support-ticket-top {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
 
-.closed{
-    background:#ececec;
-    color:#666;
-}
+    .support-ticket-title {
+        font-size: 18px;
+        line-height: 1.4;
+        font-weight: 750;
+        color: #1f2937;
+    }
 
-.book-item{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:#fff;
-    border:1px solid #eee;
-    border-radius:14px;
-    padding:22px;
-    margin-bottom:18px;
-}
+    .support-ticket-meta {
+        margin-top: 9px;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        flex-wrap: wrap;
+        color: #7b8491;
+        font-size: 14px;
+    }
 
-.book-title{
-    font-size:18px;
-    font-weight:700;
-}
+    .dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #c6ccd3;
+        display: inline-block;
+    }
 
-.book-meta{
-    margin-top:8px;
-    color:#777;
-    font-size:14px;
-}
+    .ticket-status {
+        display: inline-flex;
+        align-items: center;
+        height: 27px;
+        padding: 0 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
 
-.btn-read{
-    padding:10px 22px;
-    border-radius:8px;
-    background:#18c29c;
-    color:#fff;
-    text-decoration:none;
-    font-weight:600;
-}
+    .status-waiting {
+        background: #fff7ed;
+        color: #c2410c;
+    }
 
-.btn-read:hover{
-    opacity:.9;
-}
+    .status-processing {
+        background: #eff6ff;
+        color: #2563eb;
+    }
 
-.empty-state{
-    text-align:center;
-    padding:70px 20px;
-}
+    .status-success {
+        background: #ecfdf5;
+        color: #15803d;
+    }
 
-.empty-state h3{
-    margin-bottom:10px;
-}
+    .status-closed {
+        background: #f3f4f6;
+        color: #4b5563;
+    }
 
+    .support-ticket-action {
+        flex-shrink: 0;
+    }
+
+    .support-view-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 42px;
+        padding: 0 20px;
+        border-radius: 12px;
+        background: #18c29c;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(24, 194, 156, .22);
+        transition: .2s ease;
+    }
+
+    .support-view-btn:hover {
+        color: #ffffff;
+        background: #12ad8b;
+        transform: translateY(-1px);
+        box-shadow: 0 14px 26px rgba(24, 194, 156, .3);
+    }
+
+    .support-empty {
+        background: #ffffff;
+        border: 1px dashed #d7dde3;
+        border-radius: 18px;
+        padding: 72px 24px;
+        text-align: center;
+    }
+
+    .support-empty-title {
+        margin-bottom: 8px;
+        color: #1f2937;
+        font-size: 20px;
+        font-weight: 750;
+    }
+
+    .support-empty p {
+        margin: 0;
+        color: #7b8491;
+        font-size: 14px;
+    }
+
+    .support-pagination {
+        margin-top: 32px;
+    }
+
+    @media (max-width: 768px) {
+        .support-ticket-card {
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .support-ticket-action,
+        .support-view-btn {
+            width: 100%;
+        }
+    }
 </style>
 
 @endsection

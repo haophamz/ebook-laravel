@@ -18,6 +18,10 @@ class SupportTicket extends Model
         'image_path',
         'status',
         'admin_note',
+        'notify_user',
+'last_reply_by',
+'last_reply_at',
+'closed_at',
     ];
 
     // Nhãn tiếng Việt cho danh mục, dùng để hiển thị ở blade/admin
@@ -57,4 +61,5 @@ class SupportTicket extends Model
         'ticket_id'
     );
 }
+
 }

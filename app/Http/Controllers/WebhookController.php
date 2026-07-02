@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\BookPurchase;
 use App\Models\Cart;
+use App\Mail\PaymentSuccessMail;
+use Illuminate\Support\Facades\Mail;
 class WebhookController extends Controller
 {
     public function sepay(
@@ -141,6 +143,8 @@ class WebhookController extends Controller
                                 ->whereIn('book_id', $purchasedBookIds)
                                 ->delete();
             }
+            Mail::to($representativeOrder->user->email)
+    ->send(new PaymentSuccessMail($representativeOrder, $orderGroup));
         });
 
         return response()->json([

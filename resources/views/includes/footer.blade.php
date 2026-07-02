@@ -1,4 +1,3 @@
-
 <footer class="footer">
 
     <div class="footer-container">
@@ -184,8 +183,7 @@
 
 <button class="support-fab" id="ticketOpenBtn">Hỗ trợ</button>
 
-<div class="overlay" id="ticketOverlay" @if($errors->any()) style="display:flex" @endif>
-    <div class="ticket-container">
+<div class="overlay" id="ticketOverlay">        <div class="ticket-container">
         <div class="ticket-header">
             <div class="bot-icon">W</div>
             <h2>Gửi yêu cầu hỗ trợ</h2>
@@ -255,44 +253,71 @@
     const openBtn = document.getElementById('ticketOpenBtn');
     const closeBtn = document.getElementById('ticketCloseBtn');
     const overlay = document.getElementById('ticketOverlay');
-    openBtn.onclick = () => overlay.classList.add('active');
-    closeBtn.onclick = () => overlay.classList.remove('active');
-    overlay.onclick = (e) => { if (e.target === overlay) overlay.classList.remove('active'); };
+
+    if(openBtn && overlay){
+        openBtn.addEventListener('click', function(){
+            overlay.classList.add('active');
+        });
+    }
+
+    if(closeBtn && overlay){
+        closeBtn.addEventListener('click', function(){
+            overlay.classList.remove('active');
+        });
+    }
+
+    if(overlay){
+        overlay.addEventListener('click', function(e){
+            if(e.target === overlay){
+                overlay.classList.remove('active');
+            }
+        });
+    }
 
     const selectedItem = document.getElementById("ticketSelectedItem");
     const selectItems = document.getElementById("ticketSelectItems");
     const categoryInput = document.getElementById("ticketCategoryInput");
 
-    selectedItem.onclick = () => selectItems.style.display = (selectItems.style.display === "block") ? "none" : "block";
+    if(selectedItem && selectItems && categoryInput){
+        selectedItem.addEventListener('click', function(e){
+            e.stopPropagation();
+            selectItems.style.display = selectItems.style.display === "block" ? "none" : "block";
+        });
 
-    selectItems.querySelectorAll("div").forEach(item => {
-        item.onclick = () => {
-            selectedItem.innerText = item.innerText;
-            categoryInput.value = item.dataset.value;
-            selectItems.style.display = "none";
-        };
-    });
+        selectItems.querySelectorAll("div").forEach(function(item){
+            item.addEventListener('click', function(){
+                selectedItem.innerText = item.innerText;
+                categoryInput.value = item.dataset.value;
+                selectItems.style.display = "none";
+            });
+        });
 
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.dropdown-wrapper')) selectItems.style.display = "none";
-    });
+        document.addEventListener('click', function(e){
+            if(!e.target.closest('.dropdown-wrapper')){
+                selectItems.style.display = "none";
+            }
+        });
+    }
 
     const uploadBox = document.getElementById('ticketUploadBox');
     const fileInput = document.getElementById('ticketFileInput');
     const fileName = document.getElementById('ticketFileName');
-    uploadBox.onclick = () => fileInput.click();
-    fileInput.addEventListener('change', () => {
-        fileName.textContent = fileInput.files.length ? fileInput.files[0].name : '';
-    });
+
+    if(uploadBox && fileInput && fileName){
+        uploadBox.addEventListener('click', function(){
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', function(){
+            fileName.textContent = fileInput.files.length ? fileInput.files[0].name : '';
+        });
+    }
 })();
 
-@if (session('ticket_success'))
+@if(session('ticket_success'))
     toastr.success("{{ session('ticket_success') }}");
 @endif
 
-@if ($errors->any())
-    toastr.error("Vui lòng kiểm tra lại thông tin trong form.");
-@endif
 </script>
 </footer>
 
@@ -300,8 +325,7 @@
 
 .footer{
     margin-top:80px;
-    background:#0f1412;
-    border-top:2px solid #18c29c;
+    background:#121212;
 }
 
 .footer-container{
@@ -376,7 +400,7 @@
     width:42px;
     height:42px;
     border-radius:50%;
-    background:#1a1f1d;
+    background:#141414;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -407,7 +431,6 @@
 .footer-bottom{
     margin-top:45px;
     padding-top:22px;
-    border-top:1px solid #2b2b2b;
     text-align:center;
     color:#8f8f8f;
     font-size:14px;
@@ -429,4 +452,3 @@
 
 }
 </style>
-

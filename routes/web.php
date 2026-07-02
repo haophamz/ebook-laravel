@@ -46,6 +46,10 @@ Route::prefix('admin')
     ->middleware(['auth','verified','admin'])
     ->group(function () {
 Route::resource('support', SupportController::class);
+Route::patch(
+    'support/{support}/close',
+    [SupportController::class, 'close']
+)->name('support.close');
 Route::post(
             'support/{support}/reply',
             [SupportController::class, 'reply']
@@ -67,7 +71,8 @@ Route::get('/ebook-noi-bat', [HomeController::class, 'featured'])
     ->name('books.featured');
 Route::get('/sach-moi', [HomeController::class, 'latest'])
     ->name('books.latest');
-Route::get('/danh-muc/{slug}', [CategoryController::class, 'show'])->name('category.show');
+Route::get('/danh-muc/{slug}', [HomeController::class, 'category'])
+    ->name('category.show');
 
 //gi hang
 Route::middleware(['auth'])->group(function () {
@@ -167,17 +172,40 @@ Route::get('/go-to-login', function () {
     return redirect()->route('login');
 
 })->name('go-to-login');
-Route::post(
-    '/book/{book}/review',
-    [ReviewController::class, 'store']
-)->middleware('auth')
- ->name('reviews.store');
-Route::post(
-    '/book/{book}/comment',
-    [CommentController::class, 'store']
-)->middleware('auth')
- ->name('comments.store');
+Route::middleware('auth')->group(function () {
 
+    Route::post(
+        '/book/{book}/comment',
+        [CommentController::class, 'store']
+    )->name('comments.store');
+
+    Route::put(
+        '/comment/{comment}',
+        [CommentController::class, 'update']
+    )->name('comments.update');
+
+    Route::delete(
+        '/comment/{comment}',
+        [CommentController::class, 'destroy']
+    )->name('comments.destroy');
+
+
+    Route::post(
+        '/book/{book}/review',
+        [ReviewController::class, 'store']
+    )->name('reviews.store');
+
+    Route::put(
+        '/review/{review}',
+        [ReviewController::class, 'update']
+    )->name('reviews.update');
+
+    Route::delete(
+        '/review/{review}',
+        [ReviewController::class, 'destroy']
+    )->name('reviews.destroy');
+
+});
 Route::get('/sach/{slug}', [BookController::class,'watch'])
     ->name('home.watch');
     //render

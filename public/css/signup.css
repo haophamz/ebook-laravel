@@ -16,7 +16,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff5f0;
+
+  background:
+    linear-gradient(rgba(15,20,18,.55), rgba(15,20,18,.55)),
+    url('/storage/img/bggg.jpg');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   overflow: hidden;
   position: relative;
 }
@@ -34,14 +42,14 @@ body {
   z-index: 0;
 }
 
-.b1 { width: 420px; height: 420px; background: #ffd6c0; top: -120px;  left: -100px;   animation-delay: 0s;   }
-.b2 { width: 340px; height: 340px; background: #ffb5c8; bottom: -80px; right: -80px;   animation-delay: 2.5s; }
-.b3 { width: 260px; height: 260px; background: #c8d8ff; top: 35%;      left: 65%;      animation-delay: 4.5s; }
-.b4 { width: 200px; height: 200px; background: #b8f0d8; bottom: 12%;   left: 4%;       animation-delay: 1.5s; }
+.b1 { width: 420px; height: 420px; background: #b7f7df; top: -120px; left: -100px; animation-delay: 0s; }
+.b2 { width: 340px; height: 340px; background: #8ee8c7; bottom: -80px; right: -80px; animation-delay: 2.5s; }
+.b3 { width: 260px; height: 260px; background: #d7fff2; top: 35%; left: 65%; animation-delay: 4.5s; }
+.b4 { width: 200px; height: 200px; background: #9ff2d2; bottom: 12%; left: 4%; animation-delay: 1.5s; }
 
 @keyframes float {
   0%, 100% { transform: translateY(0) scale(1); }
-  50%       { transform: translateY(-22px) scale(1.07); }
+  50% { transform: translateY(-22px) scale(1.07); }
 }
 
 /* ===========================
@@ -50,14 +58,12 @@ body {
 .card {
   position: relative;
   z-index: 2;
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: #ffffff;
   border-radius: 22px;
-  border: 0.5px solid rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(24,194,156,.14);
   box-shadow:
-    0 8px 48px rgba(241, 90, 36, 0.1),
-    0 1px 4px rgba(0, 0, 0, 0.04);
+    0 8px 48px rgba(24,194,156,.16),
+    0 1px 4px rgba(0,0,0,.05);
   padding: 2.25rem 2.25rem 2rem;
   width: 100%;
   max-width: 440px;
@@ -66,14 +72,15 @@ body {
 
 .card h1 {
   font-size: 24px;
-  font-weight: 600;
-  color: #1a1a1a;
+  font-weight: 800;
+  color: #18c29c;
   margin-bottom: 5px;
+  letter-spacing: -0.4px;
 }
 
 .subtitle {
   font-size: 14px;
-  color: #777;
+  color: #667085;
   margin-bottom: 1.75rem;
 }
 
@@ -87,8 +94,8 @@ body {
 .field label {
   display: block;
   font-size: 13px;
-  font-weight: 500;
-  color: #333;
+  font-weight: 600;
+  color: #263a35;
   margin-bottom: 6px;
 }
 
@@ -99,29 +106,30 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  border: 0.5px solid rgba(0, 0, 0, 0.14);
+  border: 1px solid rgba(24,194,156,.16);
   border-radius: 10px;
   padding: 0 11px;
   height: 44px;
-  background: rgba(255, 255, 255, 0.85);
-  transition: border-color 0.15s, box-shadow 0.15s;
-  min-width: 0; /* fix overflow trong grid */
+  background: #f7fdfb;
+  transition: border-color .15s, box-shadow .15s, background .15s;
+  min-width: 0;
 }
 
 .input-wrap:focus-within {
-  border-color: #f15a24;
-  box-shadow: 0 0 0 3px rgba(241, 90, 36, 0.13);
+  border-color: #18c29c;
+  box-shadow: 0 0 0 3px rgba(24,194,156,.18);
+  background: #fff;
 }
 
 .input-wrap i {
   font-size: 16px;
-  color: #bbb;
+  color: #18c29c;
   flex-shrink: 0;
 }
 
 .input-wrap input {
   flex: 1;
-  min-width: 0; /* quan trọng: ngăn input làm tràn grid */
+  min-width: 0;
   border: none;
   outline: none;
   background: transparent;
@@ -131,7 +139,7 @@ body {
 }
 
 .input-wrap input::placeholder {
-  color: #ccc;
+  color: #a8b7b2;
 }
 
 /* ===========================
@@ -141,15 +149,15 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  color: #bbb;
+  color: #18c29c;
   padding: 0;
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  transition: color 0.15s;
+  transition: color .15s;
 }
 
-.toggle-btn:hover { color: #888; }
+.toggle-btn:hover { color: #16a34a; }
 
 .toggle-btn i { font-size: 16px; }
 
@@ -166,18 +174,18 @@ body {
   flex: 1;
   height: 3px;
   border-radius: 2px;
-  background: #eee;
-  transition: background 0.3s;
+  background: #dff7ef;
+  transition: background .3s;
 }
 
 .hint {
   font-size: 12px;
-  color: #bbb;
+  color: #8aa39b;
   margin-top: 6px;
 }
 
 /* ===========================
-   Name row — 2 cột responsive
+   Name row
 =========================== */
 .name-row {
   display: grid;
@@ -189,7 +197,7 @@ body {
 
 .name-row .field {
   margin-bottom: 0;
-  min-width: 0; /* ngăn cột bị đẩy ra ngoài */
+  min-width: 0;
   overflow: hidden;
 }
 
@@ -205,7 +213,7 @@ body {
 
 .tos input[type="checkbox"] {
   margin-top: 2px;
-  accent-color: #f15a24;
+  accent-color: #18c29c;
   width: 15px;
   height: 15px;
   flex-shrink: 0;
@@ -214,17 +222,20 @@ body {
 
 .tos span {
   font-size: 13px;
-  color: #666;
+  color: #5f716d;
   line-height: 1.55;
 }
 
 .tos a {
-  color: #f15a24;
+  color: #18c29c;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
 }
 
-.tos a:hover { text-decoration: underline; }
+.tos a:hover {
+  color: #16a34a;
+  text-decoration: underline;
+}
 
 /* ===========================
    Buttons
@@ -232,27 +243,33 @@ body {
 .btn-primary {
   width: 100%;
   height: 46px;
-  background: linear-gradient(135deg, #f15a24 0%, #ff8c42 100%);
+  background: linear-gradient(135deg,#18c29c,#22c55e);
   border: none;
   border-radius: 10px;
   color: #fff;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 700;
   cursor: pointer;
   font-family: inherit;
-  letter-spacing: 0.01em;
-  transition: opacity 0.15s, transform 0.1s;
+  letter-spacing: .01em;
+  transition: filter .15s, transform .1s, box-shadow .15s;
+  box-shadow: 0 10px 24px rgba(24,194,156,.28);
 }
 
-.btn-primary:hover  { opacity: 0.88; }
-.btn-primary:active { transform: scale(0.98); }
+.btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+.btn-primary:active {
+  transform: scale(.98);
+}
 
 .divider {
   display: flex;
   align-items: center;
   gap: 12px;
   margin: 1.1rem 0;
-  color: #ccc;
+  color: #9aa9a5;
   font-size: 13px;
 }
 
@@ -260,31 +277,33 @@ body {
 .divider::after {
   content: '';
   flex: 1;
-  height: 0.5px;
-  background: #e8e8e8;
+  height: .5px;
+  background: rgba(24,194,156,.2);
 }
 
 .btn-google {
   width: 100%;
   height: 46px;
-  border: 0.5px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(24,194,156,.18);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.85);
+  background: #ffffff;
   font-size: 14px;
-  font-weight: 500;
-  color: #333;
+  font-weight: 600;
+  color: #263a35;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 9px;
   font-family: inherit;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background .15s, border-color .15s, box-shadow .15s;
+  text-decoration: none;
 }
 
 .btn-google:hover {
-  background: #fff;
-  border-color: rgba(0, 0, 0, 0.2);
+  background: #f3fffb;
+  border-color: #18c29c;
+  box-shadow: 0 8px 20px rgba(24,194,156,.15);
 }
 
 .btn-google svg {
@@ -300,30 +319,33 @@ body {
   text-align: center;
   margin-top: 1.3rem;
   font-size: 13px;
-  color: #999;
+  color: #7a8c88;
 }
 
 .footer a {
-  color: #f15a24;
+  color: #18c29c;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
 }
 
-.footer a:hover { text-decoration: underline; }
+.footer a:hover {
+  color: #16a34a;
+  text-decoration: underline;
+}
 
 /* ===========================
-   Shake animation (validation)
+   Shake animation
 =========================== */
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  20%, 60%  { transform: translateX(-6px); }
-  40%, 80%  { transform: translateX(6px); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
 }
 
-.shake { animation: shake 0.35s ease; }
+.shake { animation: shake .35s ease; }
 
 /* ===========================
-   Responsive — mobile
+   Responsive
 =========================== */
 @media (max-width: 480px) {
   .card {
@@ -332,10 +354,12 @@ body {
     border-radius: 18px;
   }
 
-  .card h1 { font-size: 20px; }
+  .card h1 {
+    font-size: 20px;
+  }
 
   .name-row {
-    grid-template-columns: 1fr; /* stack thành 1 cột trên mobile nhỏ */
+    grid-template-columns: 1fr;
     gap: 0;
   }
 

@@ -107,4 +107,14 @@ public function search(Request $request)
 
     return view('books.search', compact('books', 'keyword'));
 }
+public function category($slug)
+{
+    $category = Category::where('slug', $slug)->firstOrFail();
+
+    $books = Book::where('category_id', $category->id)
+                 ->where('status', 'published')
+                 ->paginate(12);
+
+    return view('category.show', compact('category', 'books'));
+}
 }

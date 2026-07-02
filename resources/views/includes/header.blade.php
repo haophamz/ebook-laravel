@@ -1,73 +1,61 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 
 <style>
-    .search-form{
-    width:160px;
+.eco-header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    z-index:9999;
+    background:#111;
+    border-bottom:1px solid #222;
 }
-.search-form{
+
+.eco-header-container{
+    max-width:1400px;
+    margin:auto;
+    padding:0 24px;
+    height:76px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.eco-header-left{
     display:flex;
     align-items:center;
-    width:220px;
-    max-width:220px;
-    height:45px;
-    background:#1e1e1e;
-    border:1px solid #2b2b2b;
-    border-radius:999px;
-    overflow:hidden;
-    flex-shrink:1;
+    gap:45px;
 }
 
-.search-form input{
-    flex:1;
-    min-width:0;
-    height:100%;
-    padding:0 14px;
-    border:none;
-    outline:none;
-    background:transparent;
-    color:#fff;
-    font-size:14px;
-}
-
-.search-form input::placeholder{
-    color:#777;
-}
-
-.search-form button{
-    width:44px;
-    height:100%;
-    border:none;
-    background:transparent;
-    color:#bbb;
-    cursor:pointer;
-    transition:.2s;
-}
-
-.search-form button:hover{
+.eco-logo{
+    text-decoration:none;
+    font-size:34px;
+    font-weight:800;
     color:#18c29c;
 }
-.menu{
+
+.eco-menu{
     display:flex;
     gap:30px;
     align-items:center;
 }
 
-.menu-item{
-    position:relative;
-}
-
-.menu-item>a{
+.eco-menu a{
     color:#ddd;
     text-decoration:none;
     font-weight:500;
     transition:.3s;
 }
 
-.menu-item>a:hover{
+.eco-menu a:hover{
     color:#18c29c;
 }
 
-.menu-dropdown{
+.eco-menu-item{
+    position:relative;
+}
+
+.eco-menu-dropdown{
     position:absolute;
     top:100%;
     left:0;
@@ -85,189 +73,146 @@
     box-shadow:0 20px 40px rgba(0,0,0,.45);
 }
 
-.menu-item:hover .menu-dropdown{
+.eco-menu-item:hover .eco-menu-dropdown{
     opacity:1;
     visibility:visible;
     transform:none;
 }
 
-.menu-dropdown a{
+.eco-menu-dropdown a{
     display:flex;
     align-items:center;
     gap:10px;
     padding:12px 18px;
-    color:#ddd;
-    text-decoration:none;
-    transition:.2s;
 }
 
-.menu-dropdown a:hover{
-    background:#252525;
-    color:#18c29c;
-}
-.header{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    z-index:9999;
-    background:#111;
-    border-bottom:1px solid #222;
-}
-
-.header-container{
-    max-width:1400px;
-    margin:auto;
-    padding:0 24px;
-    height:76px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.left{
-    display:flex;
-    align-items:center;
-    gap:45px;
-}
-
-.logo{
-    text-decoration:none;
-    font-size:34px;
-    font-weight:800;
-    color:#18c29c;
-}
-
-.menu{
-    display:flex;
-    gap:30px;
-}
-
-.menu a{
-    color:#ddd;
-    text-decoration:none;
-    font-weight:500;
-    transition:.3s;
-}
-
-.menu a:hover{
-    color:#18c29c;
-}
-
-.right{
+.eco-header-right{
     display:flex;
     align-items:center;
     gap:12px;
 }
 
-.search{
+.eco-search-form{
+    display:flex;
+    align-items:center;
+    width:220px;
+    max-width:220px;
+    height:45px;
+    background:#1e1e1e;
+    border:1px solid #2b2b2b;
+    border-radius:999px;
+    overflow:hidden;
+    flex-shrink:1;
+}
+
+.eco-search-form input{
+    flex:1;
+    min-width:0;
+    height:100%;
+    padding:0 14px;
+    border:none;
+    outline:none;
+    background:transparent;
+    color:#fff;
+    font-size:14px;
+}
+
+.eco-search-form input::placeholder{
+    color:#777;
+}
+
+.eco-search-form button{
+    width:44px;
+    height:100%;
+    border:none;
+    background:transparent;
+    color:#bbb;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.eco-search-form button:hover{
+    color:#18c29c;
+}
+
+.eco-cart-wrap{
+    position:relative;
+    text-decoration:none;
+}
+
+.eco-cart-trigger{
     width:45px;
     height:45px;
-    border:none;
     border-radius:50%;
     background:#1e1e1e;
     color:white;
-    cursor:pointer;
     display:flex;
     align-items:center;
     justify-content:center;
-    transition: .2s;
+    cursor:pointer;
+    transition:.2s;
+    font-size:18px;
 }
 
-.search:hover {
-    background: #252525;
-    color: #18c29c;
+.eco-cart-wrap:hover .eco-cart-trigger{
+    background:#252525;
+    color:#18c29c;
 }
 
-/* CLASS ICON GIỎ HÀNG MỚI */
-.cart-btn-wrap {
-    position: relative;
-    text-decoration: none;
+.eco-cart-badge{
+    position:absolute;
+    top:-2px;
+    right:-2px;
+    background:#ef4444;
+    color:white;
+    font-size:11px;
+    font-weight:700;
+    min-width:18px;
+    height:18px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0 4px;
+    border:2px solid #111;
 }
 
-.cart-trigger {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background: #1e1e1e;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: .2s;
-    font-size: 18px;
-}
-
-.cart-btn-wrap:hover .cart-trigger {
-    background: #252525;
-    color: #18c29c;
-}
-
-.cart-badge {
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    background: #ef4444;
-    color: white;
-    font-size: 11px;
-    font-weight: 700;
-    min-width: 18px;
-    height: 18px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 4px;
-    border: 2px solid #111;
-}
-
-.package{
+.eco-package-btn,
+.eco-register-btn,
+.eco-login-btn{
     height:45px;
-    padding:0 18px;
+    padding:0 20px;
     border-radius:25px;
-    background:#222;
     color:white;
     text-decoration:none;
     display:flex;
     align-items:center;
     gap:8px;
-    transition: .2s;
 }
 
-.package:hover {
-    background: #2a2a2a;
-    color: #18c29c;
+.eco-package-btn{
+    background:#222;
 }
 
-.register{
-    height:45px;
-    padding:0 20px;
-    border-radius:25px;
+.eco-package-btn:hover{
+    background:#2a2a2a;
+    color:#18c29c;
+}
+
+.eco-register-btn{
     background:#18c29c;
-    color:white;
-    text-decoration:none;
-    display:flex;
-    align-items:center;
     font-weight:600;
 }
 
-.login{
-    height:45px;
-    padding:0 20px;
-    border-radius:25px;
+.eco-login-btn{
     border:1px solid #333;
-    color:white;
-    text-decoration:none;
-    display:flex;
-    align-items:center;
 }
 
-.user-menu{
+.eco-user-menu{
     position:relative;
 }
 
-.user-trigger{
+.eco-user-trigger{
     display:flex;
     align-items:center;
     gap:10px;
@@ -275,29 +220,29 @@
     cursor:pointer;
 }
 
-.avatar{
+.eco-avatar{
     width:42px;
     height:42px;
     border-radius:50%;
     border:2px solid #18c29c;
 }
 
-.user-info{
+.eco-user-info{
     line-height:1.2;
 }
 
-.user-name{
+.eco-user-name{
     color:#fff;
     font-size:14px;
     font-weight:600;
 }
 
-.user-role{
+.eco-user-role{
     color:#18c29c;
     font-size:11px;
 }
 
-.dropdown{
+.eco-user-dropdown{
     position:absolute;
     top:100%;
     right:0;
@@ -307,50 +252,48 @@
     border-radius:16px;
     overflow:hidden;
     box-shadow:0 20px 50px rgba(0,0,0,.45);
-
     opacity:0;
     visibility:hidden;
     transform:translateY(10px);
-
     transition:.25s;
 }
 
-.user-menu:hover .dropdown{
+.eco-user-menu:hover .eco-user-dropdown{
     opacity:1;
     visibility:visible;
     transform:none;
 }
 
-.dropdown-top{
+.eco-dropdown-top{
     padding:20px;
     display:flex;
     gap:15px;
     align-items:center;
 }
 
-.dropdown-top img{
+.eco-dropdown-top img{
     width:60px;
     height:60px;
     border-radius:50%;
 }
 
-.dropdown-top h4{
+.eco-dropdown-top h4{
     color:#fff;
 }
 
-.dropdown-top p{
+.eco-dropdown-top p{
     margin-top:5px;
     color:#888;
     font-size:13px;
 }
 
-.line{
+.eco-divider{
     height:1px;
     background:#2a2a2a;
 }
 
-.dropdown a,
-.dropdown button{
+.eco-user-dropdown a,
+.eco-user-dropdown button{
     width:100%;
     border:none;
     background:none;
@@ -364,159 +307,240 @@
     font-size:14px;
 }
 
-.dropdown a:hover,
-.dropdown button:hover{
+.eco-user-dropdown a:hover,
+.eco-user-dropdown button:hover{
     background:#252525;
     color:#18c29c;
 }
 
 @media(max-width:900px){
-
-    .menu{
+    .eco-menu{
         display:none;
     }
 
-    .package{
+    .eco-package-btn{
         display:none;
     }
 
-    .user-info{
+    .eco-user-info{
         display:none;
     }
-
 }
-
 </style>
 
-<header class="header">
+<header class="eco-header">
 
-<div class="header-container">
+    <div class="eco-header-container">
 
-<div class="left">
-    <a href="/" class="logo">
-        ECOBOOK
-    </a>
+        <div class="eco-header-left">
 
-    <nav class="menu">
-<a href="{{ route('books.free') }}">
-   Miễn phí
-</a>
-<a href="{{ route('books.member') }}">Hội viên</a>        
-<a href="{{ route('books.paid') }}">
-    Mua lẻ
-</a>
-@php
-    $categories = \App\Models\Category::where('status',1)
-        ->orderBy('name')
-        ->get();
-@endphp
-
-<div class="menu-item">
-    <a href="#">
-        Danh mục
-        <i class="ti ti-chevron-down"></i>
-    </a>
-
-    <div class="menu-dropdown">
-        @foreach($categories as $category)
-            <a href="{{ route('category.show',$category->slug) }}">
-                <i class="ti ti-book"></i>
-                {{ $category->name }}
+            <a href="/" class="eco-logo">
+                ECOBOOK
             </a>
-        @endforeach
-    </div>
-</div>
 
-<div class="right">
-<form action="{{ route('books.search') }}" method="GET" class="search-form">
-    <input
-        type="text"
-        name="q"
-        placeholder="Tên sách hoặc tác giả..."
-        value="{{ request('q') }}"
-    >
+            <nav class="eco-menu">
 
-    <button type="submit">
-        <i class="ti ti-search"></i>
-    </button>
-</form>
+                <a href="{{ route('books.free') }}">
+                    Miễn phí
+                </a>
 
-    <a href="{{ route('cart.index') }}" class="cart-btn-wrap">
-        <div class="cart-trigger">
-            <i class="ti ti-shopping-cart"></i>
-        </div>
-        @auth
-            @php
-                $cartCount = \App\Models\Cart::where('user_id', auth()->id())->count();
-            @endphp
-            @if($cartCount > 0)
-                <span class="cart-badge">{{ $cartCount }}</span>
-            @endif
-        @endauth
-    </a>
+                <a href="{{ route('books.member') }}">
+                    Hội viên
+                </a>
 
-    <a href="{{ route('pricing') }}" class="package">
-        <i class="ti ti-crown"></i>
-        Gói cước
-    </a>
+                <a href="{{ route('books.paid') }}">
+                    Mua lẻ
+                </a>
 
-    @guest
-        <a href="{{ route('register') }}" class="register">Đăng ký</a>
-        <a href="{{ route('login') }}" class="login">Đăng nhập</a>
-    @endguest
+                @php
+                    $categories = \App\Models\Category::where('status',1)
+                        ->orderBy('name')
+                        ->get();
+                @endphp
 
-    @auth
-    <div class="user-menu">
-        <div class="user-trigger">
-            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=18c29c&color=fff" class="avatar">
-            <div class="user-info">
-                <div class="user-name">{{ Auth::user()->name }}</div>
-                <div class="user-role">
-                    {{ auth()->user()->fresh()->isVip() ? 'VIP MEMBER' : 'FREE MEMBER' }}
+                <div class="eco-menu-item">
+
+                    <a href="#">
+                        Danh mục
+                        <i class="ti ti-chevron-down"></i>
+                    </a>
+
+                    <div class="eco-menu-dropdown">
+
+                        @foreach($categories as $category)
+
+                            <a href="{{ route('category.show',$category->slug) }}">
+                                <i class="ti ti-book"></i>
+                                {{ $category->name }}
+                            </a>
+
+                        @endforeach
+
+                    </div>
+
                 </div>
-            </div>
-            <i class="ti ti-chevron-down"></i>
+
+            </nav>
+
         </div>
 
-        <div class="dropdown">
-            <div class="dropdown-top">
-                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=18c29c&color=fff">
-                <div>
-                    <h4>{{ Auth::user()->name }}</h4>
-                    <p>{{ Auth::user()->email }}</p>
-                </div>
-            </div>
+        <div class="eco-header-right">
 
-            <div class="line"></div>
+            <form action="{{ route('books.search') }}" method="GET" class="eco-search-form">
 
-            <a href="{{ route('account.profile') }}">
-                <i class="ti ti-user"></i> Hồ sơ
-            </a>
+                <input
+                    type="text"
+                    name="q"
+                    placeholder="Tên sách hoặc tác giả..."
+                    value="{{ request('q') }}">
 
-            <a href="{{ route('cart.index') }}">
-                <i class="ti ti-shopping-cart"></i> Giỏ hàng của tôi
-            </a>
-
-            <a href="{{ route('account.favorites') }}">
-                <i class="ti ti-heart"></i> Sách yêu thích
-            </a>
-            <a href="{{ route('support.index') }}">
-    <i class="ti ti-headset"></i> Hỗ trợ
-</a>
-
-            <div class="line"></div>
-
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
                 <button type="submit">
-                    <i class="ti ti-logout"></i> Đăng xuất
+                    <i class="ti ti-search"></i>
                 </button>
+
             </form>
-        </div>
-    </div>
-    @endauth
+
+            <a href="{{ route('cart.index') }}" class="eco-cart-wrap">
+
+                <div class="eco-cart-trigger">
+                    <i class="ti ti-shopping-cart"></i>
+                </div>
+
+                @auth
+
+                    @php
+                        $cartCount = \App\Models\Cart::where('user_id', auth()->id())->count();
+                    @endphp
+
+                    @if($cartCount > 0)
+
+                        <span class="eco-cart-badge">
+                            {{ $cartCount }}
+                        </span>
+
+                    @endif
+
+                @endauth
+
+            </a>
+
+            <a href="{{ route('pricing') }}" class="eco-package-btn">
+                <i class="ti ti-crown"></i>
+                Gói cước
+            </a>
+
+            @guest
+
+                <a href="{{ route('register') }}" class="eco-register-btn">
+                    Đăng ký
+                </a>
+
+                <a href="{{ route('login') }}" class="eco-login-btn">
+                    Đăng nhập
+                </a>
+
+            @endguest
+
+            @auth
+
+                <div class="eco-user-menu">
+
+                    <div class="eco-user-trigger">
+
+                        <img
+                            src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=18c29c&color=fff"
+                            class="eco-avatar">
+
+                        <div class="eco-user-info">
+
+                            <div class="eco-user-name">
+                                {{ Auth::user()->name }}
+                            </div>
+
+<div class="eco-user-role">
+
+    @if(auth()->user()->is_admin)
+
+       ADMIN
+
+    @elseif(auth()->user()->fresh()->isVip())
+
+        VIP MEMBER
+
+    @else
+
+        FREE MEMBER
+
+    @endif
 
 </div>
-</div>
+
+                        </div>
+
+                        <i class="ti ti-chevron-down"></i>
+
+                    </div>
+
+                    <div class="eco-user-dropdown">
+
+                        <div class="eco-dropdown-top">
+
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=18c29c&color=fff">
+
+                            <div>
+                                <h4>{{ Auth::user()->name }}</h4>
+                                <p>{{ Auth::user()->email }}</p>
+                            </div>
+
+                        </div>
+
+                        <div class="eco-divider"></div>
+@if(auth()->user()->is_admin)
+    <a href="{{ route('admin.revenue.index') }}">
+        <i class="ti ti-layout-dashboard"></i>
+        Trang quản trị
+    </a>
+@endif
+                        <a href="{{ route('account.profile') }}">
+                            <i class="ti ti-user"></i>
+                            Hồ sơ
+                        </a>
+
+                        <a href="{{ route('cart.index') }}">
+                            <i class="ti ti-shopping-cart"></i>
+                            Giỏ hàng của tôi
+                        </a>
+
+                        <a href="{{ route('account.favorites') }}">
+                            <i class="ti ti-heart"></i>
+                            Sách yêu thích
+                        </a>
+
+                        <a href="{{ route('support.index') }}">
+                            <i class="ti ti-headset"></i>
+                            Hỗ trợ
+                        </a>
+
+                        <div class="eco-divider"></div>
+
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <button type="submit">
+                                <i class="ti ti-logout"></i>
+                                Đăng xuất
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            @endauth
+
+        </div>
+
+    </div>
 
 </header>

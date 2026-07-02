@@ -1,12 +1,14 @@
 
 <aside class="sidebar">
 
-    <div class="sidebar-logo">
-        <div class="sidebar-logo-mark"></div>
-        <div class="sidebar-logo-text">
-            Ebook CMS
-        </div>
+<div class="sidebar-logo">
+
+
+    <div class="sidebar-logo-text">
+        <span>ECOBOOK</span>
+        <small>CMS</small>
     </div>
+</div>
 
     <div class="sidebar-section-title">
         Tổng quan
@@ -15,19 +17,21 @@
     <ul class="sidebar-menu">
 
 <li>
-    <li class="{{ request()->routeIs('admin.revenue.*') ? 'active' : '' }}">
-    <a href="{{ route('admin.revenue.index')}}">
+    <a href="{{ route('admin.revenue.index') }}"
+       class="{{ request()->routeIs('admin.revenue.*') ? 'active' : '' }}">
         <i class="ti ti-chart-bar"></i>
         <span>Doanh thu</span>
     </a>
 </li>
 
-        <li>
-            <a href="{{ route('admin.books.create') }}"  class="{{ request()->routeIs('admin.books.create') ? 'active' : '' }}">
-                <i class="ti ti-book-upload"></i>
-                Upload Ebook
-            </a>
-        </li>
+<li>
+    <a href="{{ route('admin.books.create') }}"
+       class="{{ request()->routeIs('admin.books.create') ? 'active' : '' }}">
+        <i class="ti ti-book-upload"></i>
+        <span>Upload Ebook</span>
+    </a>
+</li>
+
 <li>
     <a href="{{ route('admin.books.index') }}"
        class="{{ request()->routeIs('admin.books.index') ? 'active' : '' }}">
@@ -43,47 +47,52 @@
         <span>Bản nháp Ebook</span>
     </a>
 </li>
+
 <li>
     <a href="{{ route('admin.categories.index') }}"
        class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
         <i class="ti ti-category"></i>
-        Danh mục
+        <span>Danh mục</span>
     </a>
 </li>
 
-        <li>
+<li>
     <a href="{{ route('admin.members.index') }}"
        class="{{ request()->routeIs('admin.members.*') ? 'active' : '' }}">
         <i class="ti ti-user"></i>
-        Hội viên
+        <span>Hội viên</span>
     </a>
 </li>
+
 <li>
     <a href="{{ route('admin.banners.index') }}"
        class="{{ request()->routeIs('admin.banners.*') ? 'active' : '' }}">
         <i class="ti ti-photo"></i>
-        Banner
+        <span>Banner</span>
     </a>
 </li>
+
 <li>
     <a href="{{ route('admin.vip-plans.index') }}"
        class="{{ request()->routeIs('admin.vip-plans.*') ? 'active' : '' }}">
         <i class="ti ti-crown"></i>
-        Gói thành viên
+        <span>Gói thành viên</span>
     </a>
 </li>
 
-<li class="{{ request()->routeIs('admin.coupons.*') ? 'active' : '' }}">
-    <a href="{{ route('admin.coupons.index') }}">
+<li>
+    <a href="{{ route('admin.coupons.index') }}"
+       class="{{ request()->routeIs('admin.coupons.*') ? 'active' : '' }}">
         <i class="ti ti-ticket"></i>
-        Mã giảm giá
+        <span>Mã giảm giá</span>
     </a>
 </li>
 
-<li class="{{ request()->routeIs('admin.support.*') ? 'active' : '' }}">
-    <a href="{{ route('admin.support.index') }}">
+<li>
+    <a href="{{ route('admin.support.index') }}"
+       class="{{ request()->routeIs('admin.support.*') ? 'active' : '' }}">
         <i class="ti ti-headset"></i>
-        Hỗ trợ
+        <span>Hỗ trợ</span>
     </a>
 </li>
 
